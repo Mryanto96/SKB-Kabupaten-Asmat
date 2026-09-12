@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>News | SKB Asmat</title>
+    <meta name="description"
+        content="Latest news and announcements from Sanggar Kegiatan Belajar (SKB) Asmat — program updates, events, and community learning information." />
+    <meta name="keywords"
+        content="SKB Asmat News, Berita SKB Asmat, Pengumuman SKB Asmat, Announcements, Asmat Education" />
+    <meta name="author" content="SKB Asmat" />
+    <meta property="og:title" content="News | SKB Asmat" />
+    <meta property="og:description" content="Latest news and announcements from SKB Asmat." />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+    <div class="page-content">
+
+        <!-- ===== PAGE HEADER ===== -->
+        <section class="page-header">
+            <div class="page-header-bg"></div>
+            <div class="container" style="position: relative; z-index: 1; text-align: center;">
+                <p class="section-label fade-up" data-i18n="news_page_label">News &amp; Announcements</p>
+                <h1 class="section-title fade-up">
+                    <span data-i18n="news_page_title_1">Latest News from</span>
+                    <span class="gradient-text" data-i18n="news_page_title_2">SKB Asmat</span>
+                </h1>
+                <p class="section-desc fade-up" style="margin: 0 auto;" data-i18n="news_page_desc">
+                    Stay up to date with program updates, events, and announcements from
+                    Sanggar Kegiatan Belajar (SKB) Asmat.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== FILTER BUTTONS ===== -->
+        <section style="padding-bottom: 0;">
+            <div class="container">
+                <div class="quick-links fade-up" style="justify-content: center;">
+                    <button class="quick-link-item news-filter active" data-filter="all">
+                        <i class="fas fa-layer-group"></i>
+                        <span data-i18n="news_filter_all">All</span>
+                    </button>
+                    <button class="quick-link-item news-filter" data-filter="news">
+                        <i class="fas fa-newspaper"></i>
+                        <span data-i18n="news_filter_news">News</span>
+                    </button>
+                    <button class="quick-link-item news-filter" data-filter="announcement">
+                        <i class="fas fa-bullhorn"></i>
+                        <span data-i18n="news_filter_announcement">Announcements</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== NEWS LIST ===== -->
+        <section class="section" id="news-list">
+            <div class="container">
+
+                <div class="berita-grid" id="newsGrid">
+
+                    <!-- Item 1 — News -->
+                    <article class="berita-card fade-up news-item" data-type="news">
+                        <div class="berita-thumb"><i class="fas fa-newspaper"></i></div>
+                        <div class="berita-body">
+                            <div class="date">
+                                <i class="far fa-calendar"></i>
+                                <span data-i18n="news_date_placeholder">[Date]</span>
+                                <span
+                                    style="margin-left: 8px; padding: 2px 8px; border-radius: 99px; background: var(--bg3); color: var(--accent); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;"
+                                    data-i18n="news_badge_news">News</span>
+                            </div>
+                            <h4 data-i18n="news_1_title">[News Title]</h4>
+                            <p data-i18n="news_1_desc">
+                                [Short news description — placeholder, to be filled with official SKB Asmat news.]
+                            </p>
+                            <a href="#" class="btn-sm" data-i18n-readmore>
+                                <span data-i18n="read_more">Read more</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Item 2 — Announcement -->
+                    <article class="berita-card fade-up news-item" data-type="announcement">
+                        <div class="berita-thumb"><i class="fas fa-bullhorn"></i></div>
+                        <div class="berita-body">
+                            <div class="date">
+                                <i class="far fa-calendar"></i>
+                                <span data-i18n="news_date_placeholder">[Date]</span>
+                                <span
+                                    style="margin-left: 8px; padding: 2px 8px; border-radius: 99px; background: rgba(245, 166, 35, 0.15); color: #f5a623; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;"
+                                    data-i18n="news_badge_announcement">Announcement</span>
+                            </div>
+                            <h4 data-i18n="news_2_title">[Announcement Title]</h4>
+                            <p data-i18n="news_2_desc">
+                                [Short announcement description — placeholder, to be filled with official SKB Asmat
+                                announcement.]
+                            </p>
+                            <a href="#" class="btn-sm">
+                                <span data-i18n="read_more">Read more</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Item 3 — News -->
+                    <article class="berita-card fade-up news-item" data-type="news">
+                        <div class="berita-thumb"><i class="fas fa-newspaper"></i></div>
+                        <div class="berita-body">
+                            <div class="date">
+                                <i class="far fa-calendar"></i>
+                                <span data-i18n="news_date_placeholder">[Date]</span>
+                                <span
+                                    style="margin-left: 8px; padding: 2px 8px; border-radius: 99px; background: var(--bg3); color: var(--accent); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;"
+                                    data-i18n="news_badge_news">News</span>
+                            </div>
+                            <h4 data-i18n="news_3_title">[News Title]</h4>
+                            <p data-i18n="news_3_desc">
+                                [Short news description — placeholder, to be filled with official SKB Asmat news.]
+                            </p>
+                            <a href="#" class="btn-sm">
+                                <span data-i18n="read_more">Read more</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Item 4 — Announcement -->
+                    <article class="berita-card fade-up news-item" data-type="announcement">
+                        <div class="berita-thumb"><i class="fas fa-bullhorn"></i></div>
+                        <div class="berita-body">
+                            <div class="date">
+                                <i class="far fa-calendar"></i>
+                                <span data-i18n="news_date_placeholder">[Date]</span>
+                                <span
+                                    style="margin-left: 8px; padding: 2px 8px; border-radius: 99px; background: rgba(245, 166, 35, 0.15); color: #f5a623; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;"
+                                    data-i18n="news_badge_announcement">Announcement</span>
+                            </div>
+                            <h4 data-i18n="news_4_title">[Announcement Title]</h4>
+                            <p data-i18n="news_4_desc">
+                                [Short announcement description — placeholder, to be filled with official SKB Asmat
+                                announcement.]
+                            </p>
+                            <a href="#" class="btn-sm">
+                                <span data-i18n="read_more">Read more</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Item 5 — News -->
+                    <article class="berita-card fade-up news-item" data-type="news">
+                        <div class="berita-thumb"><i class="fas fa-newspaper"></i></div>
+                        <div class="berita-body">
+                            <div class="date">
+                                <i class="far fa-calendar"></i>
+                                <span data-i18n="news_date_placeholder">[Date]</span>
+                                <span
+                                    style="margin-left: 8px; padding: 2px 8px; border-radius: 99px; background: var(--bg3); color: var(--accent); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;"
+                                    data-i18n="news_badge_news">News</span>
+                            </div>
+                            <h4 data-i18n="news_5_title">[News Title]</h4>
+                            <p data-i18n="news_5_desc">
+                                [Short news description — placeholder, to be filled with official SKB Asmat news.]
+                            </p>
+                            <a href="#" class="btn-sm">
+                                <span data-i18n="read_more">Read more</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Item 6 — News -->
+                    <article class="berita-card fade-up news-item" data-type="news">
+                        <div class="berita-thumb"><i class="fas fa-newspaper"></i></div>
+                        <div class="berita-body">
+                            <div class="date">
+                                <i class="far fa-calendar"></i>
+                                <span data-i18n="news_date_placeholder">[Date]</span>
+                                <span
+                                    style="margin-left: 8px; padding: 2px 8px; border-radius: 99px; background: var(--bg3); color: var(--accent); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;"
+                                    data-i18n="news_badge_news">News</span>
+                            </div>
+                            <h4 data-i18n="news_6_title">[News Title]</h4>
+                            <p data-i18n="news_6_desc">
+                                [Short news description — placeholder, to be filled with official SKB Asmat news.]
+                            </p>
+                            <a href="#" class="btn-sm">
+                                <span data-i18n="read_more">Read more</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                </div>
+
+                <!-- Empty state -->
+                <div id="newsEmpty" style="display: none; text-align: center; padding: 40px 20px;">
+                    <i class="fas fa-inbox"
+                        style="font-size: 2.5rem; color: var(--text3); margin-bottom: 16px; display: inline-block;"></i>
+                    <p style="color: var(--text2);" data-i18n="news_empty">No items in this category yet.</p>
+                </div>
+
+                <div style="margin-top: 40px; text-align: center;" class="fade-up">
+                    <div class="quote-box" style="display: inline-block; max-width: 800px; text-align: left;"
+                        data-i18n-html="news_note">
+                        <strong>Note:</strong> All news items and announcements must be confirmed with
+                        official SKB Asmat records. Replace placeholders such as <em>[News Title]</em>,
+                        <em>[Date]</em>, and <em>[Short news description…]</em> with verified information.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== CTA ===== -->
+        <section class="section" style="background: var(--bg2); border-top: 1px solid var(--border);">
+            <div class="container">
+                <div style="text-align: center; max-width: 580px; margin: 0 auto;" class="fade-up">
+                    <h2 style="font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px;"
+                        data-i18n="news_cta_title">
+                        Stay Connected with SKB Asmat
+                    </h2>
+                    <p style="color: var(--text2); margin-bottom: 28px; line-height: 1.7;" data-i18n="news_cta_desc">
+                        Follow our latest updates, or contact us for the latest program and
+                        enrollment information.
+                    </p>
+                    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                        <a href="contact.html" class="btn btn-primary" style="font-size: 0.95rem; padding: 14px 28px;">
+                            <i class="fas fa-envelope"></i>
+                            <span data-i18n="cta_btn_contact">Contact Us</span>
+                        </a>
+                        <a href="programs.html" class="btn btn-outline" style="font-size: 0.95rem; padding: 14px 28px;">
+                            <i class="fas fa-book-open"></i>
+                            <span data-i18n="programs_label">Our Programs</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <footer>
+            <div class="container">
+                <p>© <span data-year>2026</span> <strong>SKB ASMAT</strong> —
+                    <span data-i18n="footer_line">Sanggar Kegiatan Belajar Asmat, Dinas Pendidikan Asmat</span>
+                </p>
+                <p style="font-size: 0.75rem; margin-top: 8px; color: var(--text3);">
+                    <i class="fas fa-graduation-cap" style="color: var(--c1);"></i>
+                    <span data-i18n="footer_tagline">Learn, Grow, and Create a Better Future</span>
+                </p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ===== NEWS FILTER SCRIPT (page-local, injected once) ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterBtns = document.querySelectorAll('.news-filter');
+            const items = document.querySelectorAll('.news-item');
+            const emptyState = document.getElementById('newsEmpty');
+            if (!filterBtns.length || !items.length) return;
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const filter = this.dataset.filter;
+                    let visibleCount = 0;
+
+                    items.forEach(item => {
+                        const match = filter === 'all' || item.dataset.type === filter;
+                        item.style.display = match ? '' : 'none';
+                        if (match) visibleCount++;
+                    });
+
+                    if (emptyState) {
+                        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script src="js/main.js"></script>
+    <script src="js/navbar.js"></script>
+</body>
+
+</html>
