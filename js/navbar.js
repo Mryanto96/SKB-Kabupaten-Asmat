@@ -182,8 +182,8 @@ function renderNavbar() {
         <a href="index.html" class="logo" aria-label="SKB Asmat Home">
           <img src="images/Logo.png" alt="SKB Asmat Logo" class="logo-img">
           <div class="logo-text">
-            <span class="logo-title">SKB ASMAT</span>
-            <span class="logo-sub">Papua Selatan</span>
+            <span class="logo-title">SKB KABUPATEN ASMAT</span>
+            <span class="logo-sub">KURSUS BAHASA INGGRIS</span>
           </div>
         </a>
 
