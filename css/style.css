@@ -422,7 +422,7 @@ footer span {
 }
 
 /* ============================================================
-   STAT CARDS (mobile-first → 2-col on phone, flexible on tablet)
+   STAT CARDS
    ============================================================ */
 .stats-row {
     display: grid;
@@ -470,7 +470,6 @@ footer span {
     font-variant-numeric: tabular-nums;
 }
 
-/* 4 columns when there's room */
 @media (min-width: 640px) {
     .stats-row {
         grid-template-columns: repeat(4, 1fr);
@@ -563,7 +562,7 @@ footer span {
 }
 
 /* ============================================================
-   HERO  — fully responsive, image never cropped
+   HERO
    ============================================================ */
 .hero {
     position: relative;
@@ -656,7 +655,7 @@ footer span {
     }
 }
 
-/* ---------- HERO IMAGE (KEY FIX) ---------- */
+/* ---------- HERO IMAGE ---------- */
 .hero-image-wrapper {
     position: relative;
     width: 100%;
@@ -674,7 +673,6 @@ footer span {
     isolation: isolate;
 }
 
-/* soft glow ring behind the image */
 .hero-image-wrapper::before {
     content: '';
     position: absolute;
@@ -692,9 +690,7 @@ footer span {
     width: 100%;
     height: auto;
     max-height: 60vh;
-    /* keeps tall images in check */
     object-fit: contain;
-    /* ← NEVER crops */
     display: block;
     border-radius: calc(var(--radius) - 6px);
     background: var(--bg2);
@@ -712,7 +708,6 @@ footer span {
     transform: scale(1.015);
 }
 
-/* Tablet/mobile — cap so it never gets huge */
 @media (max-width: 991px) {
     .hero-image-wrapper img {
         max-height: 380px;
@@ -1461,13 +1456,17 @@ footer span {
     }
 }
 
+/* Menu utama mobile — font diperbesar */
 .mobile-menu>a {
     display: block;
     padding: 14px 20px;
     border-bottom: 1px solid var(--border);
     color: var(--text);
     font-weight: 500;
-    font-size: var(--fs-sm);
+    font-size: 1.02rem;
+    /* ← UPDATED (sebelumnya var(--fs-sm)) */
+    line-height: 1.5;
+    /* ← UPDATED (biar lebih lega) */
     transition: all var(--transition);
 }
 
@@ -1481,6 +1480,7 @@ footer span {
     border-bottom: 1px solid var(--border);
 }
 
+/* Toggle dropdown mobile — font diperbesar */
 .mobile-dropdown-toggle {
     display: flex;
     justify-content: space-between;
@@ -1488,7 +1488,10 @@ footer span {
     padding: 14px 20px;
     cursor: pointer;
     font-weight: 500;
-    font-size: var(--fs-sm);
+    font-size: 1.02rem;
+    /* ← UPDATED (sebelumnya var(--fs-sm)) */
+    line-height: 1.5;
+    /* ← UPDATED */
     color: var(--text);
     transition: background var(--transition);
 }
@@ -1498,7 +1501,8 @@ footer span {
 }
 
 .mobile-dropdown-toggle .toggle-icon {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
+    /* ← UPDATED (sedikit diperbesar dari 0.7rem) */
     transition: transform 0.2s;
     opacity: 0.7;
 }
@@ -1514,10 +1518,15 @@ footer span {
     background: var(--bg2);
 }
 
+/* Submenu mobile — font diperbesar */
 .mobile-submenu a {
     display: block;
-    padding: 10px 20px 10px 40px;
-    font-size: var(--fs-sm);
+    padding: 12px 20px 12px 40px;
+    /* ← UPDATED (padding vertikal 10→12px) */
+    font-size: 0.96rem;
+    /* ← UPDATED (sebelumnya var(--fs-sm)) */
+    line-height: 1.5;
+    /* ← UPDATED */
     color: var(--text2);
 }
 
@@ -1845,5 +1854,26 @@ body.menu-open {
 
     .stat-label {
         font-size: 0.62rem;
+    }
+}
+
+/* ============================================================
+   MOBILE MENU FONT BOOST — KHUSUS HP (≤992px)
+   ============================================================ */
+@media (max-width: 992px) {
+
+    .mobile-menu>a,
+    .mobile-dropdown-toggle {
+        font-size: 1.05rem;
+        /* menu utama */
+    }
+
+    .mobile-submenu a {
+        font-size: 0.98rem;
+        /* submenu */
+    }
+
+    .mobile-dropdown-toggle .toggle-icon {
+        font-size: 0.8rem;
     }
 }
