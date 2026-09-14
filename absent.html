@@ -1,0 +1,1942 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attendance System</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <style>
+        :root {
+            /* Brand palette */
+            --c1: #FF6B6B;
+            --c2: #4ECDC4;
+            --c3: #FFE66D;
+            --c4: #A8E6CF;
+            --c5: #FF8B94;
+
+            --font: 'Plus Jakarta Sans', sans-serif;
+            --container: 1280px;
+            --nav-h: 68px;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+            --bg: #ffffff;
+            --bg2: #f8fafc;
+            --bg3: #f1f5f9;
+            --text: #0f172a;
+            --text2: #475569;
+            --text3: #94a3b8;
+            --border: #e2e8f0;
+            --accent: var(--c2);
+            --accent2: #2fb8ae;
+        }
+
+        html,
+        body {
+            font-family: var(--font);
+            background: var(--bg2);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(1200px 600px at 10% 0%, rgba(78, 205, 196, .10), transparent 60%),
+                radial-gradient(1000px 600px at 100% 100%, rgba(255, 230, 109, .10), transparent 60%),
+                var(--bg2);
+        }
+
+        .container-app {
+            max-width: var(--container);
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .nav-h {
+            height: var(--nav-h);
+        }
+
+        .fade-in {
+            animation: fadeIn .45s var(--transition);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-down {
+            animation: slideDown .35s var(--transition);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pop-in {
+            animation: popIn .35s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(.94);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .scroll-thin::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        .scroll-thin::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 8px;
+        }
+
+        .loader {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, .4);
+            border-top-color: #fff;
+            animation: spin .7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #cfgBanner {
+            display: none;
+        }
+
+        #cfgBanner.show {
+            display: block;
+        }
+
+        .tab-btn {
+            transition: all .2s;
+        }
+
+        .tab-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(78, 205, 196, .35);
+        }
+
+        .subtab-btn {
+            transition: all .2s;
+        }
+
+        .subtab-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(78, 205, 196, .35);
+        }
+
+        .chart-wrap {
+            position: relative;
+            height: 280px;
+        }
+
+        .card-hover {
+            transition: all .25s;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 48px rgba(15, 23, 42, .12);
+        }
+
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--c2), var(--c4));
+        }
+
+        tbody tr:nth-child(even) {
+            background: rgba(248, 250, 252, .5);
+        }
+
+        .modal-bg {
+            backdrop-filter: blur(6px);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 42px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: #cbd5e1;
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: #fff;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background: var(--accent);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(18px);
+        }
+
+        .action-btn {
+            transition: all .2s;
+        }
+
+        .action-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(78, 205, 196, .3);
+        }
+
+        .action-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .help-box {
+            background: rgba(78, 205, 196, .10);
+            border: 1px dashed var(--c2);
+            border-radius: var(--radius-sm);
+            padding: .75rem 1rem;
+            font-size: .8rem;
+            color: #0f766e;
+        }
+
+        .help-box b {
+            color: #0d9488;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: var(--text3);
+        }
+
+        .accent-text {
+            color: var(--c2);
+        }
+
+        .accent-bg {
+            background: var(--c2);
+        }
+
+        .accent-bg-hover:hover {
+            background: var(--accent2);
+        }
+
+        .rainbow-strip {
+            background: linear-gradient(90deg, var(--c1), var(--c2), var(--c3), var(--c4), var(--c5));
+        }
+
+        /* ============================================================
+           LOGOUT BUTTON — FIXED (BOTTOM LEFT)
+           ============================================================ */
+        .absent-logout-btn {
+            position: fixed;
+            left: max(16px, env(safe-area-inset-left, 16px));
+            bottom: max(16px, env(safe-area-inset-bottom, 16px));
+            z-index: 200;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 99px;
+            background: #fff;
+            color: var(--accent);
+            border: 1.5px solid var(--accent);
+            font-family: var(--font);
+            font-weight: 700;
+            font-size: 0.85rem;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.18);
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+
+        .absent-logout-btn i {
+            font-size: 0.95rem;
+            font-style: normal;
+        }
+
+        .absent-logout-btn:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 26px rgba(37, 99, 235, 0.30);
+        }
+
+        .absent-logout-btn.hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 480px) {
+            .absent-logout-btn {
+                padding: 8px 12px;
+                font-size: 0.75rem;
+                left: max(12px, env(safe-area-inset-left, 12px));
+                bottom: max(12px, env(safe-area-inset-bottom, 12px));
+            }
+
+            .absent-logout-btn span {
+                display: none;
+            }
+
+            .absent-logout-btn i {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .absent-logout-btn {
+                bottom: max(70px, env(safe-area-inset-bottom, 70px));
+            }
+        }
+
+        /* ============================================================
+           PASSWORD INPUT (LOGIN)
+           ============================================================ */
+        .password-wrap {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text3);
+            font-size: 1rem;
+            padding: 4px;
+            line-height: 1;
+            transition: color .2s;
+        }
+
+        .password-toggle:hover {
+            color: var(--accent);
+        }
+
+        .password-error {
+            animation: shake .4s;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-6px);
+            }
+
+            40% {
+                transform: translateX(6px);
+            }
+
+            60% {
+                transform: translateX(-4px);
+            }
+
+            80% {
+                transform: translateX(4px);
+            }
+        }
+    </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', "sans-serif"] },
+                    colors: {
+                        brand: {
+                            bg: "#ffffff", bg2: "#f8fafc", bg3: "#f1f5f9",
+                            text: "#0f172a", text2: "#475569", text3: "#94a3b8",
+                            accent: "#4ECDC4", accent2: "#2fb8ae", border: "#e2e8f0",
+                            c1: "#FF6B6B", c2: "#4ECDC4", c3: "#FFE66D", c4: "#A8E6CF", c5: "#FF8B94",
+                        },
+                    },
+                    boxShadow: {
+                        soft: "0 4px 24px rgba(15,23,42,.08)",
+                        hard: "0 12px 48px rgba(15,23,42,.14)",
+                        glow: "0 0 0 1px rgba(78,205,196,.15), 0 8px 32px rgba(78,205,196,.20)",
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+
+<body class="font-sans">
+
+    <!-- ============ CONFIG BANNER ============ -->
+    <div id="cfgBanner" class="bg-amber-100 border-b border-amber-300 px-4 py-3 text-sm text-amber-900">
+        <b>⚠ Configuration:</b> Set <code class="bg-amber-200 px-1 rounded">GAS_API_URL</code> with your GAS Web App
+        URL.
+    </div>
+
+    <!-- ============ NAVBAR ============ -->
+    <nav class="sticky top-0 z-40 backdrop-blur bg-white/85 border-b border-brand-border">
+        <div class="container-app nav-h flex items-center justify-end">
+            <div id="navRight" class="hidden items-center gap-3">
+                <div class="text-right leading-tight">
+                    <div id="navUser" class="text-sm font-bold">—</div>
+                    <div id="navRole" class="text-[11px] text-brand-text3">—</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============ LOGOUT BUTTON (BOTTOM LEFT) ============ -->
+    <button id="btnLogoutFixed" class="absent-logout-btn hidden" type="button" aria-label="Logout">
+        <i>🚪</i> <span>Logout</span>
+    </button>
+
+    <!-- ============ TOAST ============ -->
+    <div id="toastWrap" class="fixed top-[80px] right-4 z-[60] space-y-2"></div>
+
+    <!-- ============ PAGE: LOGIN ============ -->
+    <main id="pageLogin" class="container-app py-10 md:py-16">
+        <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+            <section class="space-y-5 fade-in">
+                <span
+                    class="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1 rounded-full bg-brand-bg3 text-brand-text2 border border-brand-border">
+                    <span class="w-2 h-2 rounded-full" style="background: var(--c2)"></span> Asmat English Course Attendance System
+                </span>
+                <h1 class="text-[clamp(1.9rem,1.4rem+2.6vw,3.4rem)] font-extrabold leading-tight">
+                    Attendance Made <span style="color: var(--c2)">Easy.</span> Just 3 Steps.
+                </h1>
+                <p class="text-brand-text2 max-w-md">
+                    Follow the steps on the right to start checking in today.
+                </p>
+
+                <ol class="space-y-3 max-w-md">
+                    <li class="flex gap-3 items-start">
+                        <span class="w-7 h-7 shrink-0 rounded-full grid place-items-center text-sm font-bold text-white"
+                            style="background: var(--c2)">1</span>
+                        <div>
+                            <div class="font-semibold text-sm">Select your name</div>
+                            <div class="text-xs text-brand-text3">Must match a registered account.</div>
+                        </div>
+                    </li>
+                    <li class="flex gap-3 items-start">
+                        <span class="w-7 h-7 shrink-0 rounded-full grid place-items-center text-sm font-bold text-white"
+                            style="background: var(--c2)">2</span>
+                        <div>
+                            <div class="font-semibold text-sm">Enter the access password</div>
+                            <div class="text-xs text-brand-text3">Ask your coordinator if you don't have it.</div>
+                        </div>
+                    </li>
+                    <li class="flex gap-3 items-start">
+                        <span class="w-7 h-7 shrink-0 rounded-full grid place-items-center text-sm font-bold text-white"
+                            style="background: var(--c2)">3</span>
+                        <div>
+                            <div class="font-semibold text-sm">Click the Sign In button</div>
+                            <div class="text-xs text-brand-text3">You'll be taken to the dashboard.</div>
+                        </div>
+                    </li>
+                </ol>
+
+                <div class="rainbow-strip h-1.5 w-40 rounded-full opacity-80"></div>
+            </section>
+
+            <section class="fade-in relative">
+                <div class="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
+                    <div class="w-[420px] h-[420px] rounded-full blur-3xl" style="background: rgba(78,205,196,.18)">
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white rounded-2xl border border-brand-border shadow-soft p-6 md:p-8 max-w-md mx-auto w-full relative overflow-hidden">
+                    <div class="rainbow-strip absolute top-0 left-0 right-0 h-1"></div>
+
+                    <h2 class="text-xl font-extrabold mb-1 mt-2">Attendance Login</h2>
+                    <p class="text-sm text-brand-text2 mb-6">Select your name, enter the password, then click Sign In.
+                    </p>
+
+                    <!-- Select Name -->
+                    <label class="block text-sm font-semibold mb-2">Your Name</label>
+                    <div class="relative mb-4">
+                        <select id="selectUser"
+                            class="w-full appearance-none px-4 py-3 pr-10 rounded-xl border border-brand-border bg-brand-bg2 focus:outline-none focus:ring-2 focus:ring-brand-accent/40 focus:border-brand-accent transition text-sm">
+                            <option value="">Loading names…</option>
+                        </select>
+                        <span
+                            class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-brand-text3">▾</span>
+                    </div>
+
+                    <!-- Password -->
+                    <label class="block text-sm font-semibold mb-2">Access Password</label>
+                    <div class="password-wrap mb-1">
+                        <input id="inputPassword" type="password" placeholder="Enter password…" autocomplete="off"
+                            class="w-full px-4 py-3 pr-12 rounded-xl border border-brand-border bg-brand-bg2 focus:outline-none focus:ring-2 focus:ring-brand-accent/40 focus:border-brand-accent transition text-sm" />
+                        <button id="togglePassword" type="button" class="password-toggle" aria-label="Show password">
+                            👁
+                        </button>
+                    </div>
+                    <p id="passwordHint" class="text-[11px] text-brand-text3 mb-5">
+                        Contact your coordinator if you forgot the password.
+                    </p>
+
+                    <button id="btnLogin"
+                        class="w-full py-3 rounded-xl text-white font-semibold transition shadow-soft disabled:opacity-60 flex items-center justify-center gap-2 accent-bg accent-bg-hover">
+                        Sign In to Dashboard
+                    </button>
+
+                    <p class="text-[11px] text-brand-text3 mt-4 text-center">
+                        © <span id="year"></span> Attendance System
+                    </p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- ============ PAGE: DASHBOARD ============ -->
+    <main id="pageDash" class="hidden container-app py-6 space-y-6">
+
+        <!-- Welcome banner -->
+        <section class="rounded-2xl shadow-glow p-5 md:p-6 text-white fade-in relative overflow-hidden"
+            style="background: linear-gradient(135deg, var(--c2), #2fb8ae 60%, #26a69a);">
+            <div class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10"></div>
+            <div class="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-white/5"></div>
+            <div class="flex flex-wrap items-center justify-between gap-4 relative">
+                <div>
+                    <div class="text-xs opacity-90">Welcome,</div>
+                    <div id="welcomeName" class="font-extrabold text-xl md:text-2xl">—</div>
+                    <div id="welcomeHint" class="text-xs md:text-sm opacity-95 mt-1">—</div>
+                </div>
+                <div class="text-right">
+                    <div class="text-[11px] opacity-90">Today</div>
+                    <div id="welcomeDate" class="font-bold">—</div>
+                    <div class="flex items-center gap-2 justify-end mt-1">
+                        <span id="clockNow" class="font-mono font-bold text-lg">--:--:--</span>
+                        <span class="text-xs opacity-90">WIB</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Info strip -->
+        <section
+            class="bg-white rounded-2xl border border-brand-border shadow-soft p-4 flex flex-wrap items-center gap-4 justify-between fade-in">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg grid place-items-center text-lg"
+                    style="background: rgba(78,205,196,.18)">⏰</div>
+                <div>
+                    <div class="text-[11px] text-brand-text3 font-semibold">Operating Hours</div>
+                    <div id="jamOps" class="text-sm font-bold">—</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg grid place-items-center text-lg"
+                    style="background: rgba(255,230,109,.35)">📅</div>
+                <div>
+                    <div class="text-[11px] text-brand-text3 font-semibold">Operating Days</div>
+                    <div id="hariOps" class="text-sm font-bold">—</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg grid place-items-center text-lg"
+                    style="background: rgba(168,230,207,.4)">🎯</div>
+                <div>
+                    <div class="text-[11px] text-brand-text3 font-semibold">Today's Status</div>
+                    <div id="todayInfo" class="text-sm font-bold">—</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabs -->
+        <div class="flex gap-2 flex-wrap fade-in">
+            <button data-tab="absen"
+                class="tab-btn active px-4 py-2 rounded-xl text-sm font-semibold border border-brand-border bg-white">📝
+                Attendance</button>
+            <button data-tab="rekap"
+                class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold border border-brand-border bg-white">📊
+                Summary</button>
+            <button data-tab="log"
+                class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold border border-brand-border bg-white">📋
+                History</button>
+            <button data-tab="koord" id="tabKoordBtn"
+                class="tab-btn hidden px-4 py-2 rounded-xl text-sm font-semibold border border-brand-border bg-white">🛡️
+                Coordinator Panel</button>
+        </div>
+
+        <!-- ============ TAB: ATTENDANCE ============ -->
+        <section id="tab-absen" class="tab-content space-y-6">
+
+            <div class="help-box fade-in">
+                💡 <b>How to check in:</b> Click <b>Check In</b> when you arrive, then <b>Check Out</b> when you finish
+                teaching.
+                Buttons are only active during operating hours.
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6">
+
+                <!-- Attendance card -->
+                <div
+                    class="lg:col-span-1 bg-white rounded-2xl border border-brand-border shadow-soft p-6 space-y-5 fade-in relative overflow-hidden">
+                    <div class="absolute top-0 left-0 right-0 h-1" style="background: var(--c2)"></div>
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-xs text-brand-text3 font-semibold">Your Status Today</div>
+                            <div id="statusBadge"
+                                class="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-brand-bg3 text-brand-text2">
+                                Not Checked In
+                            </div>
+                        </div>
+                        <div class="w-11 h-11 rounded-xl grid place-items-center text-xl text-white"
+                            style="background: linear-gradient(135deg, var(--c2), #2fb8ae)">🗓️</div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 text-center">
+                        <div class="p-3 rounded-xl bg-brand-bg2 border border-brand-border">
+                            <div class="text-[10px] text-brand-text3 mb-1">Check In</div>
+                            <div id="jamMasuk" class="text-xl font-extrabold">—</div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-brand-bg2 border border-brand-border">
+                            <div class="text-[10px] text-brand-text3 mb-1">Check Out</div>
+                            <div id="jamPulang" class="text-xl font-extrabold">—</div>
+                        </div>
+                    </div>
+
+                    <div id="lateInfo"
+                        class="hidden text-xs bg-amber-50 border border-amber-200 text-amber-700 rounded-xl p-2 text-center font-semibold">
+                    </div>
+
+                    <div id="keteranganBox"
+                        class="hidden text-xs text-brand-text2 bg-brand-bg3 border border-brand-border rounded-xl p-3">
+                        <span class="font-semibold">Coordinator Note:</span> <span id="keteranganText">—</span>
+                    </div>
+
+                    <div class="space-y-2">
+                        <button id="btnMasuk"
+                            class="action-btn w-full py-3.5 rounded-xl text-white font-bold transition shadow-soft disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 accent-bg accent-bg-hover">
+                            <span>⏱</span> <span>Check In</span>
+                        </button>
+                        <button id="btnPulang"
+                            class="action-btn w-full py-3.5 rounded-xl font-bold transition shadow-soft disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-white"
+                            style="background: var(--c4); color: #065f46;">
+                            <span>🏁</span> <span>Check Out</span>
+                        </button>
+                    </div>
+
+                    <p class="text-[11px] text-brand-text3 text-center leading-relaxed">
+                        Status <b>Sick / Permit / Absent</b> can only be entered by the Coordinator.
+                    </p>
+                </div>
+
+                <!-- Stats + Chart -->
+                <div class="lg:col-span-2 space-y-6">
+
+                    <!-- Stat cards -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div
+                            class="stat-card bg-white rounded-2xl border border-brand-border shadow-soft p-4 card-hover">
+                            <div class="text-[11px] text-brand-text3 font-semibold">PRESENT</div>
+                            <div id="statHadir" class="text-3xl font-extrabold mt-1" style="color: var(--c2)">0</div>
+                            <div class="text-[11px] text-brand-text3 mt-1">days this month</div>
+                        </div>
+                        <div
+                            class="stat-card bg-white rounded-2xl border border-brand-border shadow-soft p-4 card-hover">
+                            <div class="text-[11px] text-brand-text3 font-semibold">LATE</div>
+                            <div id="statTerlambat" class="text-3xl font-extrabold mt-1" style="color: #d97706">0</div>
+                            <div id="statMenit" class="text-[11px] text-brand-text3 mt-1">0 min total</div>
+                        </div>
+                        <div
+                            class="stat-card bg-white rounded-2xl border border-brand-border shadow-soft p-4 card-hover">
+                            <div class="text-[11px] text-brand-text3 font-semibold">SICK</div>
+                            <div id="statSakit" class="text-3xl font-extrabold mt-1" style="color: var(--c1)">0</div>
+                            <div class="text-[11px] text-brand-text3 mt-1">days</div>
+                        </div>
+                        <div
+                            class="stat-card bg-white rounded-2xl border border-brand-border shadow-soft p-4 card-hover">
+                            <div class="text-[11px] text-brand-text3 font-semibold">PERMIT</div>
+                            <div id="statIzin" class="text-3xl font-extrabold mt-1" style="color: #3b82f6">0</div>
+                            <div id="statAlpa" class="text-[11px] text-brand-text3 mt-1">0 absent</div>
+                        </div>
+                    </div>
+
+                    <!-- Chart -->
+                    <div class="bg-white rounded-2xl border border-brand-border shadow-soft p-6 fade-in">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 class="font-extrabold text-lg">Attendance Chart</h3>
+                                <p id="chartSub" class="text-xs text-brand-text3">This month</p>
+                            </div>
+                            <div class="text-right">
+                                <span id="chartPct" class="text-2xl font-extrabold" style="color: var(--c2)">0%</span>
+                                <div class="text-[11px] text-brand-text3">attendance rate</div>
+                            </div>
+                        </div>
+                        <div class="chart-wrap">
+                            <canvas id="chartKehadiran"></canvas>
+                        </div>
+                        <div class="help-box mt-4">
+                            💡 <b>Tip:</b> The higher the <b>Present</b> bar = the more diligent. Reduce
+                            <b>Late</b>, <b>Sick</b>, and <b>Absent</b> bars to improve your attendance rate.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ TAB: SUMMARY ============ -->
+        <section id="tab-rekap" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-brand-border shadow-soft p-6 fade-in">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                    <div>
+                        <h3 class="font-extrabold text-lg">Attendance Summary</h3>
+                        <p id="rekapSub" class="text-xs text-brand-text3">—</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input id="filterBulan" type="month"
+                            class="px-3 py-2 text-sm rounded-lg border border-brand-border bg-brand-bg2 focus:outline-none focus:ring-2 focus:ring-brand-accent/40" />
+                        <button id="btnRefreshRekap"
+                            class="px-3 py-2 text-sm rounded-lg text-white font-semibold transition accent-bg accent-bg-hover">🔄
+                            Refresh</button>
+                    </div>
+                </div>
+
+                <div class="help-box mb-4">
+                    💡 <b>Column legend:</b> <b>Present</b> = days attended. <b>Late</b> = days late
+                    (still counted as present). <b>Late Min</b> = total minutes late. <b>Sick / Permit /
+                        Absent</b> = days not attended.
+                </div>
+
+                <div class="overflow-x-auto scroll-thin">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="text-left text-brand-text2 bg-brand-bg3">
+                                <th class="px-3 py-2 rounded-l-lg">Month</th>
+                                <th class="px-3 py-2">Name</th>
+                                <th class="px-3 py-2">Role</th>
+                                <th class="px-3 py-2 text-center">Present</th>
+                                <th class="px-3 py-2 text-center">Late</th>
+                                <th class="px-3 py-2 text-center">Late Min</th>
+                                <th class="px-3 py-2 text-center">Sick</th>
+                                <th class="px-3 py-2 text-center">Permit</th>
+                                <th class="px-3 py-2 text-center">Absent</th>
+                                <th class="px-3 py-2 text-center">Work Days</th>
+                                <th class="px-3 py-2 text-center rounded-r-lg">% Present</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rekapBody">
+                            <tr>
+                                <td colspan="11" class="empty-state">Loading summary…</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ TAB: HISTORY ============ -->
+        <section id="tab-log" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-brand-border shadow-soft p-6 fade-in">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                    <div>
+                        <h3 class="font-extrabold text-lg">Attendance History</h3>
+                        <p class="text-xs text-brand-text3">Latest entries first.</p>
+                    </div>
+                    <button id="btnRefreshLog"
+                        class="px-3 py-2 text-sm rounded-lg border border-brand-border hover:bg-brand-bg3 transition">🔄
+                        Refresh</button>
+                </div>
+                <div class="overflow-x-auto scroll-thin">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="text-left text-brand-text2 bg-brand-bg3">
+                                <th class="px-3 py-2 rounded-l-lg">Date</th>
+                                <th class="px-3 py-2">Name</th>
+                                <th class="px-3 py-2">Role</th>
+                                <th class="px-3 py-2 text-center">Check In</th>
+                                <th class="px-3 py-2 text-center">Check Out</th>
+                                <th class="px-3 py-2 text-center">Status</th>
+                                <th class="px-3 py-2 text-center">Late Min</th>
+                                <th class="px-3 py-2 rounded-r-lg">Note</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logBody">
+                            <tr>
+                                <td colspan="8" class="empty-state">No data yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ TAB: COORDINATOR ============ -->
+        <section id="tab-koord" class="tab-content hidden space-y-6">
+
+            <div class="help-box fade-in">
+                🛡️ <b>You are a Coordinator.</b> In this panel you can: correct tutor attendance, configure operating
+                hours & days, manage users, and record holidays.
+            </div>
+
+            <div class="flex gap-2 flex-wrap">
+                <button data-subtab="override"
+                    class="subtab-btn active px-3 py-2 rounded-lg text-xs font-semibold border border-brand-border bg-white">✏️
+                    Correct Attendance</button>
+                <button data-subtab="settings"
+                    class="subtab-btn px-3 py-2 rounded-lg text-xs font-semibold border border-brand-border bg-white">⚙️
+                    Hours & Days</button>
+                <button data-subtab="users"
+                    class="subtab-btn px-3 py-2 rounded-lg text-xs font-semibold border border-brand-border bg-white">👥
+                    Manage Users</button>
+                <button data-subtab="libur"
+                    class="subtab-btn px-3 py-2 rounded-lg text-xs font-semibold border border-brand-border bg-white">📅
+                    Holidays</button>
+            </div>
+
+            <!-- Sub: Override -->
+            <div id="subtab-override"
+                class="subtab-content bg-white rounded-2xl border border-brand-border shadow-soft p-6 fade-in">
+                <h3 class="font-extrabold text-lg mb-1">Attendance Correction</h3>
+                <p class="text-xs text-brand-text3 mb-5">Use this when a tutor forgot to check in due to sickness,
+                    permit, or absence. Cannot be used if the tutor has already checked in.</p>
+
+                <form id="formOverride" class="grid md:grid-cols-4 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Select Tutor</label>
+                        <select id="ovUser" required
+                            class="w-full px-3 py-2 text-sm rounded-lg border border-brand-border bg-brand-bg2 focus:outline-none focus:ring-2 focus:ring-brand-accent/40">
+                            <option value="">— Select —</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Date</label>
+                        <input id="ovTanggal" type="date" required
+                            class="w-full px-3 py-2 text-sm rounded-lg border border-brand-border bg-brand-bg2 focus:outline-none focus:ring-2 focus:ring-brand-accent/40" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Status</label>
+                        <select id="ovStatus" required
+                            class="w-full px-3 py-2 text-sm rounded-lg border border-brand-border bg-brand-bg2 focus:outline-none focus:ring-2 focus:ring-brand-accent/40">
+                            <option value="">— Select —</option>
+                            <option value="Sick">🤒 Sick</option>
+                            <option value="Permit">📝 Permit</option>
+                            <option value="Absent">🚫 Absent</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Note</label>
+                        <input id="ovKet" type="text" placeholder="e.g., doctor's note"
+                            class="w-full px-3 py-2 text-sm rounded-lg border border-brand-border bg-brand-bg2 focus:outline-none focus:ring-2 focus:ring-brand-accent/40" />
+                    </div>
+                    <button
+                        class="md:col-span-4 px-4 py-2.5 rounded-lg text-white font-semibold text-sm transition accent-bg accent-bg-hover">Save
+                        Correction</button>
+                </form>
+            </div>
+
+            <!-- Sub: Settings -->
+            <div id="subtab-settings"
+                class="subtab-content hidden bg-white rounded-2xl border border-brand-border shadow-soft p-6 fade-in">
+                <h3 class="font-extrabold text-lg mb-1">Operating Hours & Days</h3>
+                <p class="text-xs text-brand-text3 mb-5">Set check-in hours and work days. Changes apply immediately to
+                    all users.</p>
+
+                <div class="help-box mb-5">
+                    💡 <b>Example:</b> If check-in starts at 15:00 and tolerance is 15:15, then checking in between
+                    15:00–15:15 is considered <b>Present</b>, after 15:15 is considered <b>Late</b>.
+                </div>
+
+                <form id="formSettings" class="grid md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Check-in Start</label>
+                        <input id="setMasukMin" type="time" required
+                            class="w-full px-3 py-2 text-sm rounded-lg border border-brand-border bg-brand-bg2 focus:outline-none focus:ring-2 focus:ring-brand-accent/40" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Late Tolerance Limit</label>
+                        <input id="setMasukMax" type="time" required
+                            class="w-full px-3 py-2 text-sm rounded-lg border border-brand-border bg-brand-bg2 focus:outline-none focus:ring-2 focus:ring-brand-accent/40" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Minimum Check-out Time</label>
+                        <input id="setPulangMin" type="time" required
+                            class="w-full px-3 py-2 text-sm rounded-lg border border-brand-border bg-brand-bg2 focus:outline-none focus:ring-2 focus:ring-brand-accent/40" />
+                    </div>
+
+                    <div class="md:col-span-3">
+                        <label class="block text-xs font-semibold mb-2">Operating Days (multiple allowed)</label>
+                        <div class="flex flex-wrap gap-2">
+                            <label
+                                class="flex items-center gap-2 px-3 py-2 rounded-lg border border-brand-border bg-brand-bg2 cursor-pointer hover:bg-brand-bg3 transition"><input
+                                    type="checkbox" class="day-checkbox" value="1" /> <span
+                                    class="text-sm">Monday</span></label>
+                            <label
+                                class="flex items-center gap-2 px-3 py-2 rounded-lg border border-brand-border bg-brand-bg2 cursor-pointer hover:bg-brand-bg3 transition"><input
+                                    type="checkbox" class="day-checkbox" value="2" /> <span
+                                    class="text-sm">Tuesday</span></label>
+                            <label
+                                class="flex items-center gap-2 px-3 py-2 rounded-lg border border-brand-border bg-brand-bg2 cursor-pointer hover:bg-brand-bg3 transition"><input
+                                    type="checkbox" class="day-checkbox" value="3" /> <span
+                                    class="text-sm">Wednesday</span></label>
+                            <label
+                                class="flex items-center gap-2 px-3 py-2 rounded-lg border border-brand-border bg-brand-bg2 cursor-pointer hover:bg-brand-bg3 transition"><input
+                                    type="checkbox" class="day-checkbox" value="4" /> <span
+                                    class="text-sm">Thursday</span></label>
+                            <label
+                                class="flex items-center gap-2 px-3 py-2 rounded-lg border border-brand-border bg-brand-bg2 cursor-pointer hover:bg-brand-bg3 transition"><input
+                                    type="checkbox" class="day-checkbox" value="5" /> <span
+                                    class="text-sm">Friday</span></label>
+                            <label
+                                class="flex items-center gap-2 px-3 py-2 rounded-lg border border-brand-border bg-brand-bg2 cursor-pointer hover:bg-brand-bg3 transition"><input
+                                    type="checkbox" class="day-checkbox" value="6" /> <span
+                                    class="text-sm">Saturday</span></label>
+                            <label
+                                class="flex items-center gap-2 px-3 py-2 rounded-lg border border-brand-border bg-brand-bg2 cursor-pointer hover:bg-brand-bg3 transition"><input
+                                    type="checkbox" class="day-checkbox" value="7" /> <span
+                                    class="text-sm">Sunday</span></label>
+                        </div>
+                    </div>
+
+                    <button
+                        class="md:col-span-3 px-4 py-2.5 rounded-lg text-white font-semibold text-sm transition accent-bg accent-bg-hover">Save
+                        Changes</button>
+                </form>
+            </div>
+
+            <!-- Sub: Users -->
+            <div id="subtab-users"
+                class="subtab-content hidden bg-white rounded-2xl border border-brand-border shadow-soft p-6 fade-in">
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <h3 class="font-extrabold text-lg mb-1">Manage Users</h3>
+                        <p class="text-xs text-brand-text3">Add new tutors or deactivate inactive accounts.
+                        </p>
+                    </div>
+                    <button id="btnAddUser"
+                        class="px-3 py-2 text-sm rounded-lg text-white font-semibold transition accent-bg accent-bg-hover">+
+                        New User</button>
+                </div>
+
+                <div class="overflow-x-auto scroll-thin">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="text-left text-brand-text2 bg-brand-bg3">
+                                <th class="px-3 py-2 rounded-l-lg">ID</th>
+                                <th class="px-3 py-2">Name</th>
+                                <th class="px-3 py-2">Role</th>
+                                <th class="px-3 py-2 text-center">Status</th>
+                                <th class="px-3 py-2 text-right rounded-r-lg">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersBody">
+                            <tr>
+                                <td colspan="5" class="empty-state">Loading…</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sub: Holidays -->
+            <div id="subtab-libur"
+                class="subtab-content hidden bg-white rounded-2xl border border-brand-border shadow-soft p-6 fade-in">
+                <h3 class="font-extrabold text-lg mb-1">Holidays</h3>
+                <p class="text-xs text-brand-text3 mb-5">Holiday dates are not counted as work days.</p>
+
+                <form id="formLibur" class="grid md:grid-cols-[1fr_2fr_auto] gap-3 mb-5">
+                    <input id="liburTanggal" type="date" required
+                        class="px-3 py-2 text-sm rounded-lg border border-brand-border bg-brand-bg2 focus:outline-none focus:ring-2 focus:ring-brand-accent/40" />
+                    <input id="liburKet" type="text" placeholder="Note (e.g., Public Holiday)"
+                        class="px-3 py-2 text-sm rounded-lg border border-brand-border bg-brand-bg2 focus:outline-none focus:ring-2 focus:ring-brand-accent/40" />
+                    <button
+                        class="px-4 py-2 rounded-lg text-white font-semibold text-sm transition accent-bg accent-bg-hover">+
+                        Add</button>
+                </form>
+
+                <div class="overflow-x-auto scroll-thin">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="text-left text-brand-text2 bg-brand-bg3">
+                                <th class="px-3 py-2 rounded-l-lg">Date</th>
+                                <th class="px-3 py-2">Note</th>
+                                <th class="px-3 py-2 rounded-r-lg text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="liburBody">
+                            <tr>
+                                <td colspan="3" class="empty-state">No holidays yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-xs text-brand-text3 py-4">
+            © <span id="year2"></span> Attendance System
+        </footer>
+    </main>
+
+    <!-- ============ CONFIRM MODAL ============ -->
+    <div id="modalWrap" class="hidden fixed inset-0 z-[70] bg-black/40 modal-bg items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-hard max-w-sm w-full p-6 pop-in">
+            <h4 id="modalTitle" class="font-extrabold text-lg mb-1">Confirmation</h4>
+            <p id="modalMsg" class="text-sm text-brand-text2 mb-5">Are you sure?</p>
+            <div class="flex gap-2 justify-end">
+                <button id="modalCancel"
+                    class="px-4 py-2 text-sm rounded-lg border border-brand-border hover:bg-brand-bg3 transition">Cancel</button>
+                <button id="modalOk"
+                    class="px-4 py-2 text-sm rounded-lg text-white font-semibold transition accent-bg accent-bg-hover">Yes,
+                    Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ USER MODAL ============ -->
+    <div id="userModalWrap" class="hidden fixed inset-0 z-[70] bg-black/40 modal-bg items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-hard max-w-sm w-full p-6 pop-in">
+            <h4 id="userModalTitle" class="font-extrabold text-lg mb-4">Add User</h4>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Name</label>
+                    <input id="umNama" type="text" placeholder="e.g., Ms. Sinta"
+                        class="w-full px-3 py-2 text-sm rounded-lg border border-brand-border bg-brand-bg2 focus:outline-none focus:ring-2 focus:ring-brand-accent/40" />
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">Role</label>
+                    <select id="umRole"
+                        class="w-full px-3 py-2 text-sm rounded-lg border border-brand-border bg-brand-bg2 focus:outline-none focus:ring-2 focus:ring-brand-accent/40">
+                        <option value="Tutor">Tutor</option>
+                        <option value="Koordinator">Coordinator</option>
+                    </select>
+                </div>
+                <div id="umAktifWrap" class="hidden">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <label class="switch">
+                            <input type="checkbox" id="umAktif" checked />
+                            <span class="slider"></span>
+                        </label>
+                        <span class="text-sm font-semibold">Account Active</span>
+                    </label>
+                </div>
+            </div>
+            <div class="flex gap-2 justify-end mt-5">
+                <button id="userModalCancel"
+                    class="px-4 py-2 text-sm rounded-lg border border-brand-border hover:bg-brand-bg3 transition">Cancel</button>
+                <button id="userModalOk"
+                    class="px-4 py-2 text-sm rounded-lg text-white font-semibold transition accent-bg accent-bg-hover">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* =========================================================
+           ⚙️ CONFIGURATION
+           ========================================================= */
+        const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwLNbBPPCJnhBXG704nsDh-I077Wlt-buINJVyadEl5w3f7DLLBa5sG3c5QlmyDnH9npQ/exec';
+
+        /* 🔐 ACCESS PASSWORD — change here if needed */
+        const ACCESS_PASSWORD = 'SKBAsmat';
+
+        let CURRENT_USER = null;
+        let TODAY_STATUS = null;
+        let SETTINGS = null;
+        let clockTimer = null;
+        let chartInstance = null;
+        let editUserTarget = null;
+        let USERS_CACHE = [];
+
+        const $ = (id) => document.getElementById(id);
+
+        /* =========================================================
+           API CALLER
+           ========================================================= */
+        async function callAPI(action, payload = {}) {
+            if (!GAS_API_URL || GAS_API_URL.includes('XXXX')) {
+                $('cfgBanner').classList.add('show');
+                throw new Error('GAS_API_URL is not configured.');
+            }
+            const body = JSON.stringify(Object.assign({ action }, payload));
+            const res = await fetch(GAS_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body,
+                redirect: 'follow'
+            });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const text = await res.text();
+            try { return JSON.parse(text); }
+            catch (e) { throw new Error('Response is not JSON: ' + text.slice(0, 200)); }
+        }
+
+        /* =========================================================
+           UI HELPERS
+           ========================================================= */
+        function toast(msg, type = 'info') {
+            const colors = {
+                info: 'bg-brand-accent text-white',
+                success: 'bg-emerald-500 text-white',
+                error: 'bg-brand-c1 text-white',
+                warn: 'bg-brand-c3 text-brand-text'
+            };
+            const el = document.createElement('div');
+            el.className = `slide-down px-4 py-3 rounded-xl shadow-hard text-sm font-semibold max-w-xs ${colors[type]}`;
+            el.textContent = msg;
+            $('toastWrap').appendChild(el);
+            setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; }, 2600);
+            setTimeout(() => el.remove(), 3000);
+        }
+
+        function setLoading(btn, loading, label) {
+            if (!btn) return;
+            if (loading) {
+                btn.dataset._label = btn.innerHTML;
+                btn.innerHTML = `<span class="loader"></span>`;
+                btn.disabled = true;
+            } else {
+                btn.innerHTML = label || btn.dataset._label || 'OK';
+                btn.disabled = false;
+            }
+        }
+
+        function confirmModal(title, msg) {
+            return new Promise((resolve) => {
+                $('modalTitle').textContent = title;
+                $('modalMsg').textContent = msg;
+                const w = $('modalWrap');
+                w.classList.remove('hidden'); w.classList.add('flex');
+                const close = (ok) => {
+                    w.classList.add('hidden'); w.classList.remove('flex');
+                    $('modalOk').onclick = null; $('modalCancel').onclick = null;
+                    resolve(ok);
+                };
+                $('modalOk').onclick = () => close(true);
+                $('modalCancel').onclick = () => close(false);
+            });
+        }
+
+        function startClock() {
+            if (clockTimer) clearInterval(clockTimer);
+            clockTimer = setInterval(() => {
+                const d = new Date();
+                $('clockNow').textContent =
+                    `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function formatTanggalEN(yyyymmdd) {
+            const [y, m, d] = yyyymmdd.split('-').map(Number);
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const dt = new Date(y, m - 1, d);
+            return `${days[dt.getDay()]}, ${d} ${months[m - 1]} ${y}`;
+        }
+
+        function getDayNames(arr) {
+            const names = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday', 6: 'Saturday', 7: 'Sunday' };
+            return arr.map(n => names[n]).join(', ');
+        }
+
+        /* =========================================================
+           INIT
+           ========================================================= */
+        document.addEventListener('DOMContentLoaded', async () => {
+            $('year').textContent = new Date().getFullYear();
+            $('year2').textContent = new Date().getFullYear();
+            bindEvents();
+            await loadUsers();
+        });
+
+        async function loadUsers() {
+            const sel = $('selectUser');
+            try {
+                const res = await callAPI('getUsers');
+                if (!res.ok) throw new Error(res.message || 'Failed to load users');
+                USERS_CACHE = res.data;
+                sel.innerHTML = '<option value="">— Select Name —</option>';
+                res.data.forEach(u => {
+                    const opt = document.createElement('option');
+                    opt.value = u.id;
+                    opt.textContent = `${u.nama}  ·  ${u.role}`;
+                    sel.appendChild(opt);
+                });
+            } catch (err) {
+                sel.innerHTML = '<option value="">Failed to load names</option>';
+                toast('Failed to load users: ' + err.message, 'error');
+            }
+        }
+
+        /* =========================================================
+           BIND EVENTS
+           ========================================================= */
+        function bindEvents() {
+            $('btnLogin').addEventListener('click', doLogin);
+            $('selectUser').addEventListener('keydown', e => { if (e.key === 'Enter') $('inputPassword').focus(); });
+            $('inputPassword').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+            $('togglePassword').addEventListener('click', togglePasswordVisibility);
+            $('btnLogoutFixed').addEventListener('click', doLogout);
+
+            $('btnMasuk').addEventListener('click', () => doAbsen('masuk'));
+            $('btnPulang').addEventListener('click', () => doAbsen('pulang'));
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+            });
+            document.querySelectorAll('.subtab-btn').forEach(btn => {
+                btn.addEventListener('click', () => switchSubTab(btn.dataset.subtab));
+            });
+
+            $('btnRefreshRekap').addEventListener('click', () => loadRekap(true));
+            $('filterBulan').addEventListener('change', () => {
+                loadDashboardStats();
+                loadRekap(false);
+                loadLog();
+            });
+            $('btnRefreshLog').addEventListener('click', () => loadLog(true));
+
+            $('formOverride').addEventListener('submit', submitOverride);
+            $('formSettings').addEventListener('submit', submitSettings);
+            $('formLibur').addEventListener('submit', addLibur);
+            $('btnAddUser').addEventListener('click', () => openUserModal(null));
+            $('userModalOk').addEventListener('click', submitUserModal);
+            $('userModalCancel').addEventListener('click', closeUserModal);
+        }
+
+        function togglePasswordVisibility() {
+            const inp = $('inputPassword');
+            const btn = $('togglePassword');
+            if (inp.type === 'password') {
+                inp.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                inp.type = 'password';
+                btn.textContent = '👁';
+            }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            $('tab-' + tab).classList.remove('hidden');
+
+            if (tab === 'rekap') loadRekap(false);
+            if (tab === 'log') loadLog(false);
+            if (tab === 'koord') {
+                loadOverrideUsers();
+                loadUsersAdmin();
+                loadLibur();
+                loadSettings();
+            }
+        }
+
+        function switchSubTab(sub) {
+            document.querySelectorAll('.subtab-btn').forEach(b => b.classList.toggle('active', b.dataset.subtab === sub));
+            document.querySelectorAll('.subtab-content').forEach(c => c.classList.add('hidden'));
+            $('subtab-' + sub).classList.remove('hidden');
+        }
+
+        /* =========================================================
+           LOGIN / LOGOUT
+           ========================================================= */
+        async function doLogin() {
+            const userId = $('selectUser').value;
+            const password = $('inputPassword').value;
+
+            if (!userId) { toast('Please select your name first.', 'warn'); return; }
+            if (!password) { toast('Please enter the access password first.', 'warn'); return; }
+
+            /* 🔐 Password validation */
+            if (password !== ACCESS_PASSWORD) {
+                const wrap = $('inputPassword').parentElement;
+                wrap.classList.add('password-error');
+                setTimeout(() => wrap.classList.remove('password-error'), 500);
+                toast('Incorrect password. Try again.', 'error');
+                $('inputPassword').value = '';
+                $('inputPassword').focus();
+                return;
+            }
+
+            const btn = $('btnLogin');
+            setLoading(btn, true);
+            try {
+                const res = await callAPI('login', { userId });
+                if (!res.ok) throw new Error(res.message);
+                CURRENT_USER = res.user;
+                TODAY_STATUS = res.statusHariIni;
+                SETTINGS = res.settings;
+
+                /* Reset form */
+                $('inputPassword').value = '';
+                $('inputPassword').type = 'password';
+                $('togglePassword').textContent = '👁';
+
+                showDashboard();
+                toast(`Hi, ${CURRENT_USER.nama}! Have a great day.`, 'success');
+            } catch (err) {
+                toast('Login failed: ' + err.message, 'error');
+            } finally {
+                setLoading(btn, false, 'Sign In to Dashboard');
+            }
+        }
+
+        function doLogout() {
+            CURRENT_USER = null; TODAY_STATUS = null; SETTINGS = null;
+            if (clockTimer) clearInterval(clockTimer);
+            if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+            $('pageDash').classList.add('hidden');
+            $('pageLogin').classList.remove('hidden');
+            $('navRight').classList.add('hidden'); $('navRight').classList.remove('flex');
+            $('btnLogoutFixed').classList.add('hidden');
+            $('selectUser').value = '';
+            $('inputPassword').value = '';
+            $('inputPassword').type = 'password';
+            $('togglePassword').textContent = '👁';
+            toast('You have been logged out.', 'info');
+        }
+
+        /* =========================================================
+           DASHBOARD
+           ========================================================= */
+        async function showDashboard() {
+            $('pageLogin').classList.add('hidden');
+            $('pageDash').classList.remove('hidden');
+            $('navRight').classList.remove('hidden'); $('navRight').classList.add('flex');
+            $('btnLogoutFixed').classList.remove('hidden');
+            $('navUser').textContent = CURRENT_USER.nama;
+            $('navRole').textContent = CURRENT_USER.role;
+
+            startClock();
+
+            const todayStr = new Date().toISOString().slice(0, 10);
+            $('welcomeDate').textContent = formatTanggalEN(todayStr);
+            $('welcomeName').textContent = CURRENT_USER.nama;
+            $('welcomeHint').textContent = CURRENT_USER.role === 'Koordinator'
+                ? 'You have full access to manage the team attendance.'
+                : "Don't forget to check in & out today.";
+            $('filterBulan').value = todayStr.slice(0, 7);
+
+            if (SETTINGS) {
+                $('jamOps').textContent = `${SETTINGS.jamMasukMin} – ${SETTINGS.jamPulangMin} WIB`;
+                $('hariOps').textContent = getDayNames(SETTINGS.hariOperasional);
+            }
+
+            const isKoord = CURRENT_USER.role === 'Koordinator';
+            $('tabKoordBtn').classList.toggle('hidden', !isKoord);
+            $('rekapSub').textContent = isKoord ? 'Team-wide summary.' : 'Your monthly summary.';
+
+            switchTab('absen');
+
+            await refreshStatusHariIni();
+            await loadDashboardStats();
+            await loadRekap(false);
+        }
+
+        /* =========================================================
+           TODAY'S STATUS
+           ========================================================= */
+        async function refreshStatusHariIni() {
+            try {
+                const res = await callAPI('getStatusHariIni', { userId: CURRENT_USER.id });
+                if (!res.ok) return;
+                TODAY_STATUS = res.data;
+                SETTINGS = res.data.settings || SETTINGS;
+                if (SETTINGS) {
+                    $('jamOps').textContent = `${SETTINGS.jamMasukMin} – ${SETTINGS.jamPulangMin} WIB`;
+                    $('hariOps').textContent = getDayNames(SETTINGS.hariOperasional);
+                }
+                renderStatus();
+            } catch (e) { console.error('refreshStatus error', e); }
+        }
+
+        function renderStatus() {
+            const s = TODAY_STATUS || {};
+            const badge = $('statusBadge');
+            const infoEl = $('todayInfo');
+
+            if (s.libur) {
+                infoEl.textContent = '🔔 Holiday';
+                infoEl.className = 'text-sm font-bold text-brand-c1';
+            } else if (!s.operasional) {
+                infoEl.textContent = '🚫 Not an operating day';
+                infoEl.className = 'text-sm font-bold text-brand-text3';
+            } else {
+                infoEl.textContent = '✅ Work day';
+                infoEl.className = 'text-sm font-bold text-emerald-600';
+            }
+
+            let text = 'Not Checked In', cls = 'bg-brand-bg3 text-brand-text2';
+            if (s.status === 'Present') { text = '✔ Present'; cls = 'bg-emerald-100 text-emerald-700'; }
+            else if (s.status === 'Late') { text = '⚠ Late'; cls = 'bg-amber-100 text-amber-700'; }
+            else if (s.status === 'Sick') { text = '🤒 Sick'; cls = 'bg-brand-c3 text-brand-text'; }
+            else if (s.status === 'Permit') { text = '📝 Permit'; cls = 'bg-blue-100 text-blue-700'; }
+            else if (s.status === 'Absent') { text = '🚫 Absent'; cls = 'bg-red-100 text-red-700'; }
+            if (s.libur) { text = 'Holiday'; cls = 'bg-brand-bg3 text-brand-text2'; }
+
+            badge.className = 'mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold ' + cls;
+            badge.textContent = text;
+
+            $('jamMasuk').textContent = s.jamMasuk || '—';
+            $('jamPulang').textContent = s.jamPulang || '—';
+
+            const lateInfo = $('lateInfo');
+            if (s.status === 'Late' && s.menitTerlambat) {
+                lateInfo.textContent = `You are ${s.menitTerlambat} minutes late today.`;
+                lateInfo.classList.remove('hidden');
+            } else lateInfo.classList.add('hidden');
+
+            const ket = $('keteranganBox');
+            if (s.keterangan) {
+                ket.classList.remove('hidden');
+                $('keteranganText').textContent = s.keterangan;
+            } else ket.classList.add('hidden');
+
+            const sudahMasuk = !!s.jamMasuk;
+            const sudahPulang = !!s.jamPulang;
+            const sudahStatusLain = ['Sick', 'Permit', 'Absent'].includes(s.status);
+            const blok = s.libur || !s.operasional || sudahStatusLain;
+
+            $('btnMasuk').disabled = blok || sudahMasuk;
+            $('btnPulang').disabled = blok || !sudahMasuk || sudahPulang;
+        }
+
+        /* =========================================================
+           CHECK IN / OUT
+           ========================================================= */
+        async function doAbsen(type) {
+            const map = {
+                masuk: { btn: 'btnMasuk', action: 'absenMasuk', label: '⏱ Check In' },
+                pulang: { btn: 'btnPulang', action: 'absenPulang', label: '🏁 Check Out' }
+            };
+            const cfg = map[type];
+            if (!cfg) return;
+
+            const btn = $(cfg.btn);
+            setLoading(btn, true);
+            try {
+                const res = await callAPI(cfg.action, { userId: CURRENT_USER.id });
+                if (!res.ok) throw new Error(res.message);
+                toast(res.message, 'success');
+                await refreshStatusHariIni();
+                await loadDashboardStats();
+                await loadLog(false);
+            } catch (err) {
+                toast(err.message || 'Check-in failed', 'error');
+            } finally {
+                setLoading(btn, false, cfg.label);
+            }
+        }
+
+        /* =========================================================
+           DASHBOARD STATS + CHART
+           ========================================================= */
+        async function loadDashboardStats() {
+            const bulan = $('filterBulan').value || new Date().toISOString().slice(0, 7);
+            const userId = CURRENT_USER.role === 'Koordinator' ? null : CURRENT_USER.id;
+
+            try {
+                const res = await callAPI('getDashboardStats', { userId, bulan });
+                if (!res.ok) throw new Error(res.message);
+                const d = res.data;
+
+                $('statHadir').textContent = d.hadir;
+                $('statTerlambat').textContent = d.terlambat;
+                $('statMenit').textContent = `${d.totalMenit} min total`;
+                $('statSakit').textContent = d.sakit;
+                $('statIzin').textContent = d.izin;
+                $('statAlpa').textContent = `${d.alpa} absent`;
+
+                const pct = res.hariKerja > 0 ? Math.round((d.hadir / res.hariKerja) * 100) : 0;
+                $('chartPct').textContent = pct + '%';
+                $('chartSub').textContent = `${bulan} · ${res.hariKerja} work days`;
+
+                renderChart(d);
+            } catch (err) {
+                console.error('stats error', err);
+            }
+        }
+
+        function renderChart(d) {
+            const ctx = $('chartKehadiran').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Present', 'Late', 'Sick', 'Permit', 'Absent'],
+                    datasets: [{
+                        label: 'Days',
+                        data: [d.hadir, d.terlambat, d.sakit, d.izin, d.alpa],
+                        backgroundColor: ['#4ECDC4', '#FFE66D', '#FF6B6B', '#A8E6CF', '#FF8B94'],
+                        borderRadius: 10,
+                        borderSkipped: false,
+                        barThickness: 44
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            padding: 10,
+                            borderRadius: 8,
+                            titleFont: { family: 'Plus Jakarta Sans', size: 12 },
+                            bodyFont: { family: 'Plus Jakarta Sans', size: 12 }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1, font: { family: 'Plus Jakarta Sans' } },
+                            grid: { color: '#f1f5f9' }
+                        },
+                        x: {
+                            ticks: { font: { family: 'Plus Jakarta Sans', weight: '600' } },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        /* =========================================================
+           SUMMARY
+           ========================================================= */
+        async function loadRekap(showToast) {
+            const body = $('rekapBody');
+            body.innerHTML = '<tr><td colspan="11" class="empty-state">Loading summary…</td></tr>';
+
+            const bulan = $('filterBulan').value || '';
+            try {
+                const res = await callAPI('getRekapAll', { bulan });
+                if (!res.ok) throw new Error(res.message);
+
+                let data = res.data;
+                if (CURRENT_USER.role === 'Tutor') data = data.filter(d => d.userId === CURRENT_USER.id);
+
+                if (!data.length) {
+                    body.innerHTML = '<tr><td colspan="11" class="empty-state">No summary data yet.</td></tr>';
+                    return;
+                }
+
+                body.innerHTML = data.map(d => {
+                    const pct = d.hariKerja > 0 ? Math.round((d.hadir / d.hariKerja) * 100) : 0;
+                    const pctCls = pct >= 90 ? 'text-emerald-600' : pct >= 75 ? 'text-amber-600' : 'text-red-500';
+                    return `
+        <tr class="border-b border-brand-border/70 hover:bg-brand-bg2 transition">
+          <td class="px-3 py-2 font-mono text-xs">${d.bulan}</td>
+          <td class="px-3 py-2 font-semibold">${d.nama}</td>
+          <td class="px-3 py-2 text-brand-text2">${d.role}</td>
+          <td class="px-3 py-2 text-center">${d.hadir}</td>
+          <td class="px-3 py-2 text-center text-amber-600 font-semibold">${d.terlambat}</td>
+          <td class="px-3 py-2 text-center text-amber-700 font-mono text-xs">${d.totalMenitTerlambat} min</td>
+          <td class="px-3 py-2 text-center text-orange-500 font-semibold">${d.sakit}</td>
+          <td class="px-3 py-2 text-center text-blue-500 font-semibold">${d.izin}</td>
+          <td class="px-3 py-2 text-center text-red-500 font-semibold">${d.alpa}</td>
+          <td class="px-3 py-2 text-center">${d.hariKerja}</td>
+          <td class="px-3 py-2 text-center font-bold ${pctCls}">${pct}%</td>
+        </tr>`;
+                }).join('');
+
+                if (showToast) toast('Summary refreshed.', 'info');
+            } catch (err) {
+                body.innerHTML = `<tr><td colspan="11" class="text-center py-6 text-red-500">Error: ${err.message}</td></tr>`;
+            }
+        }
+
+        /* =========================================================
+           HISTORY
+           ========================================================= */
+        async function loadLog(showToast) {
+            const body = $('logBody');
+            body.innerHTML = '<tr><td colspan="8" class="empty-state">Loading…</td></tr>';
+            const bulan = $('filterBulan').value || '';
+            try {
+                const payload = { bulan };
+                if (CURRENT_USER.role === 'Tutor') payload.userId = CURRENT_USER.id;
+
+                const res = await callAPI('getKehadiranRaw', payload);
+                if (!res.ok) throw new Error(res.message);
+
+                if (!res.data || !res.data.length) {
+                    body.innerHTML = '<tr><td colspan="8" class="empty-state">No attendance history this month.</td></tr>';
+                    return;
+                }
+
+                body.innerHTML = res.data.map(r => {
+                    const st = r.status || '-';
+                    let stCls = 'bg-brand-bg3 text-brand-text2';
+                    if (st === 'Present') stCls = 'bg-emerald-100 text-emerald-700';
+                    else if (st === 'Late') stCls = 'bg-amber-100 text-amber-700';
+                    else if (st === 'Sick') stCls = 'bg-brand-c3 text-brand-text';
+                    else if (st === 'Permit') stCls = 'bg-blue-100 text-blue-700';
+                    else if (st === 'Absent') stCls = 'bg-red-100 text-red-700';
+                    return `
+        <tr class="border-b border-brand-border/70 hover:bg-brand-bg2 transition">
+          <td class="px-3 py-2 font-mono text-xs">${r.tanggal}</td>
+          <td class="px-3 py-2 font-semibold">${r.nama}</td>
+          <td class="px-3 py-2 text-brand-text2">${r.role}</td>
+          <td class="px-3 py-2 text-center font-mono">${r.jamMasuk || '—'}</td>
+          <td class="px-3 py-2 text-center font-mono">${r.jamPulang || '—'}</td>
+          <td class="px-3 py-2 text-center"><span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${stCls}">${st}</span></td>
+          <td class="px-3 py-2 text-center text-amber-700 font-mono text-xs">${r.menitTerlambat ? r.menitTerlambat + ' min' : '—'}</td>
+          <td class="px-3 py-2 text-brand-text2 text-xs">${r.keterangan || '—'}</td>
+        </tr>`;
+                }).join('');
+
+                if (showToast) toast('History refreshed.', 'info');
+            } catch (err) {
+                body.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-red-500">Error: ${err.message}</td></tr>`;
+            }
+        }
+
+        /* =========================================================
+           COORDINATOR: OVERRIDE
+           ========================================================= */
+        async function loadOverrideUsers() {
+            const sel = $('ovUser');
+            sel.innerHTML = '<option value="">— Select —</option>';
+            try {
+                const res = await callAPI('getUsersAdmin', { userId: CURRENT_USER.id });
+                if (!res.ok) throw new Error(res.message);
+                res.data.filter(u => u.aktif).forEach(u => {
+                    const opt = document.createElement('option');
+                    opt.value = u.id;
+                    opt.textContent = `${u.nama}  ·  ${u.role}`;
+                    sel.appendChild(opt);
+                });
+            } catch (err) {
+                toast('Failed to load users: ' + err.message, 'error');
+            }
+        }
+
+        async function submitOverride(e) {
+            e.preventDefault();
+            const targetUserId = $('ovUser').value;
+            const tanggal = $('ovTanggal').value;
+            const status = $('ovStatus').value;
+            const keterangan = $('ovKet').value.trim();
+
+            if (!targetUserId || !tanggal || !status) {
+                toast('Please complete all fields first.', 'warn');
+                return;
+            }
+
+            const label = status === 'Sick' ? 'Sick' : status === 'Permit' ? 'Permit' : 'Absent';
+            const ok = await confirmModal('Confirm Correction', `Set status "${label}" for date ${tanggal}?`);
+            if (!ok) return;
+
+            try {
+                const res = await callAPI('overrideAbsen', {
+                    userId: CURRENT_USER.id,
+                    targetUserId, tanggal, status, keterangan
+                });
+                if (!res.ok) throw new Error(res.message);
+                toast(res.message, 'success');
+                $('formOverride').reset();
+                await loadLog(false);
+                await loadDashboardStats();
+                await loadRekap(false);
+            } catch (err) {
+                toast('Error: ' + err.message, 'error');
+            }
+        }
+
+        /* =========================================================
+           COORDINATOR: SETTINGS
+           ========================================================= */
+        async function loadSettings() {
+            try {
+                const res = await callAPI('getSettings');
+                if (!res.ok) throw new Error(res.message);
+                const s = res.data;
+                SETTINGS = s;
+                $('setMasukMin').value = s.jamMasukMin;
+                $('setMasukMax').value = s.jamMasukMax;
+                $('setPulangMin').value = s.jamPulangMin;
+
+                document.querySelectorAll('.day-checkbox').forEach(cb => {
+                    cb.checked = s.hariOperasional.indexOf(Number(cb.value)) !== -1;
+                });
+            } catch (err) {
+                toast('Failed to load settings: ' + err.message, 'error');
+            }
+        }
+
+        async function submitSettings(e) {
+            e.preventDefault();
+            const hariArr = Array.from(document.querySelectorAll('.day-checkbox:checked')).map(cb => Number(cb.value));
+            if (!hariArr.length) { toast('Select at least 1 operating day.', 'warn'); return; }
+
+            const payload = {
+                userId: CURRENT_USER.id,
+                jamMasukMin: $('setMasukMin').value,
+                jamMasukMax: $('setMasukMax').value,
+                jamPulangMin: $('setPulangMin').value,
+                hariOperasional: hariArr
+            };
+
+            try {
+                const res = await callAPI('updateSettings', payload);
+                if (!res.ok) throw new Error(res.message);
+                toast(res.message, 'success');
+                SETTINGS = res.data;
+                $('jamOps').textContent = `${SETTINGS.jamMasukMin} – ${SETTINGS.jamPulangMin} WIB`;
+                $('hariOps').textContent = getDayNames(SETTINGS.hariOperasional);
+                await refreshStatusHariIni();
+            } catch (err) {
+                toast('Failed to save: ' + err.message, 'error');
+            }
+        }
+
+        /* =========================================================
+           COORDINATOR: USERS CRUD
+           ========================================================= */
+        async function loadUsersAdmin() {
+            const body = $('usersBody');
+            body.innerHTML = '<tr><td colspan="5" class="empty-state">Loading…</td></tr>';
+            try {
+                const res = await callAPI('getUsersAdmin', { userId: CURRENT_USER.id });
+                if (!res.ok) throw new Error(res.message);
+                if (!res.data.length) {
+                    body.innerHTML = '<tr><td colspan="5" class="empty-state">No users yet.</td></tr>';
+                    return;
+                }
+                body.innerHTML = res.data.map(u => `
+      <tr class="border-b border-brand-border/70 hover:bg-brand-bg2 transition">
+        <td class="px-3 py-2 font-mono text-xs">${u.id}</td>
+        <td class="px-3 py-2 font-semibold">${u.nama}</td>
+        <td class="px-3 py-2 text-brand-text2">${u.role}</td>
+        <td class="px-3 py-2 text-center">
+          <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${u.aktif ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">${u.aktif ? 'Active' : 'Inactive'}</span>
+        </td>
+        <td class="px-3 py-2 text-right space-x-1">
+          <button data-id="${u.id}" class="btnEditUser text-xs px-3 py-1 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-700 font-semibold transition">Edit</button>
+          <button data-id="${u.id}" class="btnDeleteUser text-xs px-3 py-1 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 font-semibold transition">Delete</button>
+        </td>
+      </tr>`).join('');
+
+                document.querySelectorAll('.btnEditUser').forEach(b => {
+                    b.addEventListener('click', () => openUserModal(b.dataset.id));
+                });
+                document.querySelectorAll('.btnDeleteUser').forEach(b => {
+                    b.addEventListener('click', () => deleteUser(b.dataset.id));
+                });
+            } catch (err) {
+                body.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-red-500">Error: ${err.message}</td></tr>`;
+            }
+        }
+
+        function openUserModal(userId) {
+            editUserTarget = userId;
+            const modal = $('userModalWrap');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+
+            if (userId) {
+                const u = USERS_CACHE.find(x => x.id === userId);
+                $('userModalTitle').textContent = 'Edit User';
+                $('umNama').value = u ? u.nama : '';
+                $('umRole').value = u ? u.role : 'Tutor';
+                $('umAktif').checked = u ? u.aktif !== false : true;
+                $('umAktifWrap').classList.remove('hidden');
+            } else {
+                $('userModalTitle').textContent = 'Add User';
+                $('umNama').value = '';
+                $('umRole').value = 'Tutor';
+                $('umAktif').checked = true;
+                $('umAktifWrap').classList.add('hidden');
+            }
+        }
+
+        function closeUserModal() {
+            $('userModalWrap').classList.add('hidden'); $('userModalWrap').classList.remove('flex');
+            editUserTarget = null;
+        }
+
+        async function submitUserModal() {
+            const nama = $('umNama').value.trim();
+            const role = $('umRole').value;
+            if (!nama) { toast('Name is required.', 'warn'); return; }
+
+            const btn = $('userModalOk');
+            setLoading(btn, true);
+            try {
+                let res;
+                if (editUserTarget) {
+                    res = await callAPI('updateUser', {
+                        userId: CURRENT_USER.id,
+                        targetUserId: editUserTarget,
+                        nama, role,
+                        aktif: $('umAktif').checked
+                    });
+                } else {
+                    res = await callAPI('addUser', { userId: CURRENT_USER.id, nama, role });
+                }
+                if (!res.ok) throw new Error(res.message);
+                toast(res.message, 'success');
+                closeUserModal();
+                await loadUsers();
+                await loadUsersAdmin();
+                await loadOverrideUsers();
+            } catch (err) {
+                toast('Error: ' + err.message, 'error');
+            } finally {
+                setLoading(btn, false, 'Save');
+            }
+        }
+
+        async function deleteUser(userId) {
+            const u = USERS_CACHE.find(x => x.id === userId);
+            const nama = u ? u.nama : userId;
+            const ok = await confirmModal('Delete User', `Delete "${nama}"? This action cannot be undone.`);
+            if (!ok) return;
+            try {
+                const res = await callAPI('deleteUser', { userId: CURRENT_USER.id, targetUserId: userId });
+                if (!res.ok) throw new Error(res.message);
+                toast(res.message, 'success');
+                await loadUsers();
+                await loadUsersAdmin();
+                await loadOverrideUsers();
+            } catch (err) {
+                toast('Error: ' + err.message, 'error');
+            }
+        }
+
+        /* =========================================================
+           COORDINATOR: HOLIDAYS
+           ========================================================= */
+        async function loadLibur() {
+            const body = $('liburBody');
+            body.innerHTML = '<tr><td colspan="3" class="empty-state">Loading…</td></tr>';
+            try {
+                const res = await callAPI('getHariLibur');
+                if (!res.ok) throw new Error(res.message);
+                if (!res.data.length) {
+                    body.innerHTML = '<tr><td colspan="3" class="empty-state">No holidays yet.</td></tr>';
+                    return;
+                }
+                body.innerHTML = res.data.map(l => `
+      <tr class="border-b border-brand-border/70 hover:bg-brand-bg2 transition">
+        <td class="px-3 py-2 font-mono text-xs">${l.tanggal}</td>
+        <td class="px-3 py-2 text-brand-text2">${l.keterangan || '-'}</td>
+        <td class="px-3 py-2 text-right">
+          <button data-tgl="${l.tanggal}" class="btnDelLibur text-xs px-3 py-1 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 font-semibold transition">Delete</button>
+        </td>
+      </tr>`).join('');
+                document.querySelectorAll('.btnDelLibur').forEach(b => {
+                    b.addEventListener('click', () => hapusLibur(b.dataset.tgl));
+                });
+            } catch (err) {
+                body.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-red-500">Error: ${err.message}</td></tr>`;
+            }
+        }
+
+        async function addLibur(e) {
+            e.preventDefault();
+            const tanggal = $('liburTanggal').value;
+            const keterangan = $('liburKet').value.trim();
+            if (!tanggal) return;
+            try {
+                const res = await callAPI('setHariLibur', { userId: CURRENT_USER.id, tanggal, keterangan });
+                if (!res.ok) throw new Error(res.message);
+                toast(res.message, 'success');
+                $('formLibur').reset();
+                await loadLibur();
+                await refreshStatusHariIni();
+            } catch (err) {
+                toast('Error: ' + err.message, 'error');
+            }
+        }
+
+        async function hapusLibur(tgl) {
+            const ok = await confirmModal('Delete Holiday', `Delete date ${tgl}?`);
+            if (!ok) return;
+            try {
+                const res = await callAPI('hapusHariLibur', { userId: CURRENT_USER.id, tanggal: tgl });
+                if (!res.ok) throw new Error(res.message);
+                toast(res.message, 'success');
+                await loadLibur();
+                await refreshStatusHariIni();
+            } catch (err) {
+                toast('Error: ' + err.message, 'error');
+            }
+        }
+    </script>
+    <script src="js/main.js"></script>
+    <script src="js/navbar.js"></script>
+</body>
+
+</html>
