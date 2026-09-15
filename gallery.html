@@ -1,261 +1,390 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gallery | SKB Asmat</title>
-    <meta name="description"
-        content="Photo gallery of Sanggar Kegiatan Belajar (SKB) Asmat — learning activities, events, and community moments from Asmat, Papua Selatan." />
-    <meta name="keywords" content="SKB Asmat Gallery, Galeri SKB Asmat, Foto Kegiatan SKB Asmat, Asmat Education" />
+    <meta
+      name="description"
+      content="Photo gallery of Sanggar Kegiatan Belajar (SKB) Asmat — learning activities, events, and community moments from Asmat, Papua Selatan."
+    />
+    <meta
+      name="keywords"
+      content="SKB Asmat Gallery, Galeri SKB Asmat, Foto Kegiatan SKB Asmat, Asmat Education"
+    />
     <meta name="author" content="SKB Asmat" />
     <meta property="og:title" content="Gallery | SKB Asmat" />
-    <meta property="og:description" content="Photo gallery of activities and learning at SKB Asmat." />
+    <meta
+      property="og:description"
+      content="Photo gallery of activities and learning at SKB Asmat."
+    />
     <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
     <link rel="stylesheet" href="css/style.css" />
-</head>
+  </head>
 
-<body>
-
+  <body>
     <div class="page-content">
+      <!-- ===== PAGE HEADER ===== -->
+      <section class="page-header">
+        <div class="page-header-bg"></div>
+        <div
+          class="container"
+          style="position: relative; z-index: 1; text-align: center"
+        >
+          <p class="section-label fade-up" data-i18n="gallery_page_label">
+            Gallery
+          </p>
+          <h1 class="section-title fade-up">
+            <span data-i18n="gallery_page_title_1">Moments from</span>
+            <span class="gradient-text" data-i18n="gallery_page_title_2"
+              >SKB Asmat</span
+            >
+          </h1>
+          <p
+            class="section-desc fade-up"
+            style="margin: 0 auto"
+            data-i18n="gallery_page_desc"
+          >
+            A visual journey through our learning activities, events, and
+            community moments — captured at SKB Asmat.
+          </p>
+        </div>
+      </section>
 
-        <!-- ===== PAGE HEADER ===== -->
-        <section class="page-header">
-            <div class="page-header-bg"></div>
-            <div class="container" style="position: relative; z-index: 1; text-align: center;">
-                <p class="section-label fade-up" data-i18n="gallery_page_label">Gallery</p>
-                <h1 class="section-title fade-up">
-                    <span data-i18n="gallery_page_title_1">Moments from</span>
-                    <span class="gradient-text" data-i18n="gallery_page_title_2">SKB Asmat</span>
-                </h1>
-                <p class="section-desc fade-up" style="margin: 0 auto;" data-i18n="gallery_page_desc">
-                    A visual journey through our learning activities, events, and community
-                    moments — captured at SKB Asmat.
+      <!-- ===== FILTER BUTTONS ===== -->
+      <section style="padding-bottom: 0">
+        <div class="container">
+          <div class="quick-links fade-up" style="justify-content: center">
+            <button
+              class="quick-link-item gallery-filter active"
+              data-filter="all"
+            >
+              <i class="fas fa-layer-group"></i>
+              <span data-i18n="gallery_filter_all">All</span>
+            </button>
+            <button
+              class="quick-link-item gallery-filter"
+              data-filter="learning"
+            >
+              <i class="fas fa-book-open"></i>
+              <span data-i18n="gallery_filter_learning">Learning</span>
+            </button>
+            <button class="quick-link-item gallery-filter" data-filter="events">
+              <i class="fas fa-calendar-day"></i>
+              <span data-i18n="gallery_filter_events">Events</span>
+            </button>
+            <button
+              class="quick-link-item gallery-filter"
+              data-filter="community"
+            >
+              <i class="fas fa-users"></i>
+              <span data-i18n="gallery_filter_community">Community</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== GALLERY GRID ===== -->
+      <section class="section" id="gallery-grid">
+        <div class="container">
+          <div class="berita-grid" id="galleryGrid">
+            <!-- Item 1 -->
+            <article
+              class="berita-card fade-up gallery-item"
+              data-type="learning"
+              data-title="[Image Title 1]"
+            >
+              <div class="berita-thumb"><i class="fas fa-image"></i></div>
+              <div class="berita-body">
+                <h4 data-i18n="gallery_1_title">[Image Title 1]</h4>
+                <p data-i18n="gallery_1_desc">
+                  [Short description — placeholder, to be filled with official
+                  SKB Asmat documentation.]
                 </p>
-            </div>
-        </section>
+              </div>
+            </article>
 
-        <!-- ===== FILTER BUTTONS ===== -->
-        <section style="padding-bottom: 0;">
-            <div class="container">
-                <div class="quick-links fade-up" style="justify-content: center;">
-                    <button class="quick-link-item gallery-filter active" data-filter="all">
-                        <i class="fas fa-layer-group"></i>
-                        <span data-i18n="gallery_filter_all">All</span>
-                    </button>
-                    <button class="quick-link-item gallery-filter" data-filter="learning">
-                        <i class="fas fa-book-open"></i>
-                        <span data-i18n="gallery_filter_learning">Learning</span>
-                    </button>
-                    <button class="quick-link-item gallery-filter" data-filter="events">
-                        <i class="fas fa-calendar-day"></i>
-                        <span data-i18n="gallery_filter_events">Events</span>
-                    </button>
-                    <button class="quick-link-item gallery-filter" data-filter="community">
-                        <i class="fas fa-users"></i>
-                        <span data-i18n="gallery_filter_community">Community</span>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== GALLERY GRID ===== -->
-        <section class="section" id="gallery-grid">
-            <div class="container">
-
-                <div class="berita-grid" id="galleryGrid">
-
-                    <!-- Item 1 -->
-                    <article class="berita-card fade-up gallery-item" data-type="learning" data-title="[Image Title 1]">
-                        <div class="berita-thumb"><i class="fas fa-image"></i></div>
-                        <div class="berita-body">
-                            <h4 data-i18n="gallery_1_title">[Image Title 1]</h4>
-                            <p data-i18n="gallery_1_desc">[Short description — placeholder, to be filled with official
-                                SKB Asmat documentation.]</p>
-                        </div>
-                    </article>
-
-                    <!-- Item 2 -->
-                    <article class="berita-card fade-up gallery-item" data-type="learning" data-title="[Image Title 2]">
-                        <div class="berita-thumb"><i class="fas fa-image"></i></div>
-                        <div class="berita-body">
-                            <h4 data-i18n="gallery_2_title">[Image Title 2]</h4>
-                            <p data-i18n="gallery_2_desc">[Short description — placeholder, to be filled with official
-                                SKB Asmat documentation.]</p>
-                        </div>
-                    </article>
-
-                    <!-- Item 3 -->
-                    <article class="berita-card fade-up gallery-item" data-type="events" data-title="[Image Title 3]">
-                        <div class="berita-thumb"><i class="fas fa-image"></i></div>
-                        <div class="berita-body">
-                            <h4 data-i18n="gallery_3_title">[Image Title 3]</h4>
-                            <p data-i18n="gallery_3_desc">[Short description — placeholder, to be filled with official
-                                SKB Asmat documentation.]</p>
-                        </div>
-                    </article>
-
-                    <!-- Item 4 -->
-                    <article class="berita-card fade-up gallery-item" data-type="community"
-                        data-title="[Image Title 4]">
-                        <div class="berita-thumb"><i class="fas fa-image"></i></div>
-                        <div class="berita-body">
-                            <h4 data-i18n="gallery_4_title">[Image Title 4]</h4>
-                            <p data-i18n="gallery_4_desc">[Short description — placeholder, to be filled with official
-                                SKB Asmat documentation.]</p>
-                        </div>
-                    </article>
-
-                    <!-- Item 5 -->
-                    <article class="berita-card fade-up gallery-item" data-type="learning" data-title="[Image Title 5]">
-                        <div class="berita-thumb"><i class="fas fa-image"></i></div>
-                        <div class="berita-body">
-                            <h4 data-i18n="gallery_5_title">[Image Title 5]</h4>
-                            <p data-i18n="gallery_5_desc">[Short description — placeholder, to be filled with official
-                                SKB Asmat documentation.]</p>
-                        </div>
-                    </article>
-
-                    <!-- Item 6 -->
-                    <article class="berita-card fade-up gallery-item" data-type="events" data-title="[Image Title 6]">
-                        <div class="berita-thumb"><i class="fas fa-image"></i></div>
-                        <div class="berita-body">
-                            <h4 data-i18n="gallery_6_title">[Image Title 6]</h4>
-                            <p data-i18n="gallery_6_desc">[Short description — placeholder, to be filled with official
-                                SKB Asmat documentation.]</p>
-                        </div>
-                    </article>
-
-                    <!-- Item 7 -->
-                    <article class="berita-card fade-up gallery-item" data-type="community"
-                        data-title="[Image Title 7]">
-                        <div class="berita-thumb"><i class="fas fa-image"></i></div>
-                        <div class="berita-body">
-                            <h4 data-i18n="gallery_7_title">[Image Title 7]</h4>
-                            <p data-i18n="gallery_7_desc">[Short description — placeholder, to be filled with official
-                                SKB Asmat documentation.]</p>
-                        </div>
-                    </article>
-
-                    <!-- Item 8 -->
-                    <article class="berita-card fade-up gallery-item" data-type="learning" data-title="[Image Title 8]">
-                        <div class="berita-thumb"><i class="fas fa-image"></i></div>
-                        <div class="berita-body">
-                            <h4 data-i18n="gallery_8_title">[Image Title 8]</h4>
-                            <p data-i18n="gallery_8_desc">[Short description — placeholder, to be filled with official
-                                SKB Asmat documentation.]</p>
-                        </div>
-                    </article>
-
-                    <!-- Item 9 -->
-                    <article class="berita-card fade-up gallery-item" data-type="events" data-title="[Image Title 9]">
-                        <div class="berita-thumb"><i class="fas fa-image"></i></div>
-                        <div class="berita-body">
-                            <h4 data-i18n="gallery_9_title">[Image Title 9]</h4>
-                            <p data-i18n="gallery_9_desc">[Short description — placeholder, to be filled with official
-                                SKB Asmat documentation.]</p>
-                        </div>
-                    </article>
-
-                </div>
-
-                <!-- Empty state -->
-                <div id="galleryEmpty" style="display: none; text-align: center; padding: 40px 20px;">
-                    <i class="fas fa-image"
-                        style="font-size: 2.5rem; color: var(--text3); margin-bottom: 16px; display: inline-block;"></i>
-                    <p style="color: var(--text2);" data-i18n="gallery_empty">No images in this category yet.</p>
-                </div>
-
-                <div style="margin-top: 40px; text-align: center;" class="fade-up">
-                    <div class="quote-box" style="display: inline-block; max-width: 800px; text-align: left;"
-                        data-i18n-html="gallery_note">
-                        <strong>Note:</strong> All gallery images and captions must be confirmed with
-                        official SKB Asmat records. Replace placeholders such as <em>[Image Title 1]</em>
-                        and <em>[Short description…]</em> with verified information and actual photos.
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- ===== CTA ===== -->
-        <section class="section" style="background: var(--bg2); border-top: 1px solid var(--border);">
-            <div class="container">
-                <div style="text-align: center; max-width: 580px; margin: 0 auto;" class="fade-up">
-                    <h2 style="font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px;"
-                        data-i18n="gallery_cta_title">
-                        See Something You Like?
-                    </h2>
-                    <p style="color: var(--text2); margin-bottom: 28px; line-height: 1.7;" data-i18n="gallery_cta_desc">
-                        Join a program or activity at SKB Asmat, or contact us for more information.
-                    </p>
-                    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                        <a href="activities.html" class="btn btn-primary"
-                            style="font-size: 0.95rem; padding: 14px 28px;">
-                            <i class="fas fa-star"></i>
-                            <span data-i18n="activities_page_label">Activities</span>
-                        </a>
-                        <a href="contact.html" class="btn btn-outline" style="font-size: 0.95rem; padding: 14px 28px;">
-                            <i class="fas fa-envelope"></i>
-                            <span data-i18n="cta_btn_contact">Contact Us</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== FOOTER ===== -->
-        <footer>
-            <div class="container">
-                <p>© <span data-year>2026</span> <strong>SKB ASMAT</strong> —
-                    <span data-i18n="footer_line">Sanggar Kegiatan Belajar Asmat, Dinas Pendidikan Asmat</span>
+            <!-- Item 2 -->
+            <article
+              class="berita-card fade-up gallery-item"
+              data-type="learning"
+              data-title="[Image Title 2]"
+            >
+              <div class="berita-thumb"><i class="fas fa-image"></i></div>
+              <div class="berita-body">
+                <h4 data-i18n="gallery_2_title">[Image Title 2]</h4>
+                <p data-i18n="gallery_2_desc">
+                  [Short description — placeholder, to be filled with official
+                  SKB Asmat documentation.]
                 </p>
-                <p style="font-size: 0.75rem; margin-top: 8px; color: var(--text3);">
-                    <i class="fas fa-graduation-cap" style="color: var(--c1);"></i>
-                    <span data-i18n="footer_tagline">Learn, Grow, and Create a Better Future</span>
-                </p>
-            </div>
-        </footer>
+              </div>
+            </article>
 
+            <!-- Item 3 -->
+            <article
+              class="berita-card fade-up gallery-item"
+              data-type="events"
+              data-title="[Image Title 3]"
+            >
+              <div class="berita-thumb"><i class="fas fa-image"></i></div>
+              <div class="berita-body">
+                <h4 data-i18n="gallery_3_title">[Image Title 3]</h4>
+                <p data-i18n="gallery_3_desc">
+                  [Short description — placeholder, to be filled with official
+                  SKB Asmat documentation.]
+                </p>
+              </div>
+            </article>
+
+            <!-- Item 4 -->
+            <article
+              class="berita-card fade-up gallery-item"
+              data-type="community"
+              data-title="[Image Title 4]"
+            >
+              <div class="berita-thumb"><i class="fas fa-image"></i></div>
+              <div class="berita-body">
+                <h4 data-i18n="gallery_4_title">[Image Title 4]</h4>
+                <p data-i18n="gallery_4_desc">
+                  [Short description — placeholder, to be filled with official
+                  SKB Asmat documentation.]
+                </p>
+              </div>
+            </article>
+
+            <!-- Item 5 -->
+            <article
+              class="berita-card fade-up gallery-item"
+              data-type="learning"
+              data-title="[Image Title 5]"
+            >
+              <div class="berita-thumb"><i class="fas fa-image"></i></div>
+              <div class="berita-body">
+                <h4 data-i18n="gallery_5_title">[Image Title 5]</h4>
+                <p data-i18n="gallery_5_desc">
+                  [Short description — placeholder, to be filled with official
+                  SKB Asmat documentation.]
+                </p>
+              </div>
+            </article>
+
+            <!-- Item 6 -->
+            <article
+              class="berita-card fade-up gallery-item"
+              data-type="events"
+              data-title="[Image Title 6]"
+            >
+              <div class="berita-thumb"><i class="fas fa-image"></i></div>
+              <div class="berita-body">
+                <h4 data-i18n="gallery_6_title">[Image Title 6]</h4>
+                <p data-i18n="gallery_6_desc">
+                  [Short description — placeholder, to be filled with official
+                  SKB Asmat documentation.]
+                </p>
+              </div>
+            </article>
+
+            <!-- Item 7 -->
+            <article
+              class="berita-card fade-up gallery-item"
+              data-type="community"
+              data-title="[Image Title 7]"
+            >
+              <div class="berita-thumb"><i class="fas fa-image"></i></div>
+              <div class="berita-body">
+                <h4 data-i18n="gallery_7_title">[Image Title 7]</h4>
+                <p data-i18n="gallery_7_desc">
+                  [Short description — placeholder, to be filled with official
+                  SKB Asmat documentation.]
+                </p>
+              </div>
+            </article>
+
+            <!-- Item 8 -->
+            <article
+              class="berita-card fade-up gallery-item"
+              data-type="learning"
+              data-title="[Image Title 8]"
+            >
+              <div class="berita-thumb"><i class="fas fa-image"></i></div>
+              <div class="berita-body">
+                <h4 data-i18n="gallery_8_title">[Image Title 8]</h4>
+                <p data-i18n="gallery_8_desc">
+                  [Short description — placeholder, to be filled with official
+                  SKB Asmat documentation.]
+                </p>
+              </div>
+            </article>
+
+            <!-- Item 9 -->
+            <article
+              class="berita-card fade-up gallery-item"
+              data-type="events"
+              data-title="[Image Title 9]"
+            >
+              <div class="berita-thumb"><i class="fas fa-image"></i></div>
+              <div class="berita-body">
+                <h4 data-i18n="gallery_9_title">[Image Title 9]</h4>
+                <p data-i18n="gallery_9_desc">
+                  [Short description — placeholder, to be filled with official
+                  SKB Asmat documentation.]
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <!-- Empty state -->
+          <div
+            id="galleryEmpty"
+            style="display: none; text-align: center; padding: 40px 20px"
+          >
+            <i
+              class="fas fa-image"
+              style="
+                font-size: 2.5rem;
+                color: var(--text3);
+                margin-bottom: 16px;
+                display: inline-block;
+              "
+            ></i>
+            <p style="color: var(--text2)" data-i18n="gallery_empty">
+              No images in this category yet.
+            </p>
+          </div>
+
+          <div style="margin-top: 40px; text-align: center" class="fade-up">
+            <div
+              class="quote-box"
+              style="display: inline-block; max-width: 800px; text-align: left"
+              data-i18n-html="gallery_note"
+            >
+              <strong>Note:</strong> All gallery images and captions must be
+              confirmed with official SKB Asmat records. Replace placeholders
+              such as <em>[Image Title 1]</em> and
+              <em>[Short description…]</em> with verified information and actual
+              photos.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== CTA ===== -->
+      <section
+        class="section"
+        style="background: var(--bg2); border-top: 1px solid var(--border)"
+      >
+        <div class="container">
+          <div
+            style="text-align: center; max-width: 580px; margin: 0 auto"
+            class="fade-up"
+          >
+            <h2
+              style="
+                font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+                font-weight: 800;
+                letter-spacing: -1px;
+                margin-bottom: 16px;
+              "
+              data-i18n="gallery_cta_title"
+            >
+              See Something You Like?
+            </h2>
+            <p
+              style="color: var(--text2); margin-bottom: 28px; line-height: 1.7"
+              data-i18n="gallery_cta_desc"
+            >
+              Join a program or activity at SKB Asmat, or contact us for more
+              information.
+            </p>
+            <div
+              style="
+                display: flex;
+                gap: 12px;
+                justify-content: center;
+                flex-wrap: wrap;
+              "
+            >
+              <a
+                href="activities.html"
+                class="btn btn-primary"
+                style="font-size: 0.95rem; padding: 14px 28px"
+              >
+                <i class="fas fa-star"></i>
+                <span data-i18n="activities_page_label">Activities</span>
+              </a>
+              <a
+                href="contact.html"
+                class="btn btn-outline"
+                style="font-size: 0.95rem; padding: 14px 28px"
+              >
+                <i class="fas fa-envelope"></i>
+                <span data-i18n="cta_btn_contact">Contact Us</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== FOOTER ===== -->
+      <footer>
+        <div class="container">
+          <p>
+            © <span data-year>2026</span> <strong>SKB ASMAT</strong> —
+            <span data-i18n="footer_line"
+              >Sanggar Kegiatan Belajar Asmat, Dinas Pendidikan Asmat</span
+            >
+          </p>
+          <p style="font-size: 0.75rem; margin-top: 8px; color: var(--text3)">
+            <i class="fas fa-graduation-cap" style="color: var(--c1)"></i>
+            <span data-i18n="footer_tagline"
+              >Learn, Grow, and Create a Better Future</span
+            >
+          </p>
+        </div>
+      </footer>
     </div>
 
     <!-- ===== GALLERY FILTER SCRIPT (page-local) ===== -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const filterBtns = document.querySelectorAll('.gallery-filter');
-            const items = document.querySelectorAll('.gallery-item');
-            const emptyState = document.getElementById('galleryEmpty');
-            if (!filterBtns.length || !items.length) return;
+      document.addEventListener("DOMContentLoaded", function () {
+        const filterBtns = document.querySelectorAll(".gallery-filter");
+        const items = document.querySelectorAll(".gallery-item");
+        const emptyState = document.getElementById("galleryEmpty");
+        if (!filterBtns.length || !items.length) return;
 
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', function () {
-                    filterBtns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
+        filterBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            filterBtns.forEach((b) => b.classList.remove("active"));
+            this.classList.add("active");
 
-                    const filter = this.dataset.filter;
-                    let visibleCount = 0;
+            const filter = this.dataset.filter;
+            let visibleCount = 0;
 
-                    items.forEach(item => {
-                        const match = filter === 'all' || item.dataset.type === filter;
-                        item.style.display = match ? '' : 'none';
-                        if (match) visibleCount++;
-                    });
-
-                    if (emptyState) {
-                        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
-                    }
-                });
+            items.forEach((item) => {
+              const match = filter === "all" || item.dataset.type === filter;
+              item.style.display = match ? "" : "none";
+              if (match) visibleCount++;
             });
+
+            if (emptyState) {
+              emptyState.style.display = visibleCount === 0 ? "block" : "none";
+            }
+          });
         });
+      });
     </script>
 
     <script src="js/main.js"></script>
     <script src="js/navbar.js"></script>
-</body>
-
+  </body>
 </html>

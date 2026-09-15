@@ -30,6 +30,7 @@ const TRANSLATIONS = {
 
         sub_english_course: 'English Course',
         sub_other_courses: 'Other Courses',
+        sub_quiz_courses: 'Quiz Courses',
 
         sub_activities: 'Activities',
         sub_events: 'Events',
@@ -60,7 +61,7 @@ const TRANSLATIONS = {
         sub_community_programs: 'Program Masyarakat',
 
         sub_english_course: 'Kursus Bahasa Inggris',
-        sub_other_courses: 'Kursus Lainnya',
+        sub_quiz_courses: 'Kursus Quiz',
 
         sub_activities: 'Kegiatan',
         sub_events: 'Acara',
@@ -114,7 +115,8 @@ const MENU_STRUCTURE = [
         key: 'nav_courses',
         dropdown: [
             { key: 'sub_english_course', url: 'courses.html#english' },
-            { key: 'sub_other_courses', url: 'courses.html#other' }
+            { key: 'sub_other_courses', url: 'courses.html#other' },
+            { key: 'sub_quiz_courses', url: 'quiz.html#quiz' }
         ]
     },
     {
