@@ -30,7 +30,7 @@ const TRANSLATIONS = {
 
         sub_english_course: 'English Course',
         sub_other_courses: 'Other Courses',
-        sub_quiz_courses: 'Quiz Courses',
+        sub_quiz_courses: 'Interactive Quiz',
 
         sub_activities: 'Activities',
         sub_events: 'Events',
@@ -61,7 +61,8 @@ const TRANSLATIONS = {
         sub_community_programs: 'Program Masyarakat',
 
         sub_english_course: 'Kursus Bahasa Inggris',
-        sub_quiz_courses: 'Kursus Quiz',
+        sub_other_courses: 'Kursus Lainnya',
+        sub_quiz_courses: 'Kuis Interaktif',
 
         sub_activities: 'Kegiatan',
         sub_events: 'Acara',
@@ -76,16 +77,20 @@ const LANG_STORAGE_KEY = 'skb-asmat-lang';
 const DEFAULT_LANG = 'en';
 
 function getCurrentLang() {
-    return localStorage.getItem(LANG_STORAGE_KEY) || DEFAULT_LANG;
+    const stored = localStorage.getItem(LANG_STORAGE_KEY);
+    return TRANSLATIONS[stored] ? stored : DEFAULT_LANG;
 }
 
 function setCurrentLang(lang) {
+    if (!TRANSLATIONS[lang]) return;
     localStorage.setItem(LANG_STORAGE_KEY, lang);
 }
 
 function t(key) {
     const lang = getCurrentLang();
-    return (TRANSLATIONS[lang] && TRANSLATIONS[lang][key]) || TRANSLATIONS[DEFAULT_LANG][key] || key;
+    return (TRANSLATIONS[lang] && TRANSLATIONS[lang][key])
+        || TRANSLATIONS[DEFAULT_LANG][key]
+        || key;
 }
 
 /* --------------------------------------------
@@ -116,7 +121,7 @@ const MENU_STRUCTURE = [
         dropdown: [
             { key: 'sub_english_course', url: 'courses.html#english' },
             { key: 'sub_other_courses', url: 'courses.html#other' },
-            { key: 'sub_quiz_courses', url: 'quiz.html#quiz' }
+            { key: 'sub_quiz_courses', url: 'quiz.html#interactive-quiz' }
         ]
     },
     {
@@ -129,7 +134,7 @@ const MENU_STRUCTURE = [
     },
     { key: 'nav_news', url: 'news.html' },
     { key: 'nav_gallery', url: 'gallery.html' },
-    { key: 'nav_absent', url: 'absent.html' },      
+    { key: 'nav_absent', url: 'absent.html' },
     { key: 'nav_contact', url: 'contact.html' }
 ];
 
@@ -269,7 +274,9 @@ function attachAllEvents() {
             const submenu = this.nextElementSibling;
             const isOpen = this.classList.toggle('open');
             this.setAttribute('aria-expanded', String(isOpen));
-            submenu.style.maxHeight = isOpen ? submenu.scrollHeight + 'px' : null;
+            if (submenu) {
+                submenu.style.maxHeight = isOpen ? submenu.scrollHeight + 'px' : null;
+            }
         };
 
         toggle.addEventListener('click', handler);
@@ -284,17 +291,7 @@ function attachAllEvents() {
     /* --- Close mobile menu on link click --- */
     document.querySelectorAll('#mobileMenu a').forEach(link => {
         link.addEventListener('click', function () {
-            const mobileMenuDiv = document.getElementById('mobileMenu');
-            const hamburgerBtn = document.querySelector('.hamburger');
-            if (mobileMenuDiv) {
-                mobileMenuDiv.classList.remove('active');
-                mobileMenuDiv.setAttribute('aria-hidden', 'true');
-            }
-            if (hamburgerBtn) {
-                hamburgerBtn.classList.remove('active');
-                hamburgerBtn.setAttribute('aria-expanded', 'false');
-            }
-            document.body.classList.remove('menu-open');
+            closeMobileMenu();
         });
     });
 
@@ -335,17 +332,27 @@ function attachAllEvents() {
     /* --- Escape closes mobile menu --- */
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
-            const mobileMenuDiv = document.getElementById('mobileMenu');
-            const hamburgerBtn = document.querySelector('.hamburger');
-            if (mobileMenuDiv && mobileMenuDiv.classList.contains('active')) {
-                mobileMenuDiv.classList.remove('active');
-                mobileMenuDiv.setAttribute('aria-hidden', 'true');
-                hamburgerBtn.classList.remove('active');
-                hamburgerBtn.setAttribute('aria-expanded', 'false');
-                document.body.classList.remove('menu-open');
-            }
+            closeMobileMenu();
         }
     });
+}
+
+/* --------------------------------------------
+   MOBILE MENU HELPERS
+-------------------------------------------- */
+function closeMobileMenu() {
+    const mobileMenuDiv = document.getElementById('mobileMenu');
+    const hamburgerBtn = document.querySelector('.hamburger');
+
+    if (mobileMenuDiv && mobileMenuDiv.classList.contains('active')) {
+        mobileMenuDiv.classList.remove('active');
+        mobileMenuDiv.setAttribute('aria-hidden', 'true');
+    }
+    if (hamburgerBtn) {
+        hamburgerBtn.classList.remove('active');
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+    }
+    document.body.classList.remove('menu-open');
 }
 
 /* --------------------------------------------
@@ -353,7 +360,8 @@ function attachAllEvents() {
 -------------------------------------------- */
 function updateActiveNavLink() {
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-    const currentHash = window.location.hash;
+    const currentHash = window.location.hash || '';
+    const fullPath = currentPath + currentHash;
 
     /* Desktop links */
     document.querySelectorAll('.nav-links li').forEach(li => {
@@ -362,8 +370,12 @@ function updateActiveNavLink() {
         const href = link.getAttribute('href');
 
         if (li.classList.contains('has-dropdown')) {
-            const match = li.querySelector('.dropdown-menu a[href="' + currentPath + currentHash + '"]')
-                || li.querySelector('.dropdown-menu a[href^="' + currentPath + '"]');
+            // Try exact match first (path + hash), then path + any hash, then path only
+            const match =
+                li.querySelector(`.dropdown-menu a[href="${fullPath}"]`) ||
+                li.querySelector(`.dropdown-menu a[href^="${currentPath}#"]`) ||
+                li.querySelector(`.dropdown-menu a[href="${currentPath}"]`);
+
             li.classList.toggle('active-parent', !!match);
             link.classList.remove('active');
         } else {
@@ -374,7 +386,14 @@ function updateActiveNavLink() {
     /* Mobile links */
     document.querySelectorAll('#mobileMenu a').forEach(link => {
         const href = link.getAttribute('href');
-        link.classList.toggle('active', href === currentPath || href === currentPath + currentHash);
+        const isActive = href === currentPath || href === fullPath;
+        link.classList.toggle('active', isActive);
+    });
+
+    /* Mobile parent (dropdown) highlight */
+    document.querySelectorAll('#mobileMenu .mobile-dropdown-item').forEach(item => {
+        const hasActiveChild = item.querySelector('a.active');
+        item.classList.toggle('active-parent', !!hasActiveChild);
     });
 }
 
@@ -414,6 +433,7 @@ function injectNavbarStyles() {
     .has-dropdown > a::after {
       content: " ▼"; font-size: .65rem; margin-left: 4px; opacity: .7;
     }
+    .has-dropdown.active-parent > a { color: var(--primary, #2563eb); }
 
     .mobile-dropdown-item { border-bottom: 1px solid var(--border, #e5e7eb); }
     .mobile-dropdown-toggle {
@@ -432,6 +452,7 @@ function injectNavbarStyles() {
       font-size: .9rem; color: var(--text2, #374151); text-decoration: none;
     }
     .mobile-submenu a:hover { background: var(--bg3, #f3f4f6); }
+    .mobile-submenu a.active { color: var(--primary, #2563eb); font-weight: 600; }
 
     .hamburger {
       cursor: pointer; background: none; border: none;
@@ -494,4 +515,4 @@ window.addEventListener('popstate', () => {
     setTimeout(updateActiveNavLink, 50);
 });
 
-window.addEventListener('hashchange', updateActiveNavLink);
+window.addEventListener('hashchange', updateActiveNavLink);s
