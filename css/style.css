@@ -1242,9 +1242,9 @@ footer span {
 }
 
 .logo-sub {
-    font-size: clamp(0.65rem, 1.4vw, 0.75rem);
+    font-size: clamp(0.65rem, 1.4vw, 0.98rem);
     color: var(--text2);
-    font-weight: 600;
+    font-weight: 800;
     letter-spacing: 0.3px;
     white-space: nowrap;
     overflow: hidden;
