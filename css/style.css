@@ -1233,7 +1233,7 @@ footer span {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-size: clamp(0.95rem, 2vw, 1.15rem);
+    font-size: clamp(0.95rem, 2vw, 0.90rem);
     font-weight: 800;
     letter-spacing: -0.3px;
     white-space: nowrap;
@@ -1242,7 +1242,7 @@ footer span {
 }
 
 .logo-sub {
-    font-size: clamp(0.65rem, 1.4vw, 0.98rem);
+    font-size: clamp(0.65rem, 1.4vw, 0.80rem);
     color: var(--text2);
     font-weight: 800;
     letter-spacing: 0.3px;
