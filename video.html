@@ -106,7 +106,6 @@
             }
         }
 
-        /* ---------- Mobile: gambar DI ATAS teks ---------- */
         @media (max-width: 991px) {
             .video-hero-inner .video-hero-image {
                 order: -1;
@@ -117,7 +116,6 @@
             }
         }
 
-        /* ---------- Teks kiri ---------- */
         .video-hero-text {
             max-width: 100%;
             text-align: center;
@@ -177,7 +175,6 @@
             }
         }
 
-        /* Highlight level dengan <mark> */
         .video-hero-desc mark {
             background: linear-gradient(180deg, transparent 55%, rgba(255, 230, 109, 0.65) 55%);
             color: inherit;
@@ -200,7 +197,6 @@
             }
         }
 
-        /* Stats row */
         .video-hero-stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -353,7 +349,6 @@
             animation: micBounce 1.4s ease-in-out infinite;
         }
 
-        /* Dua cincin gelombang */
         .mic-wave::before,
         .mic-wave::after {
             content: '';
@@ -524,41 +519,25 @@
             box-shadow: 0 4px 12px rgba(78, 205, 196, 0.35);
         }
 
-        /* ---------- Video grid ---------- */
+        /* ============================================================
+           VIDEO GRID — max 2 kolom di desktop
+           ============================================================ */
         .video-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1.25rem;
+            gap: 1.5rem;
         }
 
-        @media (min-width: 480px) {
+        @media (min-width: 900px) {
             .video-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 1.1rem;
+                gap: 1.75rem;
             }
         }
 
-        @media (min-width: 768px) {
-            .video-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.35rem;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .video-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1.5rem;
-            }
-        }
-
-        @media (min-width: 1280px) {
-            .video-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-
-        /* ---------- Video card ---------- */
+        /* ============================================================
+           VIDEO CARD — 2 kolom internal (main + aside)
+           ============================================================ */
         .video-card {
             background: var(--card-bg, #fff);
             border-radius: var(--radius, 16px);
@@ -566,10 +545,9 @@
             box-shadow: var(--shadow, 0 4px 24px rgba(15, 23, 42, 0.08));
             border: 1px solid var(--border, #e2e8f0);
             transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+            position: relative;
             display: flex;
             flex-direction: column;
-            cursor: pointer;
-            position: relative;
         }
 
         .video-card::before {
@@ -600,15 +578,36 @@
             outline-offset: 2px;
         }
 
-        /* ---------- Thumbnail ---------- */
+        /* Layout internal: default vertical (mobile), horizontal di desktop */
+        .video-card-inner {
+            display: grid;
+            grid-template-columns: 1fr;
+            flex: 1;
+        }
+
+        @media (min-width: 900px) {
+            .video-card-inner {
+                grid-template-columns: 40% 60%;
+            }
+        }
+
+        /* ---------- LEFT: Main ---------- */
+        .video-card-main {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+        }
+
+        /* Thumbnail */
         .video-card-thumb {
             position: relative;
             aspect-ratio: 16 / 9;
             background: linear-gradient(145deg, #0d9488, #0f172a);
+            border-radius: var(--radius-sm, 10px);
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
         }
 
         .video-card-thumb img {
@@ -640,8 +639,8 @@
         .video-play-icon {
             position: relative;
             z-index: 3;
-            width: 56px;
-            height: 56px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(4px);
@@ -661,19 +660,19 @@
         }
 
         .video-play-icon svg {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             fill: #fff;
             margin-left: 3px;
         }
 
         .video-level-badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 0.25rem 0.7rem;
+            top: 8px;
+            right: 8px;
+            padding: 0.2rem 0.6rem;
             border-radius: 999px;
-            font-size: 0.68rem;
+            font-size: 0.62rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.04em;
@@ -697,20 +696,20 @@
             background: rgba(239, 68, 68, 0.95);
         }
 
-        /* ---------- Card body ---------- */
-        .video-card-body {
-            padding: 1rem 1.1rem 1.1rem;
-            flex: 1;
+        /* Info di bawah thumbnail */
+        .video-card-info {
             display: flex;
             flex-direction: column;
-            gap: 0.3rem;
+            gap: 0.35rem;
+            margin-top: 0.9rem;
+            flex: 1;
         }
 
         .video-card-title {
             font-size: 0.98rem;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--text, #0f172a);
-            line-height: 1.35;
+            line-height: 1.3;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             line-clamp: 2;
@@ -719,11 +718,11 @@
         }
 
         .video-card-student {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--text2, #475569);
             display: flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.35rem;
             flex-wrap: wrap;
         }
 
@@ -733,12 +732,11 @@
         }
 
         .video-card-meta {
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             color: #64748b;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin-top: 0.15rem;
+            gap: 0.4rem;
             flex-wrap: wrap;
         }
 
@@ -750,25 +748,37 @@
             display: inline-block;
         }
 
+        .video-card-desc {
+            font-size: 0.78rem;
+            color: var(--text2, #475569);
+            line-height: 1.55;
+            margin-top: 0.25rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
         .video-card-date {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text3, #94a3b8);
             margin-top: auto;
-            padding-top: 0.5rem;
+            padding-top: 0.4rem;
         }
 
         .video-card-watch {
-            margin-top: 0.75rem;
+            margin-top: 0.85rem;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.4rem;
-            padding: 0.55rem 1rem;
+            padding: 0.6rem 1rem;
             border-radius: var(--radius-sm, 10px);
             background: var(--c2, #4ECDC4);
             color: #fff;
             border: none;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 700;
             cursor: pointer;
             transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
@@ -787,9 +797,116 @@
         }
 
         .video-card-watch svg {
-            width: 16px;
-            height: 16px;
+            width: 15px;
+            height: 15px;
             fill: currentColor;
+        }
+
+        /* ============================================================
+           RIGHT: Aside Metrics — jarak dirapatkan
+           ============================================================ */
+        .video-card-aside {
+            background: var(--bg2, #f8fafc);
+            border-left: 1px solid var(--border, #e2e8f0);
+            padding: 1rem 1.1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 899px) {
+            .video-card-aside {
+                border-left: none;
+                border-top: 1px solid var(--border, #e2e8f0);
+            }
+        }
+
+        .video-aside-title {
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text3, #94a3b8);
+            padding-bottom: 0.4rem;
+            border-bottom: 1px dashed var(--border, #e2e8f0);
+            margin-bottom: 0.15rem;
+        }
+
+        .video-aside-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .video-aside-metric {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+
+        .video-aside-metric-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .video-aside-metric-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text, #0f172a);
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+
+        .video-aside-metric-score {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--text, #0f172a);
+            font-variant-numeric: tabular-nums;
+            flex-shrink: 0;
+            width: 28px;
+            text-align: right;
+            line-height: 1.2;
+        }
+
+        .video-aside-metric-bar {
+            height: 6px;
+            background: var(--bg3, #f1f5f9);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .video-aside-metric-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .video-aside-metric-fill.excellent {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+
+        .video-aside-metric-fill.good {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+
+        .video-aside-metric-fill.fair {
+            background: linear-gradient(90deg, #f97316, #fb923c);
+        }
+
+        .video-aside-metric-fill.poor {
+            background: linear-gradient(90deg, #ef4444, #f87171);
+        }
+
+        .video-aside-metric-desc {
+            font-size: 0.68rem;
+            color: var(--text2, #475569);
+            line-height: 1.3;
+            padding-left: 2px;
+            margin-top: 0;
         }
 
         /* ---------- Empty state ---------- */
@@ -1017,6 +1134,89 @@
             color: var(--text3, #94a3b8);
         }
 
+        /* ---------- Modal Metrics ---------- */
+        .video-modal-metrics {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--border, #e2e8f0);
+        }
+
+        .video-modal-metrics-title {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text3, #94a3b8);
+            margin-bottom: 0.85rem;
+        }
+
+        .video-modal-metric {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .video-modal-metric-row {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .video-modal-metric-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text2, #475569);
+            flex: 1;
+        }
+
+        .video-modal-metric-score {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text, #0f172a);
+            font-variant-numeric: tabular-nums;
+            flex-shrink: 0;
+            width: 32px;
+            text-align: right;
+        }
+
+        .video-modal-metric-bar {
+            height: 8px;
+            background: var(--bg3, #f1f5f9);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .video-modal-metric-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .video-modal-metric-fill.excellent {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+
+        .video-modal-metric-fill.good {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+
+        .video-modal-metric-fill.fair {
+            background: linear-gradient(90deg, #f97316, #fb923c);
+        }
+
+        .video-modal-metric-fill.poor {
+            background: linear-gradient(90deg, #ef4444, #f87171);
+        }
+
+        .video-modal-metric-desc {
+            font-size: 0.75rem;
+            color: var(--text3, #94a3b8);
+            line-height: 1.5;
+            padding-left: 2px;
+        }
+
+        /* ---------- Responsive Modal ---------- */
         @media (max-width: 640px) {
             .video-modal-overlay {
                 padding: 0.5rem;
@@ -1102,10 +1302,8 @@
 
         <div class="video-hero-inner">
 
-            <!-- Teks kiri -->
             <div class="video-hero-text">
                 <div class="badge fade-up" style="margin-bottom: 20px;">
-                    <!-- <span class="badge-dot"></span> -->
                     <span class="mic-wave" aria-hidden="true">
                         <i class="fas fa-microphone"></i>
                     </span>
@@ -1155,7 +1353,6 @@
                 </div>
             </div>
 
-            <!-- Gambar kanan -->
             <div class="video-hero-image fade-up">
                 <img src="images/Video.png" alt="Asmat English Course — English Speaking Library"
                     onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=70';" />
@@ -1222,11 +1419,6 @@
     <script>
         /* =========================================================================
            VIDEO DATA
-           =========================================================================
-           HOW TO ADD A NEW VIDEO:
-           1. Copy one of the objects below,
-           2. Paste inside the videos array,
-           3. Update the values.
            ========================================================================= */
 
         const videos = [
@@ -1237,7 +1429,15 @@
                 title: "Introducing Myself",
                 description: "Essential vocabularies about self introduction.",
                 driveId: "1SvvrXdD13zWpFcFXpTawYIZZEyVEo4WF",
-                date: "2026-09-20"
+                date: "2026-09-20",
+                scores: {
+                    pronunciation: 85,
+                    fluency: 72,
+                    accuracy: 80,
+                    intonation: 68,
+                    confidence: 92,
+                    vocabulary: 78
+                }
             },
             {
                 student: "Maria",
@@ -1246,7 +1446,15 @@
                 title: "My Family",
                 description: "Essential vocabularies about family members.",
                 driveId: "1SvvrXdD13zWpFcFXpTawYIZZEyVEo4WF",
-                date: "2026-09-21"
+                date: "2026-09-21",
+                scores: {
+                    pronunciation: 78,
+                    fluency: 65,
+                    accuracy: 74,
+                    intonation: 60,
+                    confidence: 82,
+                    vocabulary: 70
+                }
             },
             {
                 student: "Budi",
@@ -1255,7 +1463,15 @@
                 title: "My Daily Routine",
                 description: "Meaningful daily phrases and language expressions from morning to night.",
                 driveId: "1SvvrXdD13zWpFcFXpTawYIZZEyVEo4WF",
-                date: "2026-09-22"
+                date: "2026-09-22",
+                scores: {
+                    pronunciation: 88,
+                    fluency: 80,
+                    accuracy: 85,
+                    intonation: 75,
+                    confidence: 90,
+                    vocabulary: 82
+                }
             },
             {
                 student: "Siti",
@@ -1264,7 +1480,15 @@
                 title: "My Favorite Food",
                 description: "Meaningful daily phrases and language expressions about favorite foods.",
                 driveId: "1SvvrXdD13zWpFcFXpTawYIZZEyVEo4WF",
-                date: "2026-09-22"
+                date: "2026-09-22",
+                scores: {
+                    pronunciation: 82,
+                    fluency: 76,
+                    accuracy: 79,
+                    intonation: 70,
+                    confidence: 85,
+                    vocabulary: 74
+                }
             },
             {
                 student: "Rina",
@@ -1273,7 +1497,15 @@
                 title: "The Importance of Education",
                 description: "Personal details, activities, introducing yourself, surrounding environment, and global culture.",
                 driveId: "1SvvrXdD13zWpFcFXpTawYIZZEyVEo4WF",
-                date: "2026-09-23"
+                date: "2026-09-23",
+                scores: {
+                    pronunciation: 92,
+                    fluency: 88,
+                    accuracy: 90,
+                    intonation: 85,
+                    confidence: 94,
+                    vocabulary: 89
+                }
             },
             {
                 student: "Doni",
@@ -1282,9 +1514,113 @@
                 title: "My Future Dream",
                 description: "Personal details, activities, introducing yourself, surrounding environment, and global culture.",
                 driveId: "1SvvrXdD13zWpFcFXpTawYIZZEyVEo4WF",
-                date: "2026-09-23"
+                date: "2026-09-23",
+                scores: {
+                    pronunciation: 87,
+                    fluency: 82,
+                    accuracy: 84,
+                    intonation: 78,
+                    confidence: 90,
+                    vocabulary: 86
+                }
             }
         ];
+
+        /* =========================================================================
+           METRIC DEFINITIONS
+           ========================================================================= */
+        const METRICS = [
+            {
+                key: 'pronunciation',
+                label: 'Pronunciation',
+                desc: 'Clarity and correct articulation of words'
+            },
+            {
+                key: 'fluency',
+                label: 'Fluency',
+                desc: 'Smoothness of speech without too many pauses'
+            },
+            {
+                key: 'accuracy',
+                label: 'Accuracy',
+                desc: 'Grammar and word choice correctness'
+            },
+            {
+                key: 'intonation',
+                label: 'Intonation',
+                desc: 'Rhythm and pitch variation in speech'
+            },
+            {
+                key: 'confidence',
+                label: 'Confidence',
+                desc: 'Self-assurance and eye contact during speaking'
+            },
+            {
+                key: 'vocabulary',
+                label: 'Vocabulary',
+                desc: 'Range and variety of words used'
+            }
+        ];
+
+        function getScoreClass(score) {
+            if (score >= 90) return 'excellent';
+            if (score >= 75) return 'good';
+            if (score >= 60) return 'fair';
+            return 'poor';
+        }
+
+        /**
+         * Generate HTML untuk aside metrics (di card).
+         */
+        function buildAsideMetricsHTML(scores) {
+            if (!scores) return '';
+            let html = '<div class="video-aside-metrics">';
+            METRICS.forEach(function (m) {
+                const score = Math.max(0, Math.min(100, Number(scores[m.key]) || 0));
+                const cls = getScoreClass(score);
+                html += `
+                    <div class="video-aside-metric">
+                        <div class="video-aside-metric-row">
+                            <div class="video-aside-metric-label">${m.label}</div>
+                            <div class="video-aside-metric-score">${score}</div>
+                        </div>
+                        <div class="video-aside-metric-bar">
+                            <div class="video-aside-metric-fill ${cls}" style="width:${score}%"></div>
+                        </div>
+                        <div class="video-aside-metric-desc">${m.desc}</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        /**
+         * Generate HTML untuk metrics di modal.
+         */
+        function buildModalMetricsHTML(scores) {
+            if (!scores) return '';
+            let html = '<div class="video-modal-metrics">';
+            html += '<div class="video-modal-metrics-title">Speaking Score</div>';
+            METRICS.forEach(function (m) {
+                const score = Math.max(0, Math.min(100, Number(scores[m.key]) || 0));
+                const cls = getScoreClass(score);
+                html += `
+                    <div class="video-modal-metric">
+                        <div class="video-modal-metric-row">
+                            <div class="video-modal-metric-label">${m.label}</div>
+                            <div class="video-modal-metric-score">${score}</div>
+                        </div>
+                        <div class="video-modal-metric-bar">
+                            <div class="video-modal-metric-fill ${cls}" style="width:${score}%"></div>
+                        </div>
+                        <div class="video-modal-metric-desc">${m.desc}</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
 
         /* =========================================================================
            STATE
@@ -1344,8 +1680,7 @@
         }
 
         function updateVideoCount() {
-            const total = videos.length;
-            videoCountEl.textContent = total;
+            videoCountEl.textContent = videos.length;
         }
 
         /* =========================================================================
@@ -1407,6 +1742,7 @@
                 const originalIndex = videos.indexOf(video);
                 const levelClass = (video.level || '').toLowerCase().replace(/\s+/g, '-');
                 const thumbUrl = getDriveThumbUrl(video.driveId, 640);
+                const asideMetricsHTML = buildAsideMetricsHTML(video.scores);
 
                 const card = document.createElement('div');
                 card.className = 'video-card';
@@ -1416,33 +1752,48 @@
                 card.dataset.index = originalIndex;
 
                 card.innerHTML = `
-                    <div class="video-card-thumb" aria-hidden="true">
-                        <img src="${thumbUrl}" alt="" loading="lazy"
-                             onerror="this.style.display='none';" />
-                        <span class="video-level-badge ${escapeHTML(levelClass)}">${escapeHTML(video.level || '')}</span>
-                        <div class="video-play-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
+                    <div class="video-card-inner">
+
+                        <!-- LEFT: Main -->
+                        <div class="video-card-main">
+                            <div class="video-card-thumb" aria-hidden="true">
+                                <img src="${thumbUrl}" alt="" loading="lazy"
+                                     onerror="this.style.display='none';" />
+                                <span class="video-level-badge ${escapeHTML(levelClass)}">${escapeHTML(video.level || '')}</span>
+                                <div class="video-play-icon">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="video-card-info">
+                                <div class="video-card-title">${escapeHTML(video.title || 'Untitled')}</div>
+                                <div class="video-card-student">
+                                    <strong>${escapeHTML(video.student || 'Unknown')}</strong>
+                                    <span class="dot"></span>
+                                    <span>${escapeHTML(video.class || '')}</span>
+                                </div>
+                                <div class="video-card-meta">
+                                    <span>${escapeHTML(video.level || '')}</span>
+                                    ${video.date ? `<span class="dot"></span><span>${escapeHTML(formatDate(video.date))}</span>` : ''}
+                                </div>
+                                ${video.description ? `<div class="video-card-desc">${escapeHTML(video.description)}</div>` : ''}
+                            </div>
+
+                            <button class="video-card-watch" type="button" aria-label="Watch video ${escapeHTML(video.title)}">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                Watch Video
+                            </button>
                         </div>
-                    </div>
-                    <div class="video-card-body">
-                        <div class="video-card-title">${escapeHTML(video.title || 'Untitled')}</div>
-                        <div class="video-card-student">
-                            <strong>${escapeHTML(video.student || 'Unknown')}</strong>
-                            <span class="dot"></span>
-                            <span>${escapeHTML(video.class || '')}</span>
+
+                        <!-- RIGHT: Aside Metrics -->
+                        <div class="video-card-aside">
+                            <div class="video-aside-title">Speaking Score</div>
+                            ${asideMetricsHTML}
                         </div>
-                        <div class="video-card-meta">
-                            <span>${escapeHTML(video.level || '')}</span>
-                        </div>
-                        ${video.date ? `<div class="video-card-date">${escapeHTML(formatDate(video.date))}</div>` : ''}
-                        <button class="video-card-watch" type="button" aria-label="Watch video ${escapeHTML(video.title)}">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                            Watch
-                        </button>
                     </div>
                 `;
 
@@ -1459,6 +1810,7 @@
 
                 card.addEventListener('keydown', function (e) {
                     if (e.key === 'Enter' || e.key === ' ') {
+                        if (e.target.closest('.video-card-watch')) return;
                         e.preventDefault();
                         openModal(originalIndex);
                     }
@@ -1490,6 +1842,8 @@
             `;
 
             const levelClass = (video.level || '').toLowerCase().replace(/\s+/g, '-');
+            const modalMetrics = buildModalMetricsHTML(video.scores);
+
             modalInfo.innerHTML = `
                 <h2>${escapeHTML(video.title || 'Untitled')}</h2>
                 <div class="video-modal-student">
@@ -1502,6 +1856,7 @@
                     ${video.date ? `<span class="dot"></span><span>${escapeHTML(formatDate(video.date))}</span>` : ''}
                 </div>
                 ${video.description ? `<p class="video-modal-desc">${escapeHTML(video.description)}</p>` : ''}
+                ${modalMetrics}
                 ${video.date ? `<div class="video-modal-date">Published: ${escapeHTML(formatDate(video.date))}</div>` : ''}
             `;
 
