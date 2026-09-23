@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Library | Asmat English Course</title>
+    <meta name="description"
+        content="Speaking video collection from Asmat English Course students — English speaking practice for all levels." />
+    <meta name="keywords" content="Asmat English Course Video, English Speaking, Speaking Practice, Video Library" />
+    <meta name="author" content="Asmat English Course" />
+    <meta property="og:title" content="Video Library | Asmat English Course" />
+    <meta property="og:description" content="Speaking video collection from Asmat English Course students." />
+    <meta property="og:type" content="website" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+        /* ============================================================
+           VIDEO LIBRARY PAGE — Local Styles
+           ============================================================ */
+
+        /* ---------- BODY & SCROLLBAR ---------- */
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background: var(--bg, #ffffff);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        body::-webkit-scrollbar-track {
+            background: var(--bg2, #f8fafc);
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background: var(--border, #e2e8f0);
+            border-radius: 99px;
+        }
+
+        body::-webkit-scrollbar-thumb:hover {
+            background: var(--c2, #4ECDC4);
+        }
+
+        /* ============================================================
+           HERO SECTION
+           ============================================================ */
+        .video-hero {
+            position: relative;
+            overflow: hidden;
+            padding-top: calc(var(--nav-h, 68px) + clamp(2rem, 4vw, 3rem));
+            padding-bottom: clamp(2.5rem, 5vw, 4rem);
+            padding-inline: 0;
+            display: flex;
+            align-items: center;
+            min-height: auto;
+            background: var(--bg, #ffffff);
+        }
+
+        @media (min-width: 992px) {
+            .video-hero {
+                min-height: calc(100vh - var(--nav-h, 68px));
+                padding-top: calc(var(--nav-h, 68px) + 40px);
+                padding-bottom: 60px;
+            }
+        }
+
+        .video-hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 70% 40%, rgba(78, 205, 196, 0.10) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(255, 107, 107, 0.07) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 0%, rgba(255, 230, 109, 0.07) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .video-hero-inner {
+            max-width: var(--container, 1280px);
+            margin: 0 auto;
+            padding-inline: clamp(1rem, 4vw, 1.5rem);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: clamp(1.5rem, 4vw, 3.75rem);
+            align-items: start;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (min-width: 992px) {
+            .video-hero-inner {
+                grid-template-columns: 1fr 1fr;
+                gap: 60px;
+                align-items: start;
+            }
+        }
+
+        /* ---------- Mobile: gambar DI ATAS teks ---------- */
+        @media (max-width: 991px) {
+            .video-hero-inner .video-hero-image {
+                order: -1;
+            }
+
+            .video-hero-inner .video-hero-text {
+                order: 2;
+            }
+        }
+
+        /* ---------- Teks kiri ---------- */
+        .video-hero-text {
+            max-width: 100%;
+            text-align: center;
+            align-self: start;
+        }
+
+        @media (min-width: 992px) {
+            .video-hero-text {
+                text-align: left;
+                padding-top: 8px;
+            }
+        }
+
+        .video-hero h1 {
+            font-size: clamp(1.9rem, 1.4rem + 2.6vw, 3.4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin: 0 0 clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .video-hero h1 .accent {
+            background: linear-gradient(135deg, var(--c1, #FF6B6B), var(--c2, #4ECDC4), var(--c3, #FFE66D), var(--c4, #A8E6CF));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: heroGradient 4s ease infinite;
+        }
+
+        @keyframes heroGradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .video-hero-desc {
+            font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+            color: var(--text2, #475569);
+            line-height: 1.8;
+            margin: 0 auto clamp(1.25rem, 2.5vw, 1.75rem);
+            max-width: 60ch;
+        }
+
+        @media (min-width: 992px) {
+            .video-hero-desc {
+                margin-inline: 0;
+            }
+        }
+
+        /* Highlight level dengan <mark> */
+        .video-hero-desc mark {
+            background: linear-gradient(180deg, transparent 55%, rgba(255, 230, 109, 0.65) 55%);
+            color: inherit;
+            padding: 0 2px;
+            font-weight: 800;
+            border-radius: 2px;
+        }
+
+        .video-hero-actions {
+            display: flex;
+            gap: clamp(0.5rem, 1.5vw, 1rem);
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: clamp(1.5rem, 3vw, 2rem);
+        }
+
+        @media (min-width: 992px) {
+            .video-hero-actions {
+                justify-content: flex-start;
+            }
+        }
+
+        /* Stats row */
+        .video-hero-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: clamp(0.5rem, 1.5vw, 1rem);
+            margin-top: clamp(1rem, 2vw, 1.5rem);
+            max-width: 560px;
+            margin-inline: auto;
+        }
+
+        @media (min-width: 640px) {
+            .video-hero-stats {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (min-width: 992px) {
+            .video-hero-stats {
+                margin-inline: 0;
+            }
+        }
+
+        .video-hero-stat {
+            text-align: center;
+            padding: clamp(0.75rem, 2vw, 1rem) clamp(0.5rem, 1.5vw, 0.75rem);
+            background: var(--card-bg, #fff);
+            border: 1px solid var(--border, #e2e8f0);
+            border-radius: var(--radius-sm, 10px);
+            transition: all var(--transition);
+        }
+
+        .video-hero-stat:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow, 0 4px 24px rgba(15, 23, 42, 0.08));
+            border-color: var(--c2, #4ECDC4);
+        }
+
+        .video-hero-stat-value {
+            font-size: clamp(1.35rem, 3.5vw, 1.9rem);
+            font-weight: 800;
+            line-height: 1.1;
+            background: linear-gradient(135deg, var(--c2, #4ECDC4), var(--c4, #A8E6CF));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            display: block;
+        }
+
+        .video-hero-stat-label {
+            font-size: clamp(0.7rem, 1.4vw, 0.78rem);
+            color: var(--text2, #475569);
+            font-weight: 600;
+            margin-top: 4px;
+            display: block;
+            line-height: 1.35;
+        }
+
+        /* ---------- Gambar hero ---------- */
+        .video-hero-image {
+            position: relative;
+            width: 100%;
+            border-radius: var(--radius, 16px);
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(78, 205, 196, 0.10), rgba(168, 230, 207, 0.10));
+            box-shadow:
+                0 4px 20px rgba(15, 23, 42, 0.06),
+                0 12px 48px rgba(15, 23, 42, 0.12);
+            padding: clamp(6px, 1vw, 10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: start;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            isolation: isolate;
+        }
+
+        .video-hero-image::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: calc(var(--radius, 16px) + 2px);
+            background: linear-gradient(135deg, var(--c1, #FF6B6B), var(--c2, #4ECDC4), var(--c3, #FFE66D), var(--c4, #A8E6CF));
+            background-size: 300% 300%;
+            animation: heroGradient 6s ease infinite;
+            filter: blur(14px);
+            opacity: 0.35;
+            z-index: -1;
+        }
+
+        .video-hero-image img {
+            width: 100%;
+            height: auto;
+            max-height: 60vh;
+            object-fit: contain;
+            display: block;
+            border-radius: calc(var(--radius, 16px) - 6px);
+            background: var(--bg2, #f8fafc);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .video-hero-image:hover {
+            transform: translateY(-4px);
+            box-shadow:
+                0 8px 28px rgba(15, 23, 42, 0.1),
+                0 20px 60px rgba(15, 23, 42, 0.16);
+        }
+
+        .video-hero-image:hover img {
+            transform: scale(1.015);
+        }
+
+        @media (max-width: 991px) {
+            .video-hero-image img {
+                max-height: 380px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .video-hero-image img {
+                max-height: 300px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .video-hero-image img {
+                max-height: 240px;
+            }
+        }
+
+        /* ============================================================
+           MIC ICON dengan ANIMASI GELOMBANG SUARA
+           ============================================================ */
+        .mic-wave {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+            color: var(--c1, #FF6B6B);
+            flex-shrink: 0;
+            vertical-align: middle;
+        }
+
+        .mic-wave i {
+            position: relative;
+            z-index: 2;
+            font-size: 0.85rem;
+            animation: micBounce 1.4s ease-in-out infinite;
+        }
+
+        /* Dua cincin gelombang */
+        .mic-wave::before,
+        .mic-wave::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            opacity: 0;
+            animation: micRipple 1.8s ease-out infinite;
+            pointer-events: none;
+        }
+
+        .mic-wave::after {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes micBounce {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        @keyframes micRipple {
+            0% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: scale(2.4);
+                opacity: 0;
+            }
+        }
+
+        /* ---------- Container ---------- */
+        .video-container {
+            max-width: var(--container, 1280px);
+            margin: 0 auto;
+            padding: 1.5rem 1rem 3rem;
+        }
+
+        @media (min-width: 768px) {
+            .video-container {
+                padding: 2rem 1.5rem 4rem;
+            }
+        }
+
+        /* ---------- Toolbar ---------- */
+        .video-toolbar {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-bottom: 1.75rem;
+        }
+
+        @media (min-width: 768px) {
+            .video-toolbar {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1.25rem;
+            }
+        }
+
+        .video-search-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .video-search-wrapper {
+                max-width: 360px;
+            }
+        }
+
+        .video-search-wrapper svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            stroke: var(--text2, #475569);
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .video-search-input {
+            width: 100%;
+            padding: 0.85rem 1rem 0.85rem 2.8rem;
+            border: 1.5px solid var(--border, #e2e8f0);
+            border-radius: var(--radius-sm, 10px);
+            font-size: 0.95rem;
+            background: var(--card-bg, #fff);
+            color: var(--text, #0f172a);
+            transition: border var(--transition), box-shadow var(--transition);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .video-search-input::placeholder {
+            color: var(--text3, #94a3b8);
+        }
+
+        .video-search-input:focus {
+            border-color: var(--c2, #4ECDC4);
+            box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.18);
+        }
+
+        .video-filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+        }
+
+        @media (min-width: 768px) {
+            .video-filter-row {
+                justify-content: flex-end;
+            }
+        }
+
+        .video-filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            align-items: center;
+        }
+
+        .video-filter-group label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text2, #475569);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-right: 0.15rem;
+        }
+
+        .video-filter-btn {
+            padding: 0.45rem 1rem;
+            border-radius: 999px;
+            border: 1.5px solid var(--border, #e2e8f0);
+            background: var(--card-bg, #fff);
+            color: var(--text2, #475569);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .video-filter-btn:hover {
+            border-color: var(--c2, #4ECDC4);
+            color: #0d9488;
+            background: rgba(78, 205, 196, 0.08);
+        }
+
+        .video-filter-btn.active {
+            background: var(--c2, #4ECDC4);
+            border-color: var(--c2, #4ECDC4);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(78, 205, 196, 0.35);
+        }
+
+        /* ---------- Video grid ---------- */
+        .video-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+
+        @media (min-width: 480px) {
+            .video-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.1rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .video-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.35rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .video-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .video-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* ---------- Video card ---------- */
+        .video-card {
+            background: var(--card-bg, #fff);
+            border-radius: var(--radius, 16px);
+            overflow: hidden;
+            box-shadow: var(--shadow, 0 4px 24px rgba(15, 23, 42, 0.08));
+            border: 1px solid var(--border, #e2e8f0);
+            transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .video-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--c2, #4ECDC4), var(--c4, #A8E6CF));
+            opacity: 0;
+            transition: opacity var(--transition);
+            z-index: 3;
+        }
+
+        .video-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg, 0 12px 48px rgba(15, 23, 42, 0.14));
+            border-color: rgba(78, 205, 196, 0.4);
+        }
+
+        .video-card:hover::before {
+            opacity: 1;
+        }
+
+        .video-card:focus-visible {
+            outline: 3px solid var(--c2, #4ECDC4);
+            outline-offset: 2px;
+        }
+
+        /* ---------- Thumbnail ---------- */
+        .video-card-thumb {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(145deg, #0d9488, #0f172a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .video-card-thumb img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+
+        .video-card:hover .video-card-thumb img {
+            transform: scale(1.06);
+        }
+
+        .video-card-thumb::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(15, 23, 42, 0) 40%, rgba(15, 23, 42, 0.55) 100%),
+                radial-gradient(circle at 70% 30%, rgba(78, 205, 196, 0.25) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .video-play-icon {
+            position: relative;
+            z-index: 3;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform var(--transition), background var(--transition), border-color var(--transition);
+        }
+
+        .video-card:hover .video-play-icon {
+            transform: scale(1.1);
+            background: var(--c2, #4ECDC4);
+            border-color: #fff;
+            box-shadow: 0 0 0 6px rgba(78, 205, 196, 0.25);
+        }
+
+        .video-play-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+            margin-left: 3px;
+        }
+
+        .video-level-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 0.25rem 0.7rem;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            z-index: 4;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .video-level-badge.little-starter {
+            background: rgba(16, 185, 129, 0.95);
+        }
+
+        .video-level-badge.happy-beginner {
+            background: rgba(245, 158, 11, 0.95);
+        }
+
+        .video-level-badge.junior-talk {
+            background: rgba(239, 68, 68, 0.95);
+        }
+
+        /* ---------- Card body ---------- */
+        .video-card-body {
+            padding: 1rem 1.1rem 1.1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .video-card-title {
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--text, #0f172a);
+            line-height: 1.35;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .video-card-student {
+            font-size: 0.85rem;
+            color: var(--text2, #475569);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+        }
+
+        .video-card-student strong {
+            color: #0d9488;
+            font-weight: 700;
+        }
+
+        .video-card-meta {
+            font-size: 0.78rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.15rem;
+            flex-wrap: wrap;
+        }
+
+        .video-card-meta .dot {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            display: inline-block;
+        }
+
+        .video-card-date {
+            font-size: 0.75rem;
+            color: var(--text3, #94a3b8);
+            margin-top: auto;
+            padding-top: 0.5rem;
+        }
+
+        .video-card-watch {
+            margin-top: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1rem;
+            border-radius: var(--radius-sm, 10px);
+            background: var(--c2, #4ECDC4);
+            color: #fff;
+            border: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+            font-family: inherit;
+            width: 100%;
+        }
+
+        .video-card-watch:hover {
+            background: #2fb8ae;
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(78, 205, 196, 0.35);
+        }
+
+        .video-card-watch:active {
+            transform: scale(0.98);
+        }
+
+        .video-card-watch svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        /* ---------- Empty state ---------- */
+        .video-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3.5rem 1rem;
+            background: var(--card-bg, #fff);
+            border-radius: var(--radius, 16px);
+            border: 2px dashed var(--border, #e2e8f0);
+        }
+
+        .video-empty svg {
+            width: 56px;
+            height: 56px;
+            stroke: #cbd5e1;
+            margin-bottom: 1rem;
+            margin-inline: auto;
+        }
+
+        .video-empty h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text, #0f172a);
+            margin-bottom: 0.4rem;
+        }
+
+        .video-empty p {
+            font-size: 0.9rem;
+            color: var(--text2, #475569);
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        /* ============================================================
+           MODAL
+           ============================================================ */
+        .video-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        .video-modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .video-modal-content {
+            background: var(--card-bg, #fff);
+            border-radius: var(--radius, 16px);
+            width: 100%;
+            max-width: 900px;
+            max-height: 92vh;
+            max-height: 92dvh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-lg, 0 12px 48px rgba(15, 23, 42, 0.14));
+            position: relative;
+            transform: scale(0.95) translateY(10px);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .video-modal-content::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        .video-modal-overlay.open .video-modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .video-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(15, 23, 42, 0.8);
+            color: #fff;
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: background var(--transition), transform var(--transition);
+            padding: 0;
+            font-family: inherit;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-modal-close:hover {
+            background: rgba(239, 68, 68, 0.95);
+            transform: rotate(90deg);
+        }
+
+        .video-modal-close:focus-visible {
+            outline: 3px solid rgba(255, 255, 255, 0.9);
+            outline-offset: 2px;
+        }
+
+        .video-modal-video {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .video-modal-video iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .video-modal-info {
+            padding: 1.25rem 1.4rem 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .video-modal-info::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        .video-modal-info h2 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text, #0f172a);
+            line-height: 1.35;
+            margin-bottom: 0.5rem;
+            padding-right: 2.75rem;
+        }
+
+        .video-modal-student {
+            font-size: 0.95rem;
+            color: var(--text2, #475569);
+            margin-bottom: 0.35rem;
+        }
+
+        .video-modal-student strong {
+            color: #0d9488;
+            font-weight: 700;
+        }
+
+        .video-modal-meta {
+            font-size: 0.85rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+
+        .video-modal-meta .dot {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            display: inline-block;
+        }
+
+        .video-modal-level {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .video-modal-level.little-starter {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .video-modal-level.happy-beginner {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .video-modal-level.junior-talk {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .video-modal-desc {
+            font-size: 0.9rem;
+            color: var(--text2, #475569);
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .video-modal-date {
+            font-size: 0.8rem;
+            color: var(--text3, #94a3b8);
+        }
+
+        @media (max-width: 640px) {
+            .video-modal-overlay {
+                padding: 0.5rem;
+                align-items: flex-start;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+
+            .video-modal-content {
+                max-height: calc(100dvh - 2rem);
+                border-radius: 14px;
+            }
+
+            .video-modal-close {
+                top: 8px;
+                right: 8px;
+                width: 36px;
+                height: 36px;
+                font-size: 1.3rem;
+            }
+
+            .video-modal-info {
+                padding: 1rem 1.1rem 1.25rem;
+            }
+
+            .video-modal-info h2 {
+                font-size: 1.05rem;
+                padding-right: 2.5rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .video-modal-student {
+                font-size: 0.88rem;
+            }
+
+            .video-modal-desc {
+                font-size: 0.85rem;
+            }
+
+            .video-modal-date {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .video-modal-overlay {
+                padding: 0.25rem;
+            }
+
+            .video-modal-content {
+                max-height: calc(100dvh - 0.5rem);
+                border-radius: 10px;
+            }
+
+            .video-modal-close {
+                top: 6px;
+                right: 6px;
+                width: 32px;
+                height: 32px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================================
+         HERO SECTION
+         ============================================================ -->
+    <section class="video-hero">
+        <div class="video-hero-bg"></div>
+
+        <div class="video-hero-inner">
+
+            <!-- Teks kiri -->
+            <div class="video-hero-text">
+                <div class="badge fade-up" style="margin-bottom: 20px;">
+                    <!-- <span class="badge-dot"></span> -->
+                    <span class="mic-wave" aria-hidden="true">
+                        <i class="fas fa-microphone"></i>
+                    </span>
+                    <span>English Speaking Library</span>
+                </div>
+
+                <h1 class="fade-up">
+                    Watch, Listen,<br />
+                    <span class="accent">Speak with Confidence.</span>
+                </h1>
+
+                <p class="video-hero-desc fade-up">
+                    A collection of speaking videos from Asmat English Course students.
+                    English speaking practice from <mark>Little Starter</mark> to
+                    <mark>Junior Talk</mark> level. Watch, listen, and learn how they
+                    perform with confidence.
+                </p>
+
+                <div class="video-hero-actions fade-up">
+                    <a href="#video-grid-section" class="btn btn-primary">
+                        <i class="fas fa-play"></i>
+                        <span>Watch Videos</span>
+                    </a>
+                    <a href="courses.html" class="btn btn-outline">
+                        <i class="fas fa-book-open"></i>
+                        <span>Explore Courses</span>
+                    </a>
+                </div>
+
+                <div class="video-hero-stats fade-up">
+                    <div class="video-hero-stat">
+                        <div class="video-hero-stat-value" id="videoCount">0</div>
+                        <div class="video-hero-stat-label">Speaking Videos</div>
+                    </div>
+                    <div class="video-hero-stat">
+                        <div class="video-hero-stat-value">3</div>
+                        <div class="video-hero-stat-label">Levels</div>
+                    </div>
+                    <div class="video-hero-stat">
+                        <div class="video-hero-stat-value">3</div>
+                        <div class="video-hero-stat-label">Classes</div>
+                    </div>
+                    <div class="video-hero-stat">
+                        <div class="video-hero-stat-value">100%</div>
+                        <div class="video-hero-stat-label">Free Access</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gambar kanan -->
+            <div class="video-hero-image fade-up">
+                <img src="images/Video.png" alt="Asmat English Course — English Speaking Library"
+                    onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=70';" />
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================================
+         MAIN CONTENT
+         ============================================================ -->
+    <main class="video-container" id="video-grid-section" role="main">
+
+        <!-- ===== TOOLBAR ===== -->
+        <div class="video-toolbar" role="search" aria-label="Search and filter videos">
+            <div class="video-search-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" class="video-search-input" id="searchInput"
+                    placeholder="Search student or speaking topic..." aria-label="Search student or speaking topic"
+                    autocomplete="off">
+            </div>
+
+            <div class="video-filter-row">
+                <div class="video-filter-group" role="group" aria-label="Filter by class">
+                    <label>Class:</label>
+                    <button class="video-filter-btn active" data-filter-class="all" aria-pressed="true">All</button>
+                    <button class="video-filter-btn" data-filter-class="7" aria-pressed="false">7</button>
+                    <button class="video-filter-btn" data-filter-class="8" aria-pressed="false">8</button>
+                    <button class="video-filter-btn" data-filter-class="9" aria-pressed="false">9</button>
+                </div>
+
+                <div class="video-filter-group" role="group" aria-label="Filter by level">
+                    <label>Level:</label>
+                    <button class="video-filter-btn active" data-filter-level="all" aria-pressed="true">All</button>
+                    <button class="video-filter-btn" data-filter-level="Little Starter" aria-pressed="false">Little
+                        Starter</button>
+                    <button class="video-filter-btn" data-filter-level="Happy Beginner" aria-pressed="false">Happy
+                        Beginner</button>
+                    <button class="video-filter-btn" data-filter-level="Junior Talk" aria-pressed="false">Junior
+                        Talk</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== VIDEO GRID ===== -->
+        <div class="video-grid" id="videoGrid" role="list" aria-label="Speaking video list"></div>
+
+    </main>
+
+    <!-- ===== MODAL ===== -->
+    <div class="video-modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-label="Video player"
+        tabindex="-1">
+        <div class="video-modal-content" id="modalContent">
+            <button class="video-modal-close" id="modalClose" aria-label="Close video player">&times;</button>
+            <div class="video-modal-video" id="modalVideoWrapper"></div>
+            <div class="video-modal-info" id="modalInfo"></div>
+        </div>
+    </div>
+
+    <script>
+        /* =========================================================================
+           VIDEO DATA
+           =========================================================================
+           HOW TO ADD A NEW VIDEO:
+           1. Copy one of the objects below,
+           2. Paste inside the videos array,
+           3. Update the values.
+           ========================================================================= */
+
+        const videos = [
+            {
+                student: "Andi",
+                class: "7A",
+                level: "Little Starter",
+                title: "Introducing Myself",
+                description: "Essential vocabularies about self introduction.",
+                driveId: "1SvvrXdD13zWpFcFXpTawYIZZEyVEo4WF",
+                date: "2026-09-20"
+            },
+            {
+                student: "Maria",
+                class: "7A",
+                level: "Little Starter",
+                title: "My Family",
+                description: "Essential vocabularies about family members.",
+                driveId: "1SvvrXdD13zWpFcFXpTawYIZZEyVEo4WF",
+                date: "2026-09-21"
+            },
+            {
+                student: "Budi",
+                class: "8B",
+                level: "Happy Beginner",
+                title: "My Daily Routine",
+                description: "Meaningful daily phrases and language expressions from morning to night.",
+                driveId: "1SvvrXdD13zWpFcFXpTawYIZZEyVEo4WF",
+                date: "2026-09-22"
+            },
+            {
+                student: "Siti",
+                class: "8B",
+                level: "Happy Beginner",
+                title: "My Favorite Food",
+                description: "Meaningful daily phrases and language expressions about favorite foods.",
+                driveId: "1SvvrXdD13zWpFcFXpTawYIZZEyVEo4WF",
+                date: "2026-09-22"
+            },
+            {
+                student: "Rina",
+                class: "9C",
+                level: "Junior Talk",
+                title: "The Importance of Education",
+                description: "Personal details, activities, introducing yourself, surrounding environment, and global culture.",
+                driveId: "1SvvrXdD13zWpFcFXpTawYIZZEyVEo4WF",
+                date: "2026-09-23"
+            },
+            {
+                student: "Doni",
+                class: "9C",
+                level: "Junior Talk",
+                title: "My Future Dream",
+                description: "Personal details, activities, introducing yourself, surrounding environment, and global culture.",
+                driveId: "1SvvrXdD13zWpFcFXpTawYIZZEyVEo4WF",
+                date: "2026-09-23"
+            }
+        ];
+
+        /* =========================================================================
+           STATE
+           ========================================================================= */
+
+        let activeClassFilter = 'all';
+        let activeLevelFilter = 'all';
+        let searchQuery = '';
+        let activeVideoIndex = null;
+
+        const videoGrid = document.getElementById('videoGrid');
+        const videoCountEl = document.getElementById('videoCount');
+        const searchInput = document.getElementById('searchInput');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalVideoWrapper = document.getElementById('modalVideoWrapper');
+        const modalInfo = document.getElementById('modalInfo');
+        const modalClose = document.getElementById('modalClose');
+
+        /* =========================================================================
+           UTILITIES
+           ========================================================================= */
+
+        function getDriveEmbedUrl(driveId) {
+            return `https://drive.google.com/file/d/${driveId}/preview`;
+        }
+
+        function getDriveThumbUrl(driveId, size) {
+            size = size || 640;
+            return `https://drive.google.com/thumbnail?id=${driveId}&sz=w${size}`;
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const parts = dateStr.split('-');
+            if (parts.length !== 3) return dateStr;
+            const months = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+            const day = parseInt(parts[2], 10);
+            const month = parseInt(parts[1], 10) - 1;
+            const year = parts[0];
+            if (month < 0 || month > 11) return dateStr;
+            return `${day} ${months[month]} ${year}`;
+        }
+
+        function getClassNumber(classStr) {
+            if (!classStr) return '';
+            return classStr.charAt(0);
+        }
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function updateVideoCount() {
+            const total = videos.length;
+            videoCountEl.textContent = total;
+        }
+
+        /* =========================================================================
+           FILTER
+           ========================================================================= */
+
+        function getFilteredVideos() {
+            return videos.filter(function (video) {
+                if (activeClassFilter !== 'all') {
+                    const classNum = getClassNumber(video.class);
+                    if (classNum !== activeClassFilter) return false;
+                }
+                if (activeLevelFilter !== 'all') {
+                    if (video.level !== activeLevelFilter) return false;
+                }
+                if (searchQuery.trim() !== '') {
+                    const q = searchQuery.toLowerCase().trim();
+                    const student = (video.student || '').toLowerCase();
+                    const title = (video.title || '').toLowerCase();
+                    const cls = (video.class || '').toLowerCase();
+                    const level = (video.level || '').toLowerCase();
+                    if (
+                        !student.includes(q) &&
+                        !title.includes(q) &&
+                        !cls.includes(q) &&
+                        !level.includes(q)
+                    ) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+        }
+
+        /* =========================================================================
+           RENDER
+           ========================================================================= */
+
+        function renderVideos() {
+            const filtered = getFilteredVideos();
+            videoGrid.innerHTML = '';
+
+            if (filtered.length === 0) {
+                videoGrid.innerHTML = `
+                    <div class="video-empty" role="status">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            <line x1="8" y1="11" x2="14" y2="11"></line>
+                        </svg>
+                        <h3>No speaking video found.</h3>
+                        <p>Try another student, class, level, or topic.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(function (video) {
+                const originalIndex = videos.indexOf(video);
+                const levelClass = (video.level || '').toLowerCase().replace(/\s+/g, '-');
+                const thumbUrl = getDriveThumbUrl(video.driveId, 640);
+
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.setAttribute('role', 'listitem');
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('aria-label', `Video: ${video.title} by ${video.student}`);
+                card.dataset.index = originalIndex;
+
+                card.innerHTML = `
+                    <div class="video-card-thumb" aria-hidden="true">
+                        <img src="${thumbUrl}" alt="" loading="lazy"
+                             onerror="this.style.display='none';" />
+                        <span class="video-level-badge ${escapeHTML(levelClass)}">${escapeHTML(video.level || '')}</span>
+                        <div class="video-play-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="video-card-body">
+                        <div class="video-card-title">${escapeHTML(video.title || 'Untitled')}</div>
+                        <div class="video-card-student">
+                            <strong>${escapeHTML(video.student || 'Unknown')}</strong>
+                            <span class="dot"></span>
+                            <span>${escapeHTML(video.class || '')}</span>
+                        </div>
+                        <div class="video-card-meta">
+                            <span>${escapeHTML(video.level || '')}</span>
+                        </div>
+                        ${video.date ? `<div class="video-card-date">${escapeHTML(formatDate(video.date))}</div>` : ''}
+                        <button class="video-card-watch" type="button" aria-label="Watch video ${escapeHTML(video.title)}">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            Watch
+                        </button>
+                    </div>
+                `;
+
+                card.addEventListener('click', function (e) {
+                    if (e.target.closest('.video-card-watch')) return;
+                    openModal(originalIndex);
+                });
+
+                const watchBtn = card.querySelector('.video-card-watch');
+                watchBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    openModal(originalIndex);
+                });
+
+                card.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openModal(originalIndex);
+                    }
+                });
+
+                videoGrid.appendChild(card);
+            });
+        }
+
+        /* =========================================================================
+           MODAL
+           ========================================================================= */
+
+        function openModal(index) {
+            if (index === null || index === undefined || !videos[index]) return;
+
+            activeVideoIndex = index;
+            const video = videos[index];
+
+            const embedUrl = getDriveEmbedUrl(video.driveId);
+            modalVideoWrapper.innerHTML = `
+                <iframe
+                    src="${embedUrl}"
+                    allow="autoplay; encrypted-media; fullscreen"
+                    allowfullscreen
+                    title="Video player: ${escapeHTML(video.title)}"
+                    loading="lazy"
+                ></iframe>
+            `;
+
+            const levelClass = (video.level || '').toLowerCase().replace(/\s+/g, '-');
+            modalInfo.innerHTML = `
+                <h2>${escapeHTML(video.title || 'Untitled')}</h2>
+                <div class="video-modal-student">
+                    by <strong>${escapeHTML(video.student || 'Unknown')}</strong>
+                </div>
+                <div class="video-modal-meta">
+                    <span class="video-modal-level ${escapeHTML(levelClass)}">${escapeHTML(video.level || '')}</span>
+                    <span class="dot"></span>
+                    <span>Class ${escapeHTML(video.class || '')}</span>
+                    ${video.date ? `<span class="dot"></span><span>${escapeHTML(formatDate(video.date))}</span>` : ''}
+                </div>
+                ${video.description ? `<p class="video-modal-desc">${escapeHTML(video.description)}</p>` : ''}
+                ${video.date ? `<div class="video-modal-date">Published: ${escapeHTML(formatDate(video.date))}</div>` : ''}
+            `;
+
+            modalOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(function () {
+                modalClose.focus();
+            }, 100);
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+
+            modalVideoWrapper.innerHTML = '';
+            modalInfo.innerHTML = '';
+            activeVideoIndex = null;
+
+            if (document.activeElement && document.activeElement.blur) {
+                document.activeElement.blur();
+            }
+        }
+
+        /* =========================================================================
+           EVENT LISTENERS
+           ========================================================================= */
+
+        searchInput.addEventListener('input', function (e) {
+            searchQuery = e.target.value;
+            renderVideos();
+        });
+
+        document.querySelectorAll('[data-filter-class]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('[data-filter-class]').forEach(function (b) {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-pressed', 'false');
+                });
+                btn.classList.add('active');
+                btn.setAttribute('aria-pressed', 'true');
+                activeClassFilter = btn.dataset.filterClass;
+                renderVideos();
+            });
+        });
+
+        document.querySelectorAll('[data-filter-level]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('[data-filter-level]').forEach(function (b) {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-pressed', 'false');
+                });
+                btn.classList.add('active');
+                btn.setAttribute('aria-pressed', 'true');
+                activeLevelFilter = btn.dataset.filterLevel;
+                renderVideos();
+            });
+        });
+
+        modalClose.addEventListener('click', closeModal);
+
+        modalOverlay.addEventListener('click', function (e) {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('open')) {
+                closeModal();
+            }
+        });
+
+        modalOverlay.addEventListener('keydown', function (e) {
+            if (e.key === 'Tab' && modalOverlay.classList.contains('open')) {
+                const focusable = modalOverlay.querySelectorAll(
+                    'button, iframe, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                );
+                if (focusable.length === 0) return;
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+
+                if (e.shiftKey) {
+                    if (document.activeElement === first) {
+                        e.preventDefault();
+                        last.focus();
+                    }
+                } else {
+                    if (document.activeElement === last) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+            }
+        });
+
+        /* =========================================================================
+           INIT
+           ========================================================================= */
+
+        (function init() {
+            updateVideoCount();
+            renderVideos();
+        })();
+    </script>
+    <script src="js/main.js"></script>
+    <script src="js/navbar.js"></script>
+</body>
+
+</html>

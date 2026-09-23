@@ -1194,10 +1194,10 @@ footer span {
 }
 
 .logo-img {
-    width: clamp(34px, 5vw, 40px);
-    height: clamp(34px, 5vw, 40px);
+    width: clamp(35px, 5vw, 45px);
+    height: clamp(35px, 5vw, 45px);
     object-fit: contain;
-    border-radius: 8px;
+    /* border-radius: 8px; */
     flex-shrink: 0;
 }
 
@@ -1242,7 +1242,7 @@ footer span {
 }
 
 .logo-sub {
-    font-size: clamp(0.65rem, 1.4vw, 0.80rem);
+    font-size: clamp(0.65rem, 1.4vw, 0.85rem);
     color: var(--text2);
     font-weight: 800;
     letter-spacing: 0.3px;

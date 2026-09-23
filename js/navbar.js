@@ -31,6 +31,7 @@ const TRANSLATIONS = {
         sub_english_course: 'English Course',
         sub_other_courses: 'Other Courses',
         sub_quiz_courses: 'Interactive Quiz',
+        sub_video_courses: 'Video Courses',
 
         sub_activities: 'Activities',
         sub_events: 'Events',
@@ -63,6 +64,7 @@ const TRANSLATIONS = {
         sub_english_course: 'Kursus Bahasa Inggris',
         sub_other_courses: 'Kursus Lainnya',
         sub_quiz_courses: 'Kuis Interaktif',
+        sub_video_courses: 'Video Courses',
 
         sub_activities: 'Kegiatan',
         sub_events: 'Acara',
@@ -121,7 +123,8 @@ const MENU_STRUCTURE = [
         dropdown: [
             { key: 'sub_english_course', url: 'courses.html#english' },
             { key: 'sub_other_courses', url: 'courses.html#other' },
-            { key: 'sub_quiz_courses', url: 'quiz.html#interactive-quiz' }
+            { key: 'sub_quiz_courses', url: 'quiz.html#interactive-quiz' },
+            { key: 'sub_video_courses', url: 'video.html' }
         ]
     },
     {
@@ -190,10 +193,10 @@ function renderNavbar() {
     <div class="container">
       <div class="nav-inner">
         <a href="index.html" class="logo" aria-label="SKB Asmat Home">
-          <img src="images/Logo.png" alt="SKB Asmat Logo" class="logo-img">
+          <img src="images/Logo1.png" alt="SKB Asmat Logo" class="logo-img">
           <div class="logo-text">
             <span class="logo-title">SKB KABUPATEN ASMAT</span>
-            <span class="logo-sub">KURSUS BAHASA INGGRIS</span>
+            <span class="logo-sub">ASMAT ENGLISH COURSE</span>
           </div>
         </a>
 
