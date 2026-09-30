@@ -15,7 +15,8 @@ const TRANSLATIONS = {
         nav_activities: 'Activities',
         nav_news: 'News',
         nav_gallery: 'Gallery',
-        nav_absent: 'Absent',
+        // nav_absent: 'Absent',
+        nav_attendance: 'Attendance',
         nav_contact: 'Contact',
 
         sub_about_skb: 'About SKB',
@@ -48,7 +49,8 @@ const TRANSLATIONS = {
         nav_activities: 'Kegiatan',
         nav_news: 'Berita',
         nav_gallery: 'Galeri',
-        nav_absent: 'Absen',
+        // nav_absent: 'Absensi',
+        nav_attendance: 'Kehadiran',
         nav_contact: 'Kontak',
 
         sub_about_skb: 'Tentang SKB',
@@ -137,10 +139,10 @@ const MENU_STRUCTURE = [
     },
     { key: 'nav_news', url: 'news.html' },
     { key: 'nav_gallery', url: 'gallery.html' },
-    { key: 'nav_absent', url: 'absent.html' },
+    // { key: 'nav_absent', url: 'absent.html' },
+    { key: 'nav_attendance', url: 'attendance.html' },
     { key: 'nav_contact', url: 'contact.html' }
 ];
-
 /* --------------------------------------------
    RENDER HELPERS
 -------------------------------------------- */

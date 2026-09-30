@@ -1,0 +1,2756 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Absensi Siswa — SKB Kursus Asmat</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+        <link rel="stylesheet" href="css/style.css">
+
+
+    <style>
+        :root {
+            --accent: #4ECDC4;
+            --accent-hover: #2fb8ae;
+            --accent-dark: #1f9d95;
+            --present: #10b981;
+            --sick: #ef4444;
+            --permission: #3b82f6;
+            --absent: #f59e0b;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --neutral: #64748b;
+            --neutral-hover: #475569;
+            --navbar-height: 64px;
+            --toast-width: 360px;
+            --toast-offset: 20px;
+        }
+
+        * {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            scroll-padding-top: calc(var(--navbar-height) + 16px);
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f8fafc;
+            background-image:
+                radial-gradient(circle at 15% 20%, rgba(78, 205, 196, .18), transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(59, 130, 246, .14), transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(255, 107, 107, .08), transparent 50%);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .card {
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(15, 23, 42, .08);
+            transition: box-shadow .2s ease, transform .2s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 32px rgba(15, 23, 42, .12);
+        }
+
+        .fade-in {
+            animation: fadeIn .35s ease both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .4rem;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all .18s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+            line-height: 1.1;
+            white-space: nowrap;
+        }
+
+        .btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(78, 205, 196, .35);
+        }
+
+        .btn-accent:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: var(--permission);
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(59, 130, 246, .35);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(239, 68, 68, .35);
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: var(--danger-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: var(--present);
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(16, 185, 129, .35);
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .btn-neutral {
+            background: var(--neutral);
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(100, 116, 139, .30);
+        }
+
+        .btn-neutral:hover:not(:disabled) {
+            background: var(--neutral-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-soft {
+            background: #f1f5f9;
+            color: #334155;
+            border-color: #cbd5e1;
+        }
+
+        .btn-soft:hover:not(:disabled) {
+            background: #e2e8f0;
+        }
+
+        .btn-sm {
+            padding: .45rem .8rem;
+            font-size: .8rem;
+        }
+
+        .btn-md {
+            padding: .6rem 1rem;
+            font-size: .875rem;
+        }
+
+        .btn-lg {
+            padding: .75rem 1.25rem;
+            font-size: .95rem;
+        }
+
+        .tab-btn {
+            padding: .6rem 1.15rem;
+            border-radius: 10px;
+            font-size: .875rem;
+            font-weight: 600;
+            border: 1px solid #cbd5e1;
+            background: #fff;
+            color: #475569;
+            transition: all .18s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+            transform: translateY(-1px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 4px 14px rgba(78, 205, 196, .40);
+        }
+
+        .statusBtn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: .9rem;
+            border: 2px solid #cbd5e1;
+            background: #fff;
+            color: #64748b;
+            cursor: pointer;
+            transition: all .15s ease;
+        }
+
+        .statusBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, .08);
+        }
+
+        .statusBtn.active[data-v="Present"] {
+            background: var(--present);
+            color: #fff;
+            border-color: var(--present);
+        }
+
+        .statusBtn.active[data-v="Sick"] {
+            background: var(--sick);
+            color: #fff;
+            border-color: var(--sick);
+        }
+
+        .statusBtn.active[data-v="Permission"] {
+            background: var(--permission);
+            color: #fff;
+            border-color: var(--permission);
+        }
+
+        .statusBtn.active[data-v="Absent"] {
+            background: var(--absent);
+            color: #fff;
+            border-color: var(--absent);
+        }
+
+        .chart-empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: .85rem;
+            height: 100%;
+            width: 100%;
+            flex-direction: column;
+            gap: .5rem;
+        }
+
+        .chart-empty::before {
+            content: '📊';
+            font-size: 2rem;
+            opacity: .3;
+        }
+
+        .chart-wrap {
+            position: relative;
+            height: 280px;
+        }
+
+        #toastBox {
+            position: fixed;
+            right: var(--toast-offset);
+            bottom: var(--toast-offset);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 10px;
+            pointer-events: none;
+            max-width: calc(100vw - 40px);
+        }
+
+        #toastBox:empty {
+            display: none;
+        }
+
+        #toastBox .toast-item {
+            pointer-events: auto;
+            min-width: 280px;
+            max-width: var(--toast-width);
+            animation: toastSlideIn .3s cubic-bezier(0.16, 1, 0.3, 1) both;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, .18), 0 2px 6px rgba(15, 23, 42, .12);
+        }
+
+        @keyframes toastSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px) scale(.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        .scroll-up-btn {
+            transition: opacity .25s, transform .25s;
+        }
+
+        .hidden-scroll {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
+        }
+
+        .matrix-wrap {
+            overflow-x: auto;
+            max-height: 72vh;
+        }
+
+        .matrix-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: .72rem;
+        }
+
+        .matrix-table th,
+        .matrix-table td {
+            border: 1px solid #e2e8f0;
+            padding: .25rem .3rem;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .matrix-table thead th {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: #fff;
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .matrix-table th.colNo {
+            left: 0;
+            z-index: 4;
+        }
+
+        .matrix-table th.colNama {
+            left: 40px;
+            z-index: 4;
+            min-width: 220px;
+            text-align: left;
+            padding-left: .6rem;
+        }
+
+        .matrix-table td.colNo {
+            position: sticky;
+            left: 0;
+            background: #f8fafc;
+            font-weight: 600;
+            width: 40px;
+            z-index: 1;
+        }
+
+        .matrix-table td.colNama {
+            position: sticky;
+            left: 40px;
+            background: #ffffff;
+            text-align: left;
+            padding-left: .6rem;
+            font-weight: 600;
+            min-width: 220px;
+            z-index: 1;
+        }
+
+        .matrix-table td.day {
+            width: 28px;
+            font-weight: 700;
+        }
+
+        .matrix-table td.cell-P {
+            background: #d1fae5;
+            color: #065f46;
+            font-weight: 700;
+        }
+
+        .matrix-table td.cell-S {
+            background: #fee2e2;
+            color: #991b1b;
+            font-weight: 700;
+        }
+
+        .matrix-table td.cell-I {
+            background: #dbeafe;
+            color: #1e40af;
+            font-weight: 700;
+        }
+
+        .matrix-table td.cell-A {
+            background: #fef3c7;
+            color: #92400e;
+            font-weight: 700;
+        }
+
+        .matrix-table td.rekap {
+            font-weight: 800;
+            background: #f1f5f9;
+        }
+
+        .matrix-table td.rekapP {
+            color: #065f46;
+            background: #ecfdf5;
+        }
+
+        .matrix-table td.rekapS {
+            color: #991b1b;
+            background: #fef2f2;
+        }
+
+        .matrix-table td.rekapI {
+            color: #1e40af;
+            background: #eff6ff;
+        }
+
+        .matrix-table td.rekapA {
+            color: #92400e;
+            background: #fffbeb;
+        }
+
+        .matrix-table td.today {
+            outline: 3px solid #f59e0b;
+            outline-offset: -3px;
+        }
+
+        .kpi-card {
+            position: relative;
+            overflow: hidden;
+            transition: transform .18s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .kpi-card .kpi-icon {
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            font-size: 4rem;
+            opacity: .08;
+            pointer-events: none;
+            transition: opacity .2s ease;
+        }
+
+        .kpi-card:hover .kpi-icon {
+            opacity: .15;
+        }
+
+        .kpi-bar {
+            height: 4px;
+            border-radius: 999px;
+            margin-top: .35rem;
+        }
+
+        .spinner {
+            border: 3px solid #e2e8f0;
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .cache-badge {
+            font-size: .7rem;
+            padding: .15rem .45rem;
+            border-radius: 6px;
+            background: #f0fdf4;
+            color: #059669;
+            border: 1px solid #86efac;
+        }
+
+        .role-badge {
+            font-size: .7rem;
+            padding: .15rem .55rem;
+            border-radius: 6px;
+            font-weight: 700;
+            letter-spacing: .3px;
+        }
+
+        .role-badge.tutor {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+
+        .role-badge.kordinator {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+
+        .info-banner {
+            background: #ecfdf5;
+            border: 1px solid #86efac;
+            color: #065f46;
+            border-radius: 10px;
+            padding: .6rem .9rem;
+            font-size: .8rem;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .login-wrap {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 1024px) {
+            .login-wrap {
+                grid-template-columns: 1.15fr 1fr;
+            }
+        }
+
+        .login-hero {
+            background: linear-gradient(135deg, #1f9d95 0%, #4ECDC4 50%, #7dd3fc 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3rem;
+            color: #fff;
+        }
+
+        .login-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, .15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, .10) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: .75rem;
+            padding: .75rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, .15);
+            transition: transform .2s ease, background .2s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateX(4px);
+            background: rgba(255, 255, 255, .14);
+        }
+
+        .feature-icon {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, .2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .login-form-side {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            min-height: 100vh;
+            background: transparent;
+            position: relative;
+        }
+
+        .login-inner {
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: .9rem 1rem;
+            font-size: .9rem;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            background: rgba(255, 255, 255, .7);
+            backdrop-filter: blur(8px);
+            transition: all .2s ease;
+            outline: none;
+            color: #0f172a;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(78, 205, 196, .18);
+            background: #fff;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: .9rem 2.5rem .9rem 1rem;
+            font-size: .9rem;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            background-color: rgba(255, 255, 255, .7);
+            backdrop-filter: blur(8px);
+            transition: all .2s ease;
+            outline: none;
+            color: #0f172a;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 12 12'%3E%3Cpath fill='%23475569' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+        }
+
+        .form-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(78, 205, 196, .18);
+            background-color: #fff;
+        }
+
+        .form-label {
+            display: block;
+            font-size: .8rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: .5rem;
+            letter-spacing: .2px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 800;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px rgba(78, 205, 196, .35);
+            flex-shrink: 0;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .float-anim {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .modern-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23475569' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right .75rem center;
+            padding-right: 2.25rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--permission) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        #btnLogoutFixed {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 900;
+        }
+
+        #scrollUp {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 900;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --navbar-height: 60px;
+                --toast-width: 320px;
+                --toast-offset: 16px;
+            }
+
+            .chart-wrap {
+                height: 240px;
+            }
+
+            .matrix-table {
+                font-size: .68rem;
+            }
+
+            .matrix-table th.colNama,
+            .matrix-table td.colNama {
+                min-width: 160px;
+            }
+
+            .kpi-card .kpi-icon {
+                font-size: 3rem;
+            }
+
+            #btnLogoutFixed {
+                bottom: 80px;
+                left: 16px;
+                font-size: .75rem;
+                padding: .35rem .7rem;
+            }
+
+            #scrollUp {
+                bottom: 80px;
+                right: 16px;
+                width: 40px !important;
+                height: 40px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --toast-offset: 12px;
+                --toast-width: calc(100vw - 24px);
+            }
+
+            .login-form-side {
+                padding: 1.25rem;
+            }
+
+            .login-hero {
+                padding: 1.5rem;
+            }
+
+            .login-hero h1 {
+                font-size: 1.5rem !important;
+            }
+
+            .chart-wrap {
+                height: 200px;
+            }
+
+            #toastBox {
+                left: var(--toast-offset);
+                right: var(--toast-offset);
+                max-width: none;
+            }
+
+            #toastBox .toast-item {
+                min-width: auto;
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+
+        @media print {
+
+            #toastBox,
+            #btnLogoutFixed,
+            #btnLogoutTop,
+            #scrollUp,
+            .export-btn,
+            .tab-btn,
+            #btnSimpan,
+            #btnAllPresent,
+            #btnResetFilter,
+            #btnRefreshFilter,
+            #btnOpenSheet,
+            #btnRefreshUsers,
+            #btnRefreshLevelsAbsen,
+            #btnRefreshAbsen,
+            #btnRefreshLevelsMatriks,
+            #btnRefreshFilterLevel,
+            #btnRefreshFilterTutor {
+                display: none !important;
+            }
+
+            body {
+                background: #fff !important;
+            }
+        }
+
+        #pageApp {
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        nav.sticky {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+        }
+
+        #btnLogoutFixed,
+        #scrollUp {
+            pointer-events: auto;
+        }
+    </style>
+</head>
+
+<body class="text-slate-800">
+    <br>
+
+    <!-- ===================== PAGE LOGIN ===================== -->
+    <div id="pageLogin" class="login-wrap">
+        <div class="login-hero">
+            <div class="relative z-10 max-w-lg">
+                <div class="flex items-center gap-3 mb-8">
+                </div>
+
+                <h1 class="text-3xl md:text-4xl font-extrabold leading-tight mb-4">
+                    Kelola Absensi<br>
+                    <span class="opacity-90">dengan Mudah & Cepat</span>
+                </h1>
+
+                <p class="text-base opacity-90 mb-8 leading-relaxed">
+                    Platform terintegrasi untuk Tutor dan Kordinator.
+                    Absen siswa, pantau kehadiran, dan lihat laporan — semua dalam satu sistem.
+                </p>
+
+                <div class="space-y-3 mb-8">
+                    <div class="feature-item">
+                        <div class="feature-icon">✏️</div>
+                        <div>
+                            <div class="font-bold text-sm">Absensi Harian Otomatis</div>
+                            <div class="text-xs opacity-85">Tutor tinggal klik P/S/I/A, sistem otomatis tersimpan ke
+                                spreadsheet</div>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📊</div>
+                        <div>
+                            <div class="font-bold text-sm">Dashboard Real-time</div>
+                            <div class="text-xs opacity-85">Grafik kehadiran, rekap per tutor, dan statistik per level
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📧</div>
+                        <div>
+                            <div class="font-bold text-sm">Auto-Email Laporan</div>
+                            <div class="text-xs opacity-85">Rekap bulanan otomatis terkirim ke Kordinator setiap akhir
+                                bulan</div>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📋</div>
+                        <div>
+                            <div class="font-bold text-sm">Matriks Excel-Style</div>
+                            <div class="text-xs opacity-85">Lihat absensi per tanggal dalam tampilan tabel lengkap</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 text-xs opacity-80 pt-6 border-t border-white/20">
+                    <span>⏰ Timezone: WIT (UTC+9)</span>
+                    <span>·</span>
+                    <span id="liveClock">—</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="login-form-side">
+            <div class="login-inner fade-in">
+                <div class="text-center mb-8 lg:hidden">
+                    <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl shadow-lg"
+                        style="background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%)">SK</div>
+                </div>
+
+                <div>
+                    <div class="mb-8">
+                        <h2 class="text-3xl font-extrabold mb-2 gradient-text">Selamat Datang 👋</h2>
+                        <p class="text-sm text-slate-500 leading-relaxed">Masuk untuk melanjutkan ke sistem absensi</p>
+                    </div>
+
+                    <form id="formLogin" class="space-y-5">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="form-label mb-0">Nama Pengguna</label>
+                            </div>
+                            <select id="loginNama" class="form-select" required>
+                                <option value="">— Pilih Nama —</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label">Password</label>
+                            <input id="loginPassword" type="password" autocomplete="current-password"
+                                placeholder="Masukkan password Anda" class="form-input" required />
+                        </div>
+                        <button id="btnLogin" type="submit" class="btn btn-accent btn-lg w-full">
+                            🔐 Masuk ke Sistem
+                        </button>
+                    </form>
+
+                    <div id="loginMsg" class="hidden mt-5 text-sm"></div>
+
+                    <div class="mt-10 pt-6 border-t border-slate-200/60">
+                        <div class="text-xs text-slate-400 text-center leading-relaxed">
+                            Belum punya akses? Hubungi Kordinator.<br>
+                            <span class="text-slate-300">© 2026 SKB Kursus Asmat · Sistem Absensi v1.3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br><br>
+    <!-- ===================== PAGE APP ===================== -->
+    <div id="pageApp" class="hidden">
+
+        <!-- NAVBAR -->
+        <nav class="sticky top-0 z-40 backdrop-blur bg-white/90 border-b border-slate-200 shadow-sm">
+            <div class="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-lg flex-shrink-0"
+                        style="background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%)">SK</div>
+                    <div class="hidden sm:block">
+                        <div class="font-extrabold leading-tight">Absensi Siswa</div>
+                        <div class="text-xs text-slate-500 leading-tight">SKB Kursus Asmat · WIT</div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <a id="btnOpenSheet" href="#" target="_blank" rel="noopener" class="btn btn-soft btn-sm"
+                        title="Buka spreadsheet backend">
+                        📄 <span class="hidden sm:inline">Spreadsheet</span>
+                    </a>
+
+                    <div id="navUser" class="hidden md:flex items-center gap-2 text-sm text-slate-600"></div>
+
+                    <button id="btnLogoutTop" class="btn btn-danger btn-sm hidden">🚪 <span
+                            class="hidden sm:inline">Logout</span></button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="max-w-[1600px] mx-auto px-4 py-6">
+
+            <!-- Tab Bar -->
+            <div class="flex gap-2 mb-5 flex-wrap" id="tabBar">
+                <button data-tab="absen" class="tab-btn active">✏️ Absensi</button>
+                <button data-tab="matriks" class="tab-btn">📋 Matriks Bulanan</button>
+                <button data-tab="dashboard" class="tab-btn">📊 Dashboard</button>
+                <div class="flex items-center gap-2">
+                    <a id="btnOpenSheet" href="#" target="_blank" rel="noopener" class="btn btn-soft btn-sm"
+                        title="Buka spreadsheet backend">
+                        📄 <span class="hidden sm:inline">Spreadsheet</span>
+                    </a>
+                
+                    <div id="navUser" class="hidden md:flex items-center gap-2 text-sm text-slate-600"></div>
+                
+                    <button id="btnLogoutTop" class="btn btn-danger btn-sm hidden">🚪 <span
+                            class="hidden sm:inline">Logout</span></button>
+                </div>
+            </div>
+
+            <!-- ============ TAB: ABSENSI ============ -->
+            <section id="tabAbsen" class="fade-in space-y-5">
+
+                <div id="wrapPilihLevel" class="card bg-white border border-slate-200 p-4 hidden">
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="text-xs text-slate-500 font-semibold">Pilih Level</label>
+                        <div class="flex items-center gap-2">
+                            <span id="levelScopeInfo" class="text-xs text-slate-400"></span>
+                            <button type="button" id="btnRefreshLevelsAbsen"
+                                class="text-xs text-slate-400 hover:text-[color:var(--accent)] transition"
+                                title="Refresh daftar level">🔄</button>
+                        </div>
+                    </div>
+                    <select id="pilihLevel"
+                        class="modern-select w-full mt-1 px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white">
+                        <option value="">— Pilih Level —</option>
+                    </select>
+                </div>
+
+                <div id="scheduleBanner" class="info-banner hidden">
+                    <span>📅</span>
+                    <span id="scheduleBannerText">Jadwal mengajar: —</span>
+                </div>
+
+                <div class="card bg-white border border-slate-200 p-5">
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-sm">
+                        <div>
+                            <div class="text-slate-500 text-xs">Level</div>
+                            <div id="infoLevel" class="font-bold">—</div>
+                        </div>
+                        <div>
+                            <div class="text-slate-500 text-xs">Hari / Jam</div>
+                            <div id="infoJadwal" class="font-bold text-xs">—</div>
+                        </div>
+                        <div>
+                            <div class="text-slate-500 text-xs">Tanggal (WIT)</div>
+                            <div id="infoTanggal" class="font-bold">—</div>
+                        </div>
+                        <div>
+                            <div class="text-slate-500 text-xs">Total Siswa</div>
+                            <div id="infoTotal" class="font-bold">—</div>
+                        </div>
+                        <div>
+                            <div class="text-slate-500 text-xs">Status</div>
+                            <div id="infoStatus" class="font-bold">—</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="card kpi-card bg-white border border-slate-200 p-4">
+                        <div class="kpi-icon">✓</div>
+                        <div class="text-xs text-slate-500 font-semibold">Present</div>
+                        <div id="statPresent" class="text-3xl font-extrabold" style="color:var(--present)">0</div>
+                        <div class="kpi-bar" style="background:var(--present);width:100%"></div>
+                    </div>
+                    <div class="card kpi-card bg-white border border-slate-200 p-4">
+                        <div class="kpi-icon">🤒</div>
+                        <div class="text-xs text-slate-500 font-semibold">Sick</div>
+                        <div id="statSick" class="text-3xl font-extrabold" style="color:var(--sick)">0</div>
+                        <div class="kpi-bar" style="background:var(--sick);width:100%"></div>
+                    </div>
+                    <div class="card kpi-card bg-white border border-slate-200 p-4">
+                        <div class="kpi-icon">📝</div>
+                        <div class="text-xs text-slate-500 font-semibold">Permission</div>
+                        <div id="statPermission" class="text-3xl font-extrabold" style="color:var(--permission)">0</div>
+                        <div class="kpi-bar" style="background:var(--permission);width:100%"></div>
+                    </div>
+                    <div class="card kpi-card bg-white border border-slate-200 p-4">
+                        <div class="kpi-icon">✗</div>
+                        <div class="text-xs text-slate-500 font-semibold">Absent</div>
+                        <div id="statAbsent" class="text-3xl font-extrabold" style="color:var(--absent)">0</div>
+                        <div class="kpi-bar" style="background:var(--absent);width:100%"></div>
+                    </div>
+                </div>
+
+                <div class="card bg-white border border-slate-200 overflow-hidden">
+                    <div class="p-4 flex flex-wrap gap-2 items-center justify-between border-b border-slate-200">
+                        <div class="font-bold flex items-center gap-2">👥 Daftar Siswa</div>
+                        <div class="flex gap-2 flex-wrap">
+                            <button id="btnRefreshAbsen" class="btn btn-soft btn-md">🔄 Refresh</button>
+                            <button id="btnAllPresent" class="btn btn-success btn-md">✓ Tandai Semua Hadir</button>
+                            <button id="btnSimpan" class="btn btn-accent btn-md">💾 Simpan Absensi</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="bg-slate-50 text-slate-600">
+                                <tr>
+                                    <th class="text-left px-4 py-2 w-12">#</th>
+                                    <th class="text-left px-4 py-2">Nama Siswa</th>
+                                    <th class="text-left px-4 py-2 w-56">Status</th>
+                                    <th class="text-left px-4 py-2">Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyAbsen"></tbody>
+                        </table>
+                    </div>
+                    <div id="emptyAbsen" class="hidden p-6 text-center text-slate-400 text-sm">Belum ada data siswa.
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ TAB: MATRIKS ============ -->
+            <section id="tabMatriks" class="hidden fade-in space-y-4">
+                <div class="card bg-white border border-slate-200 p-4">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs text-slate-500 font-semibold">Level</label>
+                                <button type="button" id="btnRefreshLevelsMatriks"
+                                    class="text-xs text-slate-400 hover:text-[color:var(--accent)] transition"
+                                    title="Refresh daftar level">🔄</button>
+                            </div>
+                            <select id="mLevel"
+                                class="modern-select w-full mt-1 px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white">
+                                <option value="">— Pilih Level —</option>
+                            </select>
+                            <div id="mLevelScopeInfo" class="text-xs text-slate-400 mt-1"></div>
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-500 font-semibold">Bulan</label>
+                            <select id="mBulan"
+                                class="modern-select w-full mt-1 px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white"></select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-500 font-semibold">Tahun</label>
+                            <select id="mTahun"
+                                class="modern-select w-full mt-1 px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white"></select>
+                        </div>
+                        <div class="flex items-end gap-2">
+                            <button id="btnLoadMatriks" class="btn btn-accent btn-md flex-1">🔍 Tampilkan</button>
+                            <button id="btnExportMatriks" class="btn btn-primary btn-md flex-1">📥 Export</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="matriksInfo" class="card bg-white border border-slate-200 p-4 hidden">
+                    <div class="flex flex-wrap gap-x-6 gap-y-2 items-center">
+                        <div>
+                            <div class="text-xs text-slate-500">Level</div>
+                            <div id="mInfoLevel" class="font-bold">—</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500">Instruktur</div>
+                            <div id="mInfoTutor" class="font-bold">—</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500">Jadwal</div>
+                            <div id="mInfoJadwal" class="font-bold text-xs">—</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500">Periode</div>
+                            <div id="mInfoPeriode" class="font-bold">—</div>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-xs text-slate-500 flex flex-wrap gap-3">
+                        <span><span class="inline-block w-3 h-3 rounded align-middle" style="background:#d1fae5"></span>
+                            P = Present</span>
+                        <span><span class="inline-block w-3 h-3 rounded align-middle" style="background:#fee2e2"></span>
+                            S = Sick</span>
+                        <span><span class="inline-block w-3 h-3 rounded align-middle" style="background:#dbeafe"></span>
+                            I = Permission</span>
+                        <span><span class="inline-block w-3 h-3 rounded align-middle" style="background:#fef3c7"></span>
+                            A = Absent</span>
+                    </div>
+                </div>
+
+                <div class="card bg-white border border-slate-200 overflow-hidden">
+                    <div id="matriksWrap" class="matrix-wrap p-2">
+                        <div class="chart-empty py-10">Pilih level & periode lalu klik Tampilkan</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ TAB: DASHBOARD ============ -->
+            <section id="tabDashboard" class="hidden fade-in space-y-5">
+
+                <div class="card bg-white border border-slate-200 p-4">
+                    <div id="dashScopeInfo" class="mb-3 text-xs hidden">
+                        <span class="cache-badge" id="dashScopeText"></span>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                        <div>
+                            <label class="text-xs text-slate-500 font-semibold">Bulan</label>
+                            <select id="fBulan"
+                                class="modern-select w-full mt-1 px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white"></select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-500 font-semibold">Tahun</label>
+                            <select id="fTahun"
+                                class="modern-select w-full mt-1 px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white"></select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-500 font-semibold">Tanggal</label>
+                            <select id="fTanggal"
+                                class="modern-select w-full mt-1 px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white">
+                                <option value="">Semua</option>
+                            </select>
+                        </div>
+                        <div id="wrapFilterLevel">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs text-slate-500 font-semibold">Level</label>
+                                <button type="button" id="btnRefreshFilterLevel"
+                                    class="text-xs text-slate-400 hover:text-[color:var(--accent)] transition"
+                                    title="Refresh daftar level">🔄</button>
+                            </div>
+                            <select id="fLevel"
+                                class="modern-select w-full mt-1 px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white">
+                                <option value="">Semua</option>
+                            </select>
+                        </div>
+                        <div id="wrapFilterTutor">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs text-slate-500 font-semibold">Tutor</label>
+                                <button type="button" id="btnRefreshFilterTutor"
+                                    class="text-xs text-slate-400 hover:text-[color:var(--accent)] transition"
+                                    title="Refresh daftar tutor">🔄</button>
+                            </div>
+                            <select id="fTutor"
+                                class="modern-select w-full mt-1 px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white">
+                                <option value="">Semua</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end gap-2">
+                            <button id="btnResetFilter" class="btn btn-neutral btn-md flex-1">↺ Reset</button>
+                            <button id="btnRefreshFilter" class="btn btn-accent btn-md flex-1">🔄 Refresh</button>
+                        </div>
+                    </div>
+                    <div id="cacheInfo" class="mt-2 text-xs hidden">
+                        <span class="cache-badge" id="cacheInfoText">⚡ Data dari cache</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="card kpi-card bg-white border border-slate-200 p-4">
+                        <div class="kpi-icon">✓</div>
+                        <div class="text-xs text-slate-500 font-semibold">Present</div>
+                        <div id="dashPresent" class="text-3xl font-extrabold" style="color:var(--present)">0</div>
+                        <div id="dashPresentPct" class="text-xs text-slate-400 mt-1">0%</div>
+                        <div class="kpi-bar" style="background:var(--present);width:0%"></div>
+                    </div>
+                    <div class="card kpi-card bg-white border border-slate-200 p-4">
+                        <div class="kpi-icon">🤒</div>
+                        <div class="text-xs text-slate-500 font-semibold">Sick</div>
+                        <div id="dashSick" class="text-3xl font-extrabold" style="color:var(--sick)">0</div>
+                        <div id="dashSickPct" class="text-xs text-slate-400 mt-1">0%</div>
+                        <div class="kpi-bar" style="background:var(--sick);width:0%"></div>
+                    </div>
+                    <div class="card kpi-card bg-white border border-slate-200 p-4">
+                        <div class="kpi-icon">📝</div>
+                        <div class="text-xs text-slate-500 font-semibold">Permission</div>
+                        <div id="dashPermission" class="text-3xl font-extrabold" style="color:var(--permission)">0</div>
+                        <div id="dashPermissionPct" class="text-xs text-slate-400 mt-1">0%</div>
+                        <div class="kpi-bar" style="background:var(--permission);width:0%"></div>
+                    </div>
+                    <div class="card kpi-card bg-white border border-slate-200 p-4">
+                        <div class="kpi-icon">✗</div>
+                        <div class="text-xs text-slate-500 font-semibold">Absent</div>
+                        <div id="dashAbsent" class="text-3xl font-extrabold" style="color:var(--absent)">0</div>
+                        <div id="dashAbsentPct" class="text-xs text-slate-400 mt-1">0%</div>
+                        <div class="kpi-bar" style="background:var(--absent);width:0%"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div class="card bg-white border border-slate-200 p-4">
+                        <div class="font-bold mb-3 text-sm flex items-center gap-2">📊 Distribusi Status</div>
+                        <div class="chart-wrap"><canvas id="chartBar"></canvas></div>
+                    </div>
+                    <div class="card bg-white border border-slate-200 p-4">
+                        <div class="font-bold mb-3 text-sm flex items-center gap-2">📈 Trend Harian</div>
+                        <div class="chart-wrap"><canvas id="chartTrend"></canvas></div>
+                    </div>
+                    <div class="card bg-white border border-slate-200 p-4">
+                        <div class="font-bold mb-3 text-sm flex items-center gap-2">🎯 Kehadiran per Level</div>
+                        <div class="chart-wrap"><canvas id="chartLevel"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="card bg-white border border-slate-200 overflow-hidden">
+                    <div class="p-4 flex items-center justify-between border-b border-slate-200">
+                        <div class="font-bold flex items-center gap-2">👨‍🏫 Rekap Mengajar per Tutor</div>
+                        <button data-export="perTutor" class="export-btn btn btn-primary btn-sm">📥 Export CSV</button>
+                    </div>
+                    <div class="overflow-x-auto max-h-[400px]">
+                        <table class="w-full text-sm">
+                            <thead class="bg-slate-50 text-slate-600 sticky top-0">
+                                <tr>
+                                    <th class="text-left px-4 py-2">ID</th>
+                                    <th class="text-left px-4 py-2">Nama Tutor</th>
+                                    <th class="text-left px-4 py-2">Level</th>
+                                    <th class="text-right px-4 py-2">Total Hari</th>
+                                    <th class="text-right px-4 py-2">Siswa Hadir</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyPerTutor"></tbody>
+                        </table>
+                    </div>
+                    <div id="emptyPerTutor" class="hidden p-6 text-center text-slate-400 text-sm">Tidak ada data.</div>
+                </div>
+
+                <div class="card bg-white border border-slate-200 overflow-hidden">
+                    <div class="p-4 flex items-center justify-between border-b border-slate-200">
+                        <div class="font-bold flex items-center gap-2">🎓 Rekap per Siswa</div>
+                        <button data-export="rekapPerSiswa" class="export-btn btn btn-primary btn-sm">📥 Export
+                            CSV</button>
+                    </div>
+                    <div class="overflow-x-auto max-h-[500px]">
+                        <table class="w-full text-sm">
+                            <thead class="bg-slate-50 text-slate-600 sticky top-0">
+                                <tr>
+                                    <th class="text-left px-4 py-2">Level</th>
+                                    <th class="text-left px-4 py-2">#</th>
+                                    <th class="text-left px-4 py-2">Nama Siswa</th>
+                                    <th class="text-right px-4 py-2" style="color:var(--present)">Present</th>
+                                    <th class="text-right px-4 py-2" style="color:var(--absent)">Absent</th>
+                                    <th class="text-right px-4 py-2" style="color:var(--sick)">Sick</th>
+                                    <th class="text-right px-4 py-2" style="color:var(--permission)">Permission</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyRekapSiswa"></tbody>
+                        </table>
+                    </div>
+                    <div id="emptyRekapSiswa" class="hidden p-6 text-center text-slate-400 text-sm">Tidak ada data.
+                    </div>
+                </div>
+
+                <div class="card bg-white border border-slate-200 overflow-hidden">
+                    <div class="p-4 flex items-center justify-between border-b border-slate-200">
+                        <div class="font-bold flex items-center gap-2">📅 Detail Absensi Harian</div>
+                        <button data-export="detailHarian" class="export-btn btn btn-primary btn-sm">📥 Export
+                            CSV</button>
+                    </div>
+                    <div class="overflow-x-auto max-h-[500px]">
+                        <table class="w-full text-sm">
+                            <thead class="bg-slate-50 text-slate-600 sticky top-0">
+                                <tr>
+                                    <th class="text-left px-4 py-2">Tanggal</th>
+                                    <th class="text-left px-4 py-2">Tutor</th>
+                                    <th class="text-left px-4 py-2">Level</th>
+                                    <th class="text-right px-4 py-2">Hadir</th>
+                                    <th class="text-right px-4 py-2">Tidak Hadir</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyDetail"></tbody>
+                        </table>
+                    </div>
+                    <div id="emptyDetail" class="hidden p-6 text-center text-slate-400 text-sm">Tidak ada data.</div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div id="toastBox"></div>
+
+    <!-- <button id="scrollUp"
+        class="scroll-up-btn hidden-scroll fixed bottom-5 right-5 w-12 h-12 rounded-full bg-slate-800 text-white shadow-lg z-50 flex items-center justify-center text-xl"
+        title="Kembali ke atas">↑</button> -->
+
+    <button id="btnLogoutFixed" class="btn btn-danger btn-sm hidden">🚪 Logout</button>
+
+    <script>
+        /* ============================================================
+           KONFIGURASI
+           ============================================================ */
+        const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxT_lmP5mhte7-x_YOjHJ706oLqvErttmcexLMbbLC0WSk_gwJ-cZUptESPePY5omK6/exec';
+        const SS_ID_VIEW = '1tWe8gSt_FvQ8fCyKpnGzvvzXDyN7BoqhbyXCNaecoNw';
+        const SS_URL = 'https://docs.google.com/spreadsheets/d/' + SS_ID_VIEW + '/edit';
+
+        const BULAN_NAMA = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        const HARI_ID = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+        /* ============================================================
+           CACHE
+           ============================================================ */
+        const CACHE_TTL = {
+            getListPengguna: 5 * 60 * 1000,
+            getListLevel: 5 * 60 * 1000,
+            getLevelByTutor: 5 * 60 * 1000,
+            getSiswaByLevel: 5 * 60 * 1000,
+            getAbsensiHariIni: 15 * 1000,
+            getMatriksLevel: 60 * 1000,
+            getDashboard: 30 * 1000,
+            getTanggalTersedia: 60 * 1000
+        };
+
+        const cache = {
+            store: {}, pending: {},
+            key(a, p) { return a + '::' + JSON.stringify(p || {}); },
+            get(a, p) {
+                const k = this.key(a, p); const e = this.store[k];
+                if (!e) return null;
+                if (Date.now() > e.expireAt) { delete this.store[k]; return null; }
+                return e.data;
+            },
+            set(a, p, d) {
+                const ttl = CACHE_TTL[a]; if (!ttl) return;
+                this.store[this.key(a, p)] = { data: d, expireAt: Date.now() + ttl };
+            },
+            invalidate(a) {
+                Object.keys(this.store).forEach(k => {
+                    if (k.indexOf(a + '::') === 0) delete this.store[k];
+                });
+            },
+            invalidateAll() { this.store = {}; }
+        };
+        window.__cache = cache;
+
+        /* ============================================================
+           STATE
+           ============================================================ */
+        const state = {
+            user: null,
+            isKordinator: false,
+            levelsOfUser: [],
+            currentLevel: null,
+            siswa: [],
+            absensiHariIni: [],
+            dashboard: null,
+            matriks: null,
+            charts: { bar: null, trend: null, level: null },
+            dashboardBound: false,
+            matriksBound: false
+        };
+
+        /* ============================================================
+           UTIL
+           ============================================================ */
+        function $(s) { return document.querySelector(s); }
+        function $all(s) { return document.querySelectorAll(s); }
+
+        function showToast(msg, type = 'info') {
+            const box = $('#toastBox');
+            if (!box) return;
+            const colors = {
+                info: 'bg-slate-800', success: 'bg-emerald-600',
+                error: 'bg-rose-600', warn: 'bg-amber-500'
+            };
+            const icons = { info: 'ℹ️', success: '✅', error: '❌', warn: '⚠️' };
+            const el = document.createElement('div');
+            el.className = `toast-item ${colors[type] || colors.info} text-white text-sm px-4 py-2.5 rounded-lg shadow-lg max-w-xs`;
+            el.innerHTML = `<span class="mr-1">${icons[type] || ''}</span>${msg}`;
+            box.appendChild(el);
+            setTimeout(() => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateX(40px)';
+                setTimeout(() => el.remove(), 250);
+            }, 3200);
+        }
+
+        function todayWIT() {
+            const now = new Date();
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const wit = new Date(utc + (9 * 3600 * 1000));
+            const dd = String(wit.getDate()).padStart(2, '0');
+            const mm = String(wit.getMonth() + 1).padStart(2, '0');
+            const yyyy = wit.getFullYear();
+            const hh = String(wit.getHours()).padStart(2, '0');
+            const mi = String(wit.getMinutes()).padStart(2, '0');
+            const ss = String(wit.getSeconds()).padStart(2, '0');
+            const hari = HARI_ID[wit.getDay()];
+            return {
+                tgl: `${dd}/${mm}/${yyyy}`,
+                bln: mm,
+                thn: yyyy,
+                hari: hari,
+                jam: `${hh}:${mi}:${ss}`,
+                tanggal: Number(dd),
+                bulanInput: `${yyyy}-${mm}`
+            };
+        }
+
+        function escapeHtml(s) {
+            return String(s == null ? '' : s)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+        }
+
+        function pad2(n) { return String(n).padStart(2, '0'); }
+
+        function debounce(fn, wait) {
+            let timer = null;
+            return function (...args) {
+                clearTimeout(timer);
+                timer = setTimeout(() => fn.apply(this, args), wait);
+            };
+        }
+
+        function getInitials(name) {
+            return String(name || '?').split(/\s+/).map(p => p[0]).slice(0, 2).join('').toUpperCase();
+        }
+
+        function setLoading(btn, text = 'Memuat…') {
+            if (!btn) return null;
+            const orig = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<span class="spinner" style="width:14px;height:14px;border-width:2px"></span> ${text}`;
+            return () => { btn.disabled = false; btn.innerHTML = orig; };
+        }
+
+        /* ============================================================
+           LIVE CLOCK WIT
+           ============================================================ */
+        function updateLiveClock() {
+            const el = document.getElementById('liveClock');
+            if (!el) return;
+            const t = todayWIT();
+            el.textContent = `${t.tgl} ${t.hari} · ${t.jam} WIT`;
+        }
+        setInterval(updateLiveClock, 1000);
+
+        /* ============================================================
+           API CALL
+           ============================================================ */
+        async function callAPI(action, payload = {}, options = {}) {
+            if (!GAS_API_URL || GAS_API_URL.indexOf('PASTE_URL') === 0) {
+                throw new Error('GAS_API_URL belum diisi.');
+            }
+            const useCache = options.cache !== false;
+            const force = options.force === true;
+            const k = cache.key(action, payload);
+
+            if (useCache && !force) {
+                const cached = cache.get(action, payload);
+                if (cached) return { ...cached, __fromCache: true };
+            }
+            if (cache.pending[k]) return cache.pending[k];
+
+            const promise = (async () => {
+                const controller = new AbortController();
+                const timer = setTimeout(() => controller.abort(), 30000);
+                try {
+                    const res = await fetch(GAS_API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ action, ...payload }),
+                        signal: controller.signal,
+                        redirect: 'follow',
+                        cache: 'no-store'
+                    });
+                    clearTimeout(timer);
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    const text = await res.text();
+                    let json;
+                    try { json = JSON.parse(text); }
+                    catch (e) {
+                        console.error('Non-JSON response:', text);
+                        throw new Error('Response bukan JSON: ' + text.slice(0, 120));
+                    }
+                    if (useCache && json && json.success) cache.set(action, payload, json);
+                    return json;
+                } catch (err) {
+                    clearTimeout(timer);
+                    if (err.name !== 'AbortError' && options.retry !== 0) {
+                        console.warn('Retry', action, ':', err.message);
+                        return callAPI(action, payload, { ...options, retry: 0, force: true });
+                    }
+                    throw err;
+                } finally {
+                    delete cache.pending[k];
+                }
+            })();
+
+            cache.pending[k] = promise;
+            return promise;
+        }
+
+        window.__absensi = { call: callAPI, state, cache };
+
+        /* ============================================================
+           LOGIN
+           ============================================================ */
+        async function loadLoginUsers(force = false) {
+            const sel = $('#loginNama');
+            if (!sel) return;
+            try {
+                if (force) cache.invalidate('getListPengguna');
+                const res = await callAPI('getListPengguna', {}, { force });
+                if (res && res.success && Array.isArray(res.data)) {
+                    const current = sel.value;
+                    sel.innerHTML = '<option value="">— Pilih Nama —</option>';
+                    res.data.forEach(u => {
+                        const opt = document.createElement('option');
+                        opt.value = u.id;
+                        opt.textContent = `${u.nama} — ${u.role} (${u.id})`;
+                        opt.dataset.role = u.role;
+                        opt.dataset.id = u.id;
+                        opt.dataset.nama = u.nama;
+                        sel.appendChild(opt);
+                    });
+                    if (current && Array.from(sel.options).some(o => o.value === current)) {
+                        sel.value = current;
+                    }
+                    if (force) showToast('Daftar pengguna diperbarui.', 'success');
+                }
+            } catch (err) {
+                showToast('Gagal memuat daftar pengguna: ' + err.message, 'error');
+            }
+        }
+
+        function bindLoginForm() {
+            const form = $('#formLogin');
+            if (!form || form.dataset.bound === '1') return;
+            form.dataset.bound = '1';
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const selOpt = $('#loginNama').selectedOptions[0];
+                const idInput = selOpt ? selOpt.value : '';
+                const namaInput = selOpt ? (selOpt.dataset.nama || '') : '';
+                const password = $('#loginPassword').value.trim();
+                const msg = $('#loginMsg');
+                msg.classList.add('hidden');
+
+                if (!idInput || !password) {
+                    msg.className = 'mt-4 text-sm text-rose-600';
+                    msg.textContent = 'Nama dan password wajib diisi.';
+                    msg.classList.remove('hidden');
+                    return;
+                }
+
+                const btn = $('#btnLogin');
+                const orig = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner"></span> Memproses…';
+
+                try {
+                    const res = await callAPI('login', { id: idInput, nama: namaInput, password }, { cache: false });
+                    if (res && res.success && res.user) {
+                        state.user = res.user;
+                        state.isKordinator = (res.user.role || '').toLowerCase() === 'kordinator';
+                        showToast('Selamat datang, ' + res.user.nama, 'success');
+                        await startApp();
+                    } else {
+                        msg.className = 'mt-4 text-sm text-rose-600';
+                        msg.textContent = (res && res.message) || 'Login gagal.';
+                        msg.classList.remove('hidden');
+                    }
+                } catch (err) {
+                    msg.className = 'mt-4 text-sm text-rose-600';
+                    msg.textContent = 'Error: ' + err.message;
+                    msg.classList.remove('hidden');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                }
+            });
+        }
+
+        /* ============================================================
+           START APP
+           ============================================================ */
+        async function startApp() {
+            $('#pageLogin').classList.add('hidden');
+            $('#pageApp').classList.remove('hidden');
+            $('#btnLogoutTop').classList.remove('hidden');
+            $('#btnLogoutFixed').classList.remove('hidden');
+
+            $('#btnOpenSheet').href = SS_URL;
+
+            const roleBadge = state.isKordinator ? 'kordinator' : 'tutor';
+            const roleText = state.isKordinator ? 'Kordinator' : 'Tutor';
+            const initials = getInitials(state.user.nama);
+            $('#navUser').innerHTML = `
+                <div class="avatar">${initials}</div>
+                <div class="text-left">
+                    <div class="font-semibold leading-tight">${escapeHtml(state.user.nama.split(' ')[0])}</div>
+                    <span class="role-badge ${roleBadge}">${roleText}</span>
+                </div>
+            `;
+
+            buildBulanTahunSelects();
+            await loadLevelsOfUser(true);
+            await applyRoleToUI();
+            await refreshTutorList(true);
+            await refreshTanggalTersedia(true);
+
+            if (!state.isKordinator) {
+                if (state.levelsOfUser.length === 1) {
+                    $('#pilihLevel').value = state.levelsOfUser[0].id;
+                    await loadAbsensiByLevel(state.levelsOfUser[0].id);
+                }
+                switchTab('absen');
+            } else {
+                switchTab('dashboard');
+                await initDashboardFilters();
+                await loadDashboard();
+            }
+        }
+
+        async function loadLevelsOfUser(force = false) {
+            try {
+                if (force) {
+                    cache.invalidate('getListLevel');
+                    cache.invalidate('getLevelByTutor');
+                }
+                let data = [];
+                if (state.isKordinator) {
+                    const res = await callAPI('getListLevel', {}, { force });
+                    if (res && res.success) data = res.data;
+                } else {
+                    const res = await callAPI('getLevelByTutor', { idTutor: state.user.id }, { force });
+                    if (res && res.success) data = res.data;
+                }
+                state.levelsOfUser = data;
+
+                const sel = $('#pilihLevel');
+                const curSelVal = sel.value;
+                sel.innerHTML = '<option value="">— Pilih Level —</option>';
+                data.forEach(lv => {
+                    const opt = document.createElement('option');
+                    opt.value = lv.id;
+                    opt.textContent = state.isKordinator
+                        ? lv.nama + ' — ' + (lv.namaTutor || lv.idTutor || '')
+                        : lv.nama + ' (' + (lv.hari || '') + ')';
+                    sel.appendChild(opt);
+                });
+                if (curSelVal && Array.from(sel.options).some(o => o.value === curSelVal)) {
+                    sel.value = curSelVal;
+                }
+
+                const mSel = $('#mLevel');
+                const curMSelVal = mSel.value;
+                mSel.innerHTML = '<option value="">— Pilih Level —</option>';
+                data.forEach(lv => {
+                    const opt = document.createElement('option');
+                    opt.value = lv.id;
+                    opt.textContent = state.isKordinator
+                        ? lv.nama + ' — ' + (lv.namaTutor || lv.idTutor || '')
+                        : lv.nama;
+                    mSel.appendChild(opt);
+                });
+                if (curMSelVal && Array.from(mSel.options).some(o => o.value === curMSelVal)) {
+                    mSel.value = curMSelVal;
+                }
+
+                const fLevel = $('#fLevel');
+                const curFLevelVal = fLevel.value;
+                fLevel.innerHTML = '<option value="">Semua</option>';
+                data.forEach(lv => {
+                    const opt = document.createElement('option');
+                    opt.value = lv.id;
+                    opt.textContent = lv.nama;
+                    fLevel.appendChild(opt);
+                });
+                if (curFLevelVal && Array.from(fLevel.options).some(o => o.value === curFLevelVal)) {
+                    fLevel.value = curFLevelVal;
+                }
+
+                if (!state.isKordinator) {
+                    $('#levelScopeInfo').textContent = `🔒 ${data.length} level Anda`;
+                    $('#mLevelScopeInfo').textContent = `🔒 Terbatas ke ${data.length} level Anda`;
+                } else {
+                    $('#levelScopeInfo').textContent = `🔓 ${data.length} level tersedia`;
+                    $('#mLevelScopeInfo').textContent = '';
+                }
+
+                const wrap = $('#wrapPilihLevel');
+                if (data.length === 0) {
+                    wrap.classList.remove('hidden');
+                    showToast('Anda belum memiliki level.', 'warn');
+                } else if (data.length === 1 && !state.isKordinator) {
+                    wrap.classList.add('hidden');
+                    sel.value = data[0].id;
+                } else {
+                    wrap.classList.remove('hidden');
+                }
+
+                if (sel.dataset.bound !== '1') {
+                    sel.dataset.bound = '1';
+                    sel.addEventListener('change', async () => {
+                        const id = sel.value;
+                        if (!id) return;
+                        await loadAbsensiByLevel(id);
+                    });
+                }
+
+                if (force && state.isKordinator) {
+                    showToast('Daftar level diperbarui.', 'success');
+                }
+            } catch (err) {
+                showToast('Gagal memuat level: ' + err.message, 'error');
+            }
+        }
+
+        async function applyRoleToUI() {
+            if (state.isKordinator) {
+                $('#wrapFilterLevel').classList.remove('hidden');
+                $('#wrapFilterTutor').classList.remove('hidden');
+                $('#dashScopeInfo').classList.add('hidden');
+            } else {
+                $('#wrapFilterTutor').classList.add('hidden');
+
+                const fLevel = $('#fLevel');
+                fLevel.innerHTML = '';
+                state.levelsOfUser.forEach(lv => {
+                    const opt = document.createElement('option');
+                    opt.value = lv.id;
+                    opt.textContent = lv.nama;
+                    fLevel.appendChild(opt);
+                });
+                if (state.levelsOfUser.length > 0) {
+                    fLevel.value = state.levelsOfUser[0].id;
+                }
+                fLevel.disabled = true;
+
+                $('#dashScopeInfo').classList.remove('hidden');
+                const names = state.levelsOfUser.map(l => l.nama).join(', ');
+                $('#dashScopeText').textContent = `🔒 Dashboard hanya menampilkan: ${names}`;
+            }
+        }
+
+        async function refreshTutorList(force = false) {
+            if (!state.isKordinator) return;
+            const sel = $('#fTutor');
+            if (!sel) return;
+            try {
+                if (force) cache.invalidate('getListPengguna');
+                const res = await callAPI('getListPengguna', {}, { force });
+                if (res && res.success && Array.isArray(res.data)) {
+                    const current = sel.value;
+                    sel.innerHTML = '<option value="">Semua</option>';
+                    res.data.forEach(u => {
+                        const opt = document.createElement('option');
+                        opt.value = u.id;
+                        opt.textContent = `${u.nama} (${u.id})`;
+                        sel.appendChild(opt);
+                    });
+                    if (current && Array.from(sel.options).some(o => o.value === current)) {
+                        sel.value = current;
+                    }
+                    if (force) showToast('Daftar tutor diperbarui.', 'success');
+                }
+            } catch (err) {
+                console.warn('refreshTutorList:', err.message);
+            }
+        }
+
+        function buildBulanTahunSelects() {
+            const t = todayWIT();
+            const curMonth = Number(t.bln);
+            const curYear = Number(t.thn);
+
+            ['#mBulan', '#fBulan'].forEach(sel => {
+                const el = $(sel);
+                if (!el) return;
+                el.innerHTML = '';
+                BULAN_NAMA.forEach((nama, idx) => {
+                    const opt = document.createElement('option');
+                    opt.value = pad2(idx + 1);
+                    opt.textContent = nama;
+                    el.appendChild(opt);
+                });
+                el.value = pad2(curMonth);
+            });
+
+            ['#mTahun', '#fTahun'].forEach(sel => {
+                const el = $(sel);
+                if (!el) return;
+                el.innerHTML = '';
+                for (let y = curYear - 2; y <= curYear + 1; y++) {
+                    const opt = document.createElement('option');
+                    opt.value = String(y);
+                    opt.textContent = String(y);
+                    el.appendChild(opt);
+                }
+                el.value = String(curYear);
+            });
+        }
+
+        /* ============================================================
+           TAB
+           ============================================================ */
+        function switchTab(name) {
+            $all('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+            $('#tabAbsen').classList.toggle('hidden', name !== 'absen');
+            $('#tabMatriks').classList.toggle('hidden', name !== 'matriks');
+            $('#tabDashboard').classList.toggle('hidden', name !== 'dashboard');
+        }
+
+        function bindTabs() {
+            if (document.body.dataset.tabsBound === '1') return;
+            document.body.dataset.tabsBound = '1';
+            $all('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const name = btn.dataset.tab;
+                    switchTab(name);
+                    if (name === 'dashboard') {
+                        await initDashboardFilters();
+                        await refreshTanggalTersedia();
+                        await loadDashboard();
+                    } else if (name === 'matriks') {
+                        bindMatriksControls();
+                        const idLevel = $('#mLevel').value;
+                        if (idLevel && !state.matriks) {
+                            await loadMatriks();
+                        }
+                    } else if (name === 'absen') {
+                        const idLevel = $('#pilihLevel').value;
+                        if (idLevel) {
+                            await loadAbsensiByLevel(idLevel);
+                        }
+                    }
+                });
+            });
+        }
+
+        /* ============================================================
+           TAB: ABSENSI
+           ============================================================ */
+        async function loadAbsensiByLevel(idLevel, force = false) {
+            const t = todayWIT();
+            $('#infoTanggal').textContent = `${t.tgl} ${t.hari} · ${t.jam} WIT`;
+            $('#infoLevel').textContent = '…';
+            $('#infoJadwal').textContent = '…';
+            $('#infoTotal').textContent = '…';
+            $('#infoStatus').textContent = '…';
+            $('#tbodyAbsen').innerHTML = '<tr><td colspan="4" class="px-4 py-6 text-center text-slate-400"><span class="spinner"></span> Memuat…</td></tr>';
+            $('#emptyAbsen').classList.add('hidden');
+            $('#scheduleBanner').classList.add('hidden');
+
+            try {
+                const [resSiswa, resAbsen] = await Promise.all([
+                    callAPI('getSiswaByLevel', { idLevel }, { force }),
+                    callAPI('getAbsensiHariIni', { idLevel, tanggal: t.tgl }, { force })
+                ]);
+
+                if (!resSiswa || !resSiswa.success) throw new Error((resSiswa && resSiswa.message) || 'Gagal memuat siswa');
+
+                state.currentLevel = resSiswa.level;
+                state.siswa = Array.isArray(resSiswa.data) ? resSiswa.data : [];
+                state.absensiHariIni = (resAbsen && resAbsen.success && Array.isArray(resAbsen.data)) ? resAbsen.data : [];
+
+                const map = {};
+                state.absensiHariIni.forEach(a => { map[a.nomor] = a; });
+
+                $('#infoLevel').textContent = state.currentLevel.nama || '—';
+                $('#infoJadwal').textContent = (state.currentLevel.hari || '') + ' · ' + (state.currentLevel.jam || '');
+                $('#infoTotal').textContent = state.siswa.length;
+                $('#infoStatus').textContent = state.absensiHariIni.length > 0 ? '✅ Sudah diisi' : '⏳ Belum diisi';
+
+                if (state.currentLevel.hari) {
+                    const isMatch = (state.currentLevel.hari || '')
+                        .split(',').map(s => s.trim().toLowerCase())
+                        .includes(t.hari.toLowerCase());
+                    $('#scheduleBanner').classList.remove('hidden');
+                    $('#scheduleBannerText').innerHTML = isMatch
+                        ? `📅 Hari ini <b>${t.hari}</b> — sesuai jadwal <b>${state.currentLevel.nama}</b> (${state.currentLevel.hari}, ${state.currentLevel.jam})`
+                        : `📅 Hari ini <b>${t.hari}</b> — jadwal reguler <b>${state.currentLevel.nama}</b> adalah <b>${state.currentLevel.hari}</b> (${state.currentLevel.jam}). Anda tetap bisa mengisi.`;
+                }
+
+                const tbody = $('#tbodyAbsen');
+                tbody.innerHTML = '';
+                if (state.siswa.length === 0) {
+                    $('#emptyAbsen').classList.remove('hidden');
+                    updateStatCards();
+                    return;
+                }
+
+                state.siswa.forEach(s => {
+                    const a = map[s.nomor] || null;
+                    const status = a ? (a.status || 'Present') : 'Present';
+                    const ket = a ? (a.keterangan || '') : '';
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-t border-slate-100 hover:bg-slate-50 transition';
+                    tr.dataset.nomor = s.nomor;
+                    tr.innerHTML = `
+                        <td class="px-4 py-2 text-slate-500 font-semibold">${s.nomor}</td>
+                        <td class="px-4 py-2 font-semibold">${escapeHtml(s.nama)}</td>
+                        <td class="px-4 py-2">
+                            <div class="flex gap-1" data-role="statusGroup">
+                                <button type="button" class="statusBtn" data-v="Present" title="Present">P</button>
+                                <button type="button" class="statusBtn" data-v="Sick" title="Sick">S</button>
+                                <button type="button" class="statusBtn" data-v="Permission" title="Permission">I</button>
+                                <button type="button" class="statusBtn" data-v="Absent" title="Absent">A</button>
+                            </div>
+                            <input type="hidden" class="statusHidden" value="${status}" />
+                        </td>
+                        <td class="px-4 py-2">
+                            <input type="text" class="ketInp w-full px-2 py-1.5 rounded-lg border border-slate-300 text-sm" placeholder="Wajib jika bukan Present" value="${escapeHtml(ket)}" />
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+
+                    const buttons = tr.querySelectorAll('.statusBtn');
+                    const hidden = tr.querySelector('.statusHidden');
+                    const inp = tr.querySelector('.ketInp');
+
+                    buttons.forEach(btn => {
+                        if (btn.dataset.v === status) btn.classList.add('active');
+                        btn.addEventListener('click', () => {
+                            buttons.forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                            hidden.value = btn.dataset.v;
+                            updateRowState(tr);
+                            updateStatCards();
+                        });
+                    });
+
+                    updateRowState(tr);
+                });
+
+                updateStatCards();
+            } catch (err) {
+                showToast('Gagal memuat absensi: ' + err.message, 'error');
+                $('#tbodyAbsen').innerHTML = '<tr><td colspan="4" class="px-4 py-6 text-center text-rose-500">Gagal memuat data.</td></tr>';
+            }
+        }
+
+        function updateRowState(tr) {
+            const hidden = tr.querySelector('.statusHidden');
+            const inp = tr.querySelector('.ketInp');
+            const st = hidden.value;
+            inp.disabled = (st === 'Present');
+            if (st === 'Present') inp.value = '';
+        }
+
+        function updateStatCards() {
+            const counts = { Present: 0, Sick: 0, Permission: 0, Absent: 0 };
+            $all('#tbodyAbsen tr').forEach(tr => {
+                const h = tr.querySelector('.statusHidden');
+                if (!h) return;
+                if (counts[h.value] !== undefined) counts[h.value]++;
+            });
+            $('#statPresent').textContent = counts.Present;
+            $('#statSick').textContent = counts.Sick;
+            $('#statPermission').textContent = counts.Permission;
+            $('#statAbsent').textContent = counts.Absent;
+        }
+
+        function bindAbsenButtons() {
+            if (document.body.dataset.absenBound === '1') return;
+            document.body.dataset.absenBound = '1';
+
+            $('#btnAllPresent').addEventListener('click', () => {
+                $all('#tbodyAbsen tr').forEach(tr => {
+                    const buttons = tr.querySelectorAll('.statusBtn');
+                    const hidden = tr.querySelector('.statusHidden');
+                    if (!buttons.length) return;
+                    buttons.forEach(b => b.classList.toggle('active', b.dataset.v === 'Present'));
+                    hidden.value = 'Present';
+                    updateRowState(tr);
+                });
+                updateStatCards();
+                showToast('Semua siswa ditandai Present.', 'success');
+            });
+
+            $('#btnSimpan').addEventListener('click', async () => {
+                if (!state.user || !state.currentLevel) return;
+                if (state.siswa.length === 0) { showToast('Tidak ada siswa untuk disimpan.', 'warn'); return; }
+
+                const t = todayWIT();
+                const rows = [];
+                let invalid = null;
+                $all('#tbodyAbsen tr').forEach(tr => {
+                    const hidden = tr.querySelector('.statusHidden');
+                    const inp = tr.querySelector('.ketInp');
+                    if (!hidden) return;
+                    const nomor = Number(tr.dataset.nomor);
+                    const s = state.siswa.find(x => x.nomor === nomor);
+                    if (!s) return;
+                    const status = hidden.value;
+                    const keterangan = inp.value.trim();
+                    if (status !== 'Present' && !keterangan) invalid = s.nama;
+                    rows.push({ nomor, nama: s.nama, status, keterangan });
+                });
+
+                if (invalid) {
+                    showToast('Keterangan wajib diisi untuk: ' + invalid, 'error');
+                    return;
+                }
+
+                const btn = $('#btnSimpan');
+                const restore = setLoading(btn, 'Menyimpan…');
+                try {
+                    const res = await callAPI('simpanAbsensi', {
+                        idLevel: state.currentLevel.id,
+                        idUser: state.user.id,
+                        tanggal: t.tgl,
+                        bulan: t.bln,
+                        tahun: t.thn,
+                        hari: t.hari,
+                        jam: t.jam,
+                        tanggalAngka: t.tanggal,
+                        data: rows
+                    }, { cache: false });
+
+                    if (res && res.success) {
+                        showToast(res.message || 'Absensi tersimpan.', 'success');
+                        $('#infoStatus').textContent = '✅ Sudah diisi';
+
+                        cache.invalidate('getDashboard');
+                        cache.invalidate('getAbsensiHariIni');
+                        cache.invalidate('getMatriksLevel');
+                        cache.invalidate('getTanggalTersedia');
+
+                        state.dashboard = null;
+                        state.matriks = null;
+
+                        await refreshTanggalTersedia(true);
+                    } else {
+                        showToast((res && res.message) || 'Gagal menyimpan.', 'error');
+                    }
+                } catch (err) {
+                    showToast('Gagal menyimpan: ' + err.message, 'error');
+                } finally {
+                    restore();
+                }
+            });
+
+            const btnRefAbsen = $('#btnRefreshAbsen');
+            if (btnRefAbsen) {
+                btnRefAbsen.addEventListener('click', async () => {
+                    const idLevel = $('#pilihLevel').value;
+                    if (!idLevel) { showToast('Pilih level dulu.', 'warn'); return; }
+                    const restore = setLoading(btnRefAbsen, 'Refresh…');
+                    cache.invalidate('getSiswaByLevel');
+                    cache.invalidate('getAbsensiHariIni');
+                    await loadAbsensiByLevel(idLevel, true);
+                    restore();
+                    showToast('Data absensi diperbarui.', 'success');
+                });
+            }
+
+            const btnRefLv = $('#btnRefreshLevelsAbsen');
+            if (btnRefLv) {
+                btnRefLv.addEventListener('click', async () => {
+                    const restore = setLoading(btnRefLv, '');
+                    await loadLevelsOfUser(true);
+                    await applyRoleToUI();
+                    restore();
+                });
+            }
+        }
+
+        /* ============================================================
+           TAB: MATRIKS
+           ============================================================ */
+        async function loadMatriks(force = false) {
+            const idLevel = $('#mLevel').value;
+            const bulan = $('#mBulan').value;
+            const tahun = $('#mTahun').value;
+            if (!idLevel) { showToast('Pilih level dulu.', 'warn'); return; }
+
+            const wrap = $('#matriksWrap');
+            wrap.innerHTML = '<div class="chart-empty py-10"><span class="spinner"></span></div>';
+
+            try {
+                const res = await callAPI('getMatriksLevel', { idLevel, bulan, tahun }, { force });
+                if (!res || !res.success) throw new Error((res && res.message) || 'Gagal');
+                state.matriks = res;
+                renderMatriks(res);
+            } catch (err) {
+                wrap.innerHTML = '<div class="chart-empty py-10 text-rose-500">Gagal memuat: ' + escapeHtml(err.message) + '</div>';
+            }
+        }
+
+        function renderMatriks(res) {
+            const wrap = $('#matriksWrap');
+            const info = $('#matriksInfo');
+            const lv = res.level || {};
+            $('#mInfoLevel').textContent = lv.nama || '—';
+            $('#mInfoTutor').textContent = lv.namaTutor || '—';
+            $('#mInfoJadwal').textContent = (lv.hari || '') + ' · ' + (lv.jam || '');
+            const blnNama = BULAN_NAMA[Number(res.bulan) - 1] || res.bulan;
+            $('#mInfoPeriode').textContent = blnNama + ' ' + res.tahun;
+            info.classList.remove('hidden');
+
+            const siswaList = res.data || [];
+            if (siswaList.length === 0) {
+                wrap.innerHTML = '<div class="chart-empty py-10">Tidak ada siswa.</div>';
+                return;
+            }
+
+            const t = todayWIT();
+            const isCurrentMonth = (t.bln === pad2(res.bulan)) && (t.thn === String(res.tahun));
+            const todayDay = isCurrentMonth ? t.tanggal : -1;
+
+            const days = [];
+            for (let d = 1; d <= 31; d++) days.push(d);
+
+            let html = '<table class="matrix-table">';
+            html += '<thead><tr>';
+            html += '<th class="colNo">NO</th>';
+            html += '<th class="colNama">NAMA</th>';
+            days.forEach(d => {
+                const cls = (d === todayDay) ? 'day today' : 'day';
+                html += `<th class="${cls}">${d}</th>`;
+            });
+            html += '<th class="rekap">P</th><th class="rekap">S</th><th class="rekap">I</th><th class="rekap">A</th>';
+            html += '</tr></thead><tbody>';
+
+            siswaList.forEach(s => {
+                html += '<tr>';
+                html += `<td class="colNo">${s.nomor}</td>`;
+                html += `<td class="colNama">${escapeHtml(s.nama)}</td>`;
+                days.forEach(d => {
+                    const key = pad2(d);
+                    const kode = (s.tanggal && s.tanggal[key]) || '';
+                    const cls = kode ? ('cell-' + kode) : '';
+                    const todayCls = (d === todayDay) ? 'today' : '';
+                    html += `<td class="day ${cls} ${todayCls}">${kode}</td>`;
+                });
+                html += `<td class="rekap rekapP">${s.Present || 0}</td>`;
+                html += `<td class="rekap rekapS">${s.Sick || 0}</td>`;
+                html += `<td class="rekap rekapI">${s.Permission || 0}</td>`;
+                html += `<td class="rekap rekapA">${s.Absent || 0}</td>`;
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
+            wrap.innerHTML = html;
+        }
+
+        function bindMatriksControls() {
+            if (state.matriksBound) return;
+            state.matriksBound = true;
+
+            $('#btnLoadMatriks').addEventListener('click', async () => {
+                const btn = $('#btnLoadMatriks');
+                const restore = setLoading(btn, 'Memuat…');
+                cache.invalidate('getMatriksLevel');
+                await loadMatriks(true);
+                restore();
+            });
+
+            $('#btnExportMatriks').addEventListener('click', exportMatriks);
+
+            const btnRefLv = $('#btnRefreshLevelsMatriks');
+            if (btnRefLv) {
+                btnRefLv.addEventListener('click', async () => {
+                    const restore = setLoading(btnRefLv, '');
+                    await loadLevelsOfUser(true);
+                    await applyRoleToUI();
+                    restore();
+                });
+            }
+        }
+
+        function exportMatriks() {
+            if (!state.matriks) { showToast('Belum ada data untuk diexport.', 'warn'); return; }
+            const res = state.matriks;
+            const days = [];
+            for (let d = 1; d <= 31; d++) days.push(d);
+            const header = ['NO', 'NAMA', ...days, 'Present', 'Sick', 'Permission', 'Absent'];
+            const lines = [header.join(',')];
+            (res.data || []).forEach(s => {
+                const row = [s.nomor, '"' + String(s.nama).replace(/"/g, '""') + '"'];
+                days.forEach(d => {
+                    const kode = (s.tanggal && s.tanggal[pad2(d)]) || '';
+                    row.push(kode);
+                });
+                row.push(s.Present || 0, s.Sick || 0, s.Permission || 0, s.Absent || 0);
+                lines.push(row.join(','));
+            });
+            const blnNama = BULAN_NAMA[Number(res.bulan) - 1] || res.bulan;
+            downloadCSV(`matriks_${res.level.id}_${blnNama}_${res.tahun}.csv`, lines.join('\n'));
+            showToast('CSV diunduh.', 'success');
+        }
+
+        /* ============================================================
+           TAB: DASHBOARD
+           ============================================================ */
+        async function initDashboardFilters() {
+            if (state.dashboardBound) return;
+            state.dashboardBound = true;
+
+            if (state.isKordinator) {
+                await refreshTutorList();
+            }
+
+            const debouncedFilter = debounce(onFilterChange, 300);
+
+            $('#fBulan').addEventListener('change', async () => {
+                await refreshTanggalTersedia();
+                onFilterChange();
+            });
+            $('#fTahun').addEventListener('change', async () => {
+                await refreshTanggalTersedia();
+                onFilterChange();
+            });
+            $('#fLevel').addEventListener('change', debouncedFilter);
+            $('#fTutor').addEventListener('change', debouncedFilter);
+            $('#fTanggal').addEventListener('change', debouncedFilter);
+
+            $('#btnResetFilter').addEventListener('click', () => {
+                const t = todayWIT();
+                $('#fBulan').value = t.bln;
+                $('#fTahun').value = t.thn;
+                $('#fTanggal').value = '';
+                $('#fLevel').value = '';
+                if (state.isKordinator) $('#fTutor').value = '';
+                onFilterChange(true);
+            });
+
+            $('#btnRefreshFilter').addEventListener('click', async () => {
+                const btn = $('#btnRefreshFilter');
+                const restore = setLoading(btn, 'Loading…');
+
+                cache.invalidate('getDashboard');
+                cache.invalidate('getTanggalTersedia');
+                cache.invalidate('getListLevel');
+                cache.invalidate('getListPengguna');
+                cache.invalidate('getLevelByTutor');
+
+                await loadLevelsOfUser(true);
+                await applyRoleToUI();
+                if (state.isKordinator) await refreshTutorList(true);
+                await refreshTanggalTersedia(true);
+                await loadDashboard(true);
+
+                restore();
+                showToast('Dashboard diperbarui.', 'success');
+            });
+
+            const btnRefLv = $('#btnRefreshFilterLevel');
+            if (btnRefLv) {
+                btnRefLv.addEventListener('click', async () => {
+                    const restore = setLoading(btnRefLv, '');
+                    await loadLevelsOfUser(true);
+                    await applyRoleToUI();
+                    restore();
+                });
+            }
+
+            const btnRefTut = $('#btnRefreshFilterTutor');
+            if (btnRefTut) {
+                btnRefTut.addEventListener('click', async () => {
+                    const restore = setLoading(btnRefTut, '');
+                    await refreshTutorList(true);
+                    restore();
+                });
+            }
+        }
+
+        async function onFilterChange(force = false) {
+            await loadDashboard(force);
+        }
+
+        async function refreshTanggalTersedia(force = false) {
+            try {
+                const bulan = $('#fBulan').value;
+                const tahun = $('#fTahun').value;
+                const res = await callAPI('getTanggalTersedia', { bulan, tahun }, { force });
+                const sel = $('#fTanggal');
+                const current = sel.value;
+                sel.innerHTML = '<option value="">Semua</option>';
+                if (res && res.success && Array.isArray(res.data)) {
+                    res.data.forEach(t => {
+                        const o = document.createElement('option');
+                        o.value = t; o.textContent = t;
+                        sel.appendChild(o);
+                    });
+                }
+                if (current && Array.from(sel.options).some(o => o.value === current)) {
+                    sel.value = current;
+                }
+            } catch (err) {
+                console.warn('refreshTanggalTersedia:', err.message);
+            }
+        }
+
+        async function loadDashboard(force = false) {
+            const bulan = $('#fBulan').value;
+            const tahun = $('#fTahun').value;
+            const tanggal = $('#fTanggal').value;
+
+            let idLevel = $('#fLevel').value || '';
+            let idTutor = state.isKordinator ? ($('#fTutor').value || '') : state.user.id;
+
+            try {
+                const res = await callAPI('getDashboard', { bulan, tahun, idLevel, idTutor, tanggal }, { force });
+                if (!res || !res.success) {
+                    showToast((res && res.message) || 'Gagal memuat dashboard.', 'error');
+                    state.dashboard = emptyDashboard();
+                } else {
+                    state.dashboard = res;
+                    if (res.__fromCache) {
+                        $('#cacheInfo').classList.remove('hidden');
+                        $('#cacheInfoText').textContent = '⚡ Data dari cache (instan)';
+                    } else {
+                        $('#cacheInfo').classList.add('hidden');
+                    }
+                }
+            } catch (err) {
+                showToast('Gagal memuat dashboard: ' + err.message, 'error');
+                state.dashboard = emptyDashboard();
+            }
+            renderDashboard(state.dashboard);
+        }
+
+        function emptyDashboard() {
+            return {
+                success: true,
+                ringkasan: { Present: 0, Sick: 0, Permission: 0, Absent: 0 },
+                perLevel: [], perTutor: [], detailHarian: [], trendHarian: [], rekapPerSiswa: []
+            };
+        }
+
+        function renderDashboard(d) {
+            if (!d) d = emptyDashboard();
+
+            const r = d.ringkasan || { Present: 0, Sick: 0, Permission: 0, Absent: 0 };
+            const total = (r.Present || 0) + (r.Sick || 0) + (r.Permission || 0) + (r.Absent || 0);
+            const pct = v => total > 0 ? Math.round((v / total) * 100) : 0;
+
+            $('#dashPresent').textContent = r.Present || 0;
+            $('#dashSick').textContent = r.Sick || 0;
+            $('#dashPermission').textContent = r.Permission || 0;
+            $('#dashAbsent').textContent = r.Absent || 0;
+            $('#dashPresentPct').textContent = pct(r.Present || 0) + '%';
+            $('#dashSickPct').textContent = pct(r.Sick || 0) + '%';
+            $('#dashPermissionPct').textContent = pct(r.Permission || 0) + '%';
+            $('#dashAbsentPct').textContent = pct(r.Absent || 0) + '%';
+
+            renderChartBar(r);
+            renderChartTrend(d.trendHarian || []);
+            renderChartLevel(d.perLevel || []);
+
+            renderPerTutor(d.perTutor || []);
+            renderRekapSiswa(d.rekapPerSiswa || []);
+            renderDetailHarian(d.detailHarian || []);
+        }
+
+        /* ============================================================
+           CHART HELPERS
+           ============================================================ */
+        function safeDestroy(key) {
+            if (state.charts[key]) {
+                try { state.charts[key].destroy(); } catch (e) { }
+                state.charts[key] = null;
+            }
+        }
+        function chartsReady() {
+            if (typeof Chart === 'undefined') { console.warn('Chart.js not ready'); return false; }
+            return true;
+        }
+        function chartEmptyNotice(canvasId, text) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const parent = canvas.parentElement;
+            parent.querySelectorAll('.chart-empty').forEach(n => n.remove());
+            canvas.style.display = 'none';
+            const div = document.createElement('div');
+            div.className = 'chart-empty';
+            div.textContent = text || 'Belum ada data';
+            parent.appendChild(div);
+        }
+        function chartShowCanvas(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const parent = canvas.parentElement;
+            parent.querySelectorAll('.chart-empty').forEach(n => n.remove());
+            canvas.style.display = 'block';
+        }
+
+        function renderChartBar(ringkasan) {
+            if (!chartsReady()) return;
+            const canvas = document.getElementById('chartBar');
+            if (!canvas) return;
+            safeDestroy('bar');
+            const r = ringkasan || {};
+            const values = [r.Present || 0, r.Sick || 0, r.Permission || 0, r.Absent || 0];
+            const total = values.reduce((a, b) => a + b, 0);
+            if (total === 0) { chartEmptyNotice('chartBar', 'Belum ada data absensi'); return; }
+            chartShowCanvas('chartBar');
+            state.charts.bar = new Chart(canvas.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Present', 'Sick', 'Permission', 'Absent'],
+                    datasets: [{ data: values, backgroundColor: ['#10b981', '#ef4444', '#3b82f6', '#f59e0b'], borderRadius: 10 }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                }
+            });
+        }
+
+        function renderChartTrend(trend) {
+            if (!chartsReady()) return;
+            const canvas = document.getElementById('chartTrend');
+            if (!canvas) return;
+            safeDestroy('trend');
+            if (!Array.isArray(trend) || trend.length === 0) {
+                chartEmptyNotice('chartTrend', 'Belum ada data harian');
+                return;
+            }
+            chartShowCanvas('chartTrend');
+            const labels = trend.map(t => t.tanggal);
+            const present = trend.map(t => t.present || 0);
+            const tidakHadir = trend.map(t => t.tidakHadir || 0);
+            state.charts.trend = new Chart(canvas.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [
+                        { label: 'Present', data: present, borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,.15)', tension: .35, fill: true, pointRadius: 4, pointBackgroundColor: '#10b981' },
+                        { label: 'Tidak Hadir', data: tidakHadir, borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,.10)', tension: .35, fill: true, pointRadius: 4, pointBackgroundColor: '#ef4444' }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } },
+                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                }
+            });
+        }
+
+        function renderChartLevel(perLevel) {
+            if (!chartsReady()) return;
+            const canvas = document.getElementById('chartLevel');
+            if (!canvas) return;
+            safeDestroy('level');
+            if (!Array.isArray(perLevel) || perLevel.length === 0) {
+                chartEmptyNotice('chartLevel', 'Belum ada data per level');
+                return;
+            }
+            chartShowCanvas('chartLevel');
+            const labels = perLevel.map(p => p.level);
+            const persen = perLevel.map(p => p.persen || 0);
+            state.charts.level = new Chart(canvas.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{ label: 'Kehadiran (%)', data: persen, backgroundColor: '#4ECDC4', borderRadius: 10 }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: ctx => ctx.parsed.y + '%' } }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' } }
+                    }
+                }
+            });
+        }
+
+        /* ============================================================
+           TABEL DASHBOARD
+           ============================================================ */
+        function renderPerTutor(rows) {
+            const tbody = $('#tbodyPerTutor');
+            const empty = $('#emptyPerTutor');
+            tbody.innerHTML = '';
+            if (!rows || rows.length === 0) { empty.classList.remove('hidden'); return; }
+            empty.classList.add('hidden');
+            rows.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-t border-slate-100 hover:bg-slate-50';
+                tr.innerHTML = `
+                    <td class="px-4 py-2 text-slate-500 font-semibold">${escapeHtml(r.idTutor)}</td>
+                    <td class="px-4 py-2 font-semibold">${escapeHtml(r.namaTutor)}</td>
+                    <td class="px-4 py-2 text-xs">${escapeHtml(r.level)}</td>
+                    <td class="px-4 py-2 text-right font-semibold">${r.totalHari || 0}</td>
+                    <td class="px-4 py-2 text-right font-bold" style="color:var(--present)">${r.siswaHadir || 0}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderRekapSiswa(rows) {
+            const tbody = $('#tbodyRekapSiswa');
+            const empty = $('#emptyRekapSiswa');
+            tbody.innerHTML = '';
+            if (!rows || rows.length === 0) { empty.classList.remove('hidden'); return; }
+            empty.classList.add('hidden');
+            rows.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-t border-slate-100 hover:bg-slate-50';
+                tr.innerHTML = `
+                    <td class="px-4 py-2 text-slate-600 text-xs">${escapeHtml(r.level)}</td>
+                    <td class="px-4 py-2 text-slate-500">${r.nomor}</td>
+                    <td class="px-4 py-2 font-semibold">${escapeHtml(r.nama)}</td>
+                    <td class="px-4 py-2 text-right font-bold" style="color:var(--present)">${r.Present || 0}</td>
+                    <td class="px-4 py-2 text-right font-bold" style="color:var(--absent)">${r.Absent || 0}</td>
+                    <td class="px-4 py-2 text-right font-bold" style="color:var(--sick)">${r.Sick || 0}</td>
+                    <td class="px-4 py-2 text-right font-bold" style="color:var(--permission)">${r.Permission || 0}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderDetailHarian(rows) {
+            const tbody = $('#tbodyDetail');
+            const empty = $('#emptyDetail');
+            tbody.innerHTML = '';
+            if (!rows || rows.length === 0) { empty.classList.remove('hidden'); return; }
+            empty.classList.add('hidden');
+            rows.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-t border-slate-100 hover:bg-slate-50';
+                tr.innerHTML = `
+                    <td class="px-4 py-2 text-slate-600 font-semibold">${escapeHtml(r.tanggal)}</td>
+                    <td class="px-4 py-2 font-semibold">${escapeHtml(r.namaTutor)}</td>
+                    <td class="px-4 py-2 text-xs">${escapeHtml(r.level)}</td>
+                    <td class="px-4 py-2 text-right font-bold" style="color:var(--present)">${r.hadir || 0}</td>
+                    <td class="px-4 py-2 text-right font-bold" style="color:var(--sick)">${r.tidakHadir || 0}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        /* ============================================================
+           EXPORT CSV
+           ============================================================ */
+        function toCSV(rows) {
+            if (!rows || rows.length === 0) return '';
+            const headers = Object.keys(rows[0]);
+            const esc = v => {
+                const s = String(v == null ? '' : v);
+                return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+            };
+            const lines = [headers.join(',')];
+            rows.forEach(r => lines.push(headers.map(h => esc(r[h])).join(',')));
+            return lines.join('\n');
+        }
+
+        function downloadCSV(filename, content) {
+            const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = filename;
+            document.body.appendChild(a); a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function bindExportButtons() {
+            if (document.body.dataset.exportBound === '1') return;
+            document.body.dataset.exportBound = '1';
+            $all('.export-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const type = btn.dataset.export;
+                    if (!state.dashboard) { showToast('Belum ada data.', 'warn'); return; }
+                    let rows = [], fname = 'export.csv';
+                    if (type === 'perTutor') { rows = state.dashboard.perTutor || []; fname = 'rekap_per_tutor.csv'; }
+                    else if (type === 'rekapPerSiswa') { rows = state.dashboard.rekapPerSiswa || []; fname = 'rekap_per_siswa.csv'; }
+                    else if (type === 'detailHarian') { rows = state.dashboard.detailHarian || []; fname = 'detail_harian.csv'; }
+                    if (rows.length === 0) { showToast('Tidak ada data.', 'warn'); return; }
+                    downloadCSV(fname, toCSV(rows));
+                    showToast('CSV diunduh: ' + fname, 'success');
+                });
+            });
+        }
+
+        /* ============================================================
+           LOGOUT
+           ============================================================ */
+        function doLogout() {
+            cache.invalidateAll();
+            state.user = null;
+            state.isKordinator = false;
+            state.siswa = [];
+            state.absensiHariIni = [];
+            state.dashboard = null;
+            state.matriks = null;
+            state.currentLevel = null;
+            state.levelsOfUser = [];
+            state.dashboardBound = false;
+            state.matriksBound = false;
+            safeDestroy('bar'); safeDestroy('trend'); safeDestroy('level');
+
+            $('#pageApp').classList.add('hidden');
+            $('#pageLogin').classList.remove('hidden');
+            $('#btnLogoutTop').classList.add('hidden');
+            $('#btnLogoutFixed').classList.add('hidden');
+            $('#navUser').innerHTML = '';
+            $('#loginPassword').value = '';
+            $('#matriksInfo').classList.add('hidden');
+            $('#cacheInfo').classList.add('hidden');
+            $('#dashScopeInfo').classList.add('hidden');
+            $('#scheduleBanner').classList.add('hidden');
+            $('#matriksWrap').innerHTML = '<div class="chart-empty py-10">Pilih level & periode lalu klik Tampilkan</div>';
+            showToast('Logout berhasil.', 'info');
+        }
+
+        /* ============================================================
+           SCROLL UP
+           ============================================================ */
+        function initScrollUp() {
+            const btn = $('#scrollUp');
+            if (!btn || btn.dataset.bound === '1') return;
+            btn.dataset.bound = '1';
+            function onScroll() {
+                if (window.scrollY > 300) btn.classList.remove('hidden-scroll');
+                else btn.classList.add('hidden-scroll');
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            onScroll();
+        }
+
+        /* ============================================================
+           INIT
+           ============================================================ */
+        function initAll() {
+            bindLoginForm();
+            bindTabs();
+            bindAbsenButtons();
+            bindExportButtons();
+            initScrollUp();
+            updateLiveClock();
+
+            $('#btnLogoutTop').addEventListener('click', doLogout);
+            $('#btnLogoutFixed').addEventListener('click', doLogout);
+
+            // Refresh button untuk daftar pengguna (login)
+            const btnRefreshUsers = $('#btnRefreshUsers');
+            if (btnRefreshUsers) {
+                btnRefreshUsers.addEventListener('click', async () => {
+                    const restore = setLoading(btnRefreshUsers, '');
+                    await loadLoginUsers(true);
+                    restore();
+                });
+            }
+
+            buildBulanTahunSelects();
+            loadLoginUsers();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initAll);
+        } else {
+            initAll();
+        }
+    </script>
+    <!-- <script src="js/scroll-up.js" defer></script> -->
+    <script src="js/main.js"></script>
+    <script src="js/navbar.js"></script>
+</body>
+
+</html>
