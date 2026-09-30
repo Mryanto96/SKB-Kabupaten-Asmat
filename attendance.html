@@ -941,6 +941,11 @@
                         <div>
                             <div class="flex items-center justify-between mb-1">
                                 <label class="form-label mb-0">Nama Pengguna</label>
+                                <button type="button" id="btnRefreshUsers"
+                                    class="text-xs text-slate-400 hover:text-[color:var(--accent)] transition flex items-center gap-1"
+                                    title="Refresh daftar pengguna">
+                                    🔄 <span>Refresh</span>
+                                </button>
                             </div>
                             <select id="loginNama" class="form-select" required>
                                 <option value="">— Pilih Nama —</option>
@@ -1005,17 +1010,6 @@
                 <button data-tab="absen" class="tab-btn active">✏️ Absensi</button>
                 <button data-tab="matriks" class="tab-btn">📋 Matriks Bulanan</button>
                 <button data-tab="dashboard" class="tab-btn">📊 Dashboard</button>
-                <div class="flex items-center gap-2">
-                    <a id="btnOpenSheet" href="#" target="_blank" rel="noopener" class="btn btn-soft btn-sm"
-                        title="Buka spreadsheet backend">
-                        📄 <span class="hidden sm:inline">Spreadsheet</span>
-                    </a>
-                
-                    <div id="navUser" class="hidden md:flex items-center gap-2 text-sm text-slate-600"></div>
-                
-                    <button id="btnLogoutTop" class="btn btn-danger btn-sm hidden">🚪 <span
-                            class="hidden sm:inline">Logout</span></button>
-                </div>
             </div>
 
             <!-- ============ TAB: ABSENSI ============ -->
