@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peserta | SKB Asmat English Prime Course</title>
+    <meta name="description"
+        content="Daftar lengkap peserta English Prime Course SKB Asmat — nama, level, dan jadwal kelas." />
+    <meta name="keywords" content="Peserta SKB Asmat, Siswa English Prime Course, Daftar Peserta Kursus, Asmat" />
+    <meta name="author" content="SKB Asmat" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Chart.js di head -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<style>
+    /* ============================================================
+       PESERTA PAGE — Local Styles
+       ============================================================ */
+
+    /* ---------- Keyframes ---------- */
+    @keyframes gradientShift {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    @keyframes headerShine {
+        0% {
+            transform: translateX(-100%);
+        }
+
+        50% {
+            transform: translateX(100%);
+        }
+
+        100% {
+            transform: translateX(100%);
+        }
+    }
+
+    /* ---------- Toolbar ---------- */
+    .peserta-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .peserta-toolbar:hover {
+        box-shadow: var(--shadow);
+    }
+
+    .peserta-search {
+        position: relative;
+        flex: 1 1 240px;
+        max-width: 340px;
+    }
+
+    .peserta-search i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text3);
+        font-size: 0.9rem;
+        pointer-events: none;
+        transition: color 0.3s ease;
+    }
+
+    .peserta-search input {
+        width: 100%;
+        padding: 10px 16px 10px 40px;
+        border-radius: 99px;
+        border: 1.5px solid var(--border);
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font);
+        font-size: var(--fs-sm);
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .peserta-search input:hover {
+        border-color: var(--border-strong);
+    }
+
+    .peserta-search input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px var(--accent-ring);
+        background: #fff;
+    }
+
+    .peserta-search:focus-within i {
+        color: var(--accent);
+    }
+
+    .peserta-filter {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .filter-btn {
+        padding: 7px 14px;
+        border-radius: 99px;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        color: var(--text2);
+        font-size: var(--fs-xs);
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        cursor: pointer;
+        transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--font);
+    }
+
+    .filter-btn:hover {
+        background: var(--bg2);
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    .filter-btn.active {
+        background: linear-gradient(135deg, var(--c1), var(--c2));
+        color: #fff;
+        border-color: transparent;
+    }
+
+    /* ---------- Charts ---------- */
+    .charts-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+        margin-bottom: 48px;
+    }
+
+    @media (min-width: 768px) {
+        .charts-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .chart-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: clamp(18px, 3vw, 28px);
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .chart-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--c1), var(--c2), var(--c3), var(--c2), var(--c1));
+        background-size: 300% 300%;
+        animation: gradientShift 4s ease infinite;
+    }
+
+    .chart-card:hover {
+        box-shadow: var(--shadow-lg);
+        border-color: var(--c2);
+    }
+
+    .chart-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .chart-card-title {
+        font-size: clamp(1rem, 2vw, 1.15rem);
+        font-weight: 800;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        letter-spacing: -0.3px;
+        line-height: 1.3;
+    }
+
+    .chart-card-title i {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+        flex-shrink: 0;
+        background: linear-gradient(135deg, rgba(78, 205, 196, 0.2), rgba(168, 230, 207, 0.15));
+        color: #0d9488;
+        animation: gradientShift 3s ease infinite;
+        background-size: 200% 200%;
+    }
+
+    .chart-card-title.title-gender i {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(236, 72, 153, 0.15));
+        color: #db2777;
+        animation: none;
+        background-size: auto;
+    }
+
+    .chart-card-title.title-level i {
+        background: linear-gradient(135deg, rgba(255, 230, 109, 0.3), rgba(255, 200, 60, 0.2));
+        color: #b45309;
+        animation: none;
+        background-size: auto;
+    }
+
+    .chart-card-title.title-top i {
+        background: linear-gradient(135deg, rgba(78, 205, 196, 0.3), rgba(168, 230, 207, 0.2));
+        color: #0d9488;
+        animation: gradientShift 3s ease infinite;
+        background-size: 200% 200%;
+    }
+
+    .chart-card-sub {
+        font-size: 0.78rem;
+        color: var(--text2);
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .chart-wrap-peserta {
+        position: relative;
+        height: 280px;
+    }
+
+    @media (max-width: 640px) {
+        .chart-wrap-peserta {
+            height: 240px;
+        }
+    }
+
+    .chart-legend-custom {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 16px;
+        flex-wrap: wrap;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text2);
+    }
+
+    .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .legend-value {
+        font-weight: 800;
+        color: var(--text);
+    }
+
+    @media (min-width: 768px) {
+        .chart-card-full {
+            grid-column: 1 / -1;
+        }
+    }
+
+    /* ============================================================
+       TABLE PESERTA
+       ============================================================ */
+    .peserta-table-wrap {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow-x: auto;
+        overflow-y: hidden;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .peserta-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: var(--fs-sm);
+        min-width: 900px;
+    }
+
+    /* ---------- HEADER TABLE PESERTA — ANIMATED GREEN/TEAL ---------- */
+    .peserta-table thead {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+
+    .peserta-table thead tr {
+        background: linear-gradient(90deg, #4ECDC4, #44a8a0, #2fb8ae, #4ECDC4, #A8E6CF, #4ECDC4);
+        background-size: 400% 400%;
+        animation: gradientShift 8s ease infinite;
+    }
+
+    .peserta-table thead th {
+        position: relative;
+        padding: 16px 18px;
+        text-align: left;
+        font-weight: 700;
+        font-size: 0.78rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: #ffffff;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+        white-space: nowrap;
+        overflow: hidden;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Efek shine — kilau bergerak dari kiri ke kanan */
+    .peserta-table thead th::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+        animation: headerShine 4s ease-in-out infinite;
+        pointer-events: none;
+    }
+
+    .peserta-table thead th:nth-child(2)::before {
+        animation-delay: 0.3s;
+    }
+
+    .peserta-table thead th:nth-child(3)::before {
+        animation-delay: 0.6s;
+    }
+
+    .peserta-table thead th:nth-child(4)::before {
+        animation-delay: 0.9s;
+    }
+
+    .peserta-table thead th:nth-child(5)::before {
+        animation-delay: 1.2s;
+    }
+
+    .peserta-table thead th:first-child {
+        border-top-left-radius: var(--radius);
+    }
+
+    .peserta-table thead th:last-child {
+        border-top-right-radius: var(--radius);
+    }
+
+    .peserta-table tbody tr {
+        transition: background 0.2s ease;
+    }
+
+    .peserta-table tbody tr:nth-child(even) {
+        background: rgba(248, 250, 252, 0.5);
+    }
+
+    .peserta-table tbody tr:hover {
+        background: linear-gradient(90deg, rgba(78, 205, 196, 0.08), rgba(168, 230, 207, 0.05));
+    }
+
+    .peserta-table tbody td {
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+        color: var(--text);
+    }
+
+    .peserta-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .peserta-table .col-no {
+        font-weight: 700;
+        color: var(--text3);
+        font-variant-numeric: tabular-nums;
+        text-align: center;
+    }
+
+    .peserta-table .col-nama strong {
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    /* ---------- Gender Badges ---------- */
+    .gender-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: 99px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        white-space: nowrap;
+    }
+
+    .gender-badge i {
+        font-size: 0.7rem;
+    }
+
+    .gender-m {
+        background: rgba(59, 130, 246, 0.12);
+        color: #2563eb;
+        border: 1px solid rgba(59, 130, 246, 0.25);
+    }
+
+    .gender-f {
+        background: rgba(236, 72, 153, 0.12);
+        color: #db2777;
+        border: 1px solid rgba(236, 72, 153, 0.25);
+    }
+
+    .gender-x {
+        background: var(--bg3);
+        color: var(--text3);
+        border: 1px solid var(--border);
+    }
+
+    /* ---------- Level Badges ---------- */
+    .peserta-table .col-level {
+        white-space: nowrap;
+    }
+
+    .level-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.5px;
+        margin-right: 8px;
+        background: linear-gradient(135deg, rgba(78, 205, 196, 0.2), rgba(168, 230, 207, 0.15));
+        color: #0d9488;
+        border: 1px solid rgba(13, 148, 136, 0.3);
+    }
+
+    .level-lsa,
+    .level-lsb,
+    .level-lsc,
+    .level-lsd,
+    .level-lse,
+    .level-lsf {
+        background: linear-gradient(135deg, rgba(168, 230, 207, 0.3), rgba(78, 205, 196, 0.2));
+        color: #0d9488;
+        border-color: rgba(13, 148, 136, 0.3);
+    }
+
+    .level-hba,
+    .level-hbb {
+        background: linear-gradient(135deg, rgba(255, 230, 109, 0.3), rgba(255, 200, 60, 0.2));
+        color: #b45309;
+        border-color: rgba(180, 83, 9, 0.3);
+    }
+
+    .level-jt {
+        background: linear-gradient(135deg, rgba(255, 107, 107, 0.25), rgba(255, 139, 148, 0.2));
+        color: #dc2626;
+        border-color: rgba(220, 38, 38, 0.3);
+    }
+
+    .level-full {
+        font-size: 0.82rem;
+        color: var(--text2);
+        font-weight: 500;
+    }
+
+    /* ---------- Jadwal ---------- */
+    .peserta-table .col-jadwal {
+        font-size: 0.82rem;
+        color: var(--text2);
+        line-height: 1.6;
+    }
+
+    .jadwal-hari {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 2px;
+    }
+
+    .jadwal-hari i {
+        color: var(--c1);
+        font-size: 0.75rem;
+    }
+
+    .jadwal-jam {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.78rem;
+        color: var(--text3);
+    }
+
+    .jadwal-jam i {
+        color: var(--c2);
+        font-size: 0.72rem;
+    }
+
+    /* ============================================================
+       TABLE TUTOR
+       ============================================================ */
+    .tutor-table-wrap {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow-x: auto;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .tutor-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: var(--fs-sm);
+        min-width: 900px;
+    }
+
+    /* ---------- HEADER TABLE TUTOR — ANIMATED GREEN/TEAL ---------- */
+    .tutor-table thead tr {
+        background: linear-gradient(90deg, #4ECDC4, #2fb8ae, #44a8a0, #A8E6CF, #4ECDC4, #2fb8ae);
+        background-size: 400% 400%;
+        animation: gradientShift 8s ease infinite;
+    }
+
+    .tutor-table thead th {
+        position: relative;
+        padding: 14px 12px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 0.78rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: #ffffff;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+        white-space: nowrap;
+        overflow: hidden;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+
+    .tutor-table thead th::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+        animation: headerShine 4s ease-in-out infinite;
+        pointer-events: none;
+    }
+
+    .tutor-table thead th:nth-child(2)::before {
+        animation-delay: 0.2s;
+    }
+
+    .tutor-table thead th:nth-child(3)::before {
+        animation-delay: 0.4s;
+    }
+
+    .tutor-table thead th:nth-child(4)::before {
+        animation-delay: 0.6s;
+    }
+
+    .tutor-table thead th:nth-child(5)::before {
+        animation-delay: 0.8s;
+    }
+
+    .tutor-table thead th:nth-child(6)::before {
+        animation-delay: 1.0s;
+    }
+
+    .tutor-table thead th:nth-child(7)::before {
+        animation-delay: 1.2s;
+    }
+
+    .tutor-table thead th.tutor-name-col {
+        text-align: left;
+        padding-left: 20px;
+        min-width: 220px;
+    }
+
+    .tutor-table thead th:first-child {
+        border-top-left-radius: var(--radius);
+    }
+
+    .tutor-table thead th:last-child {
+        border-top-right-radius: var(--radius);
+    }
+
+    .tutor-table tbody tr {
+        transition: background 0.2s ease;
+    }
+
+    .tutor-table tbody tr:nth-child(even) {
+        background: rgba(248, 250, 252, 0.5);
+    }
+
+    .tutor-table tbody tr:hover {
+        background: linear-gradient(90deg, rgba(78, 205, 196, 0.08), rgba(168, 230, 207, 0.05));
+    }
+
+    .tutor-table tbody td {
+        padding: 14px 12px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+        color: var(--text);
+        text-align: center;
+        font-size: 0.82rem;
+    }
+
+    .tutor-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .tutor-table .tutor-name-cell {
+        text-align: left;
+        padding-left: 20px;
+        font-weight: 700;
+        color: var(--text);
+        min-width: 220px;
+        white-space: nowrap;
+    }
+
+    .tutor-table .tutor-name-cell .tutor-role {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: var(--text3);
+        margin-top: 2px;
+        letter-spacing: 0.2px;
+    }
+
+    /* ---------- Schedule Cell ---------- */
+    .schedule-cell {
+        display: inline-flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        min-width: 90px;
+        transition: background 0.25s ease, box-shadow 0.25s ease;
+        text-align: left;
+    }
+
+    .schedule-cell.active {
+        background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+        border-color: #F59E0B;
+        box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
+    }
+
+    .schedule-cell.active:hover {
+        background: linear-gradient(135deg, #FDE68A, #FCD34D);
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+    }
+
+    .schedule-cell .sc-level {
+        display: block;
+        font-weight: 800;
+        font-size: 0.72rem;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.5px;
+        color: var(--text2);
+    }
+
+    .schedule-cell.active .sc-level {
+        color: #92400E;
+    }
+
+    .schedule-cell .sc-jam {
+        display: block;
+        font-size: 0.65rem;
+        font-weight: 500;
+        color: var(--text3);
+        white-space: nowrap;
+    }
+
+    .schedule-cell.active .sc-jam {
+        color: #78350F;
+    }
+
+    .schedule-cell.empty {
+        background: transparent;
+        border: 1px dashed var(--border);
+        color: var(--text3);
+        opacity: 0.4;
+        font-size: 0.75rem;
+        font-weight: 400;
+        padding: 8px 10px;
+        min-width: 90px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    /* ---------- Footer Credit Link ---------- */
+    .footer-credit-link {
+        color: var(--c1);
+        font-weight: 700;
+        text-decoration: none;
+        padding: 2px 6px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
+    }
+
+    .footer-credit-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 6px;
+        right: 6px;
+        height: 1.5px;
+        background: linear-gradient(90deg, var(--c1), var(--c2), var(--c3));
+        border-radius: 99px;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+    }
+
+    .footer-credit-link:hover {
+        color: var(--accent);
+        background: var(--accent-soft);
+    }
+
+    .footer-credit-link:hover::after {
+        transform: scaleX(1);
+        background: linear-gradient(90deg, var(--accent), var(--c2));
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 768px) {
+        .peserta-toolbar {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 14px 16px;
+        }
+
+        .peserta-search {
+            max-width: none;
+        }
+
+        .peserta-filter {
+            justify-content: flex-start;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            padding-bottom: 4px;
+            scrollbar-width: thin;
+        }
+
+        .filter-btn {
+            flex-shrink: 0;
+        }
+
+        .peserta-table thead th,
+        .peserta-table tbody td,
+        .tutor-table thead th,
+        .tutor-table tbody td {
+            padding: 12px 10px;
+            font-size: 0.78rem;
+        }
+
+        .schedule-cell {
+            padding: 5px 8px;
+            min-width: 80px;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .peserta-table thead th,
+        .peserta-table tbody td,
+        .tutor-table thead th,
+        .tutor-table tbody td {
+            padding: 10px 8px;
+            font-size: 0.75rem;
+        }
+
+        .gender-badge {
+            padding: 3px 8px;
+            font-size: 0.68rem;
+        }
+
+        .level-badge {
+            font-size: 0.68rem;
+            padding: 3px 8px;
+        }
+
+        .level-full {
+            display: none;
+        }
+
+        .schedule-cell {
+            min-width: 70px;
+            padding: 4px 6px;
+        }
+
+        .schedule-cell .sc-jam {
+            font-size: 0.6rem;
+        }
+    }
+
+    /* ---------- Reduced Motion ---------- */
+    @media (prefers-reduced-motion: reduce) {
+
+        .peserta-table thead tr,
+        .tutor-table thead tr,
+        .peserta-table thead th::before,
+        .tutor-table thead th::before,
+        .chart-card::before,
+        .chart-card-title i {
+            animation: none !important;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+    <div class="page-content">
+
+        <!-- ===== PAGE HEADER ===== -->
+        <section class="page-header">
+            <div class="page-header-bg"></div>
+            <div class="container" style="position: relative; z-index: 1; text-align: center;">
+                <p class="section-label fade-up">Our Students</p>
+                <h1 class="section-title fade-up">
+                    <span>English Prime Course</span>
+                    <span class="gradient-text">Participants</span>
+                </h1>
+                <p class="section-desc fade-up" style="margin: 0 auto;">
+                    A complete list of learners enrolled in the English Prime Course at SKB Asmat —
+                    across nine class levels.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== STATS ===== -->
+        <section class="section-sm" style="padding-top: 0;">
+            <div class="container">
+                <div class="stats-row" style="justify-content: center;">
+                    <div class="stat-card">
+                        <div class="stat-value"><span class="counter" data-target="148">0</span></div>
+                        <div class="stat-label">Total Participants</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value"><span class="counter" data-target="9">0</span></div>
+                        <div class="stat-label">Class Levels</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value"><span class="counter" data-target="6">0</span></div>
+                        <div class="stat-label">Little Starter Classes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value"><span class="counter" data-target="2">0</span></div>
+                        <div class="stat-label">Happy Beginner Classes</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CHARTS ===== -->
+        <section class="section-sm">
+            <div class="container">
+                <div class="charts-grid">
+
+                    <div class="chart-card">
+                        <div class="chart-card-header">
+                            <div class="chart-card-title title-gender">
+                                <i class="fas fa-venus-mars"></i>
+                                <div>
+                                    <div>Gender Comparison</div>
+                                    <p class="chart-card-sub">Perbandingan Laki-laki &amp; Perempuan</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-wrap-peserta">
+                            <canvas id="genderChart"></canvas>
+                        </div>
+                        <div class="chart-legend-custom" id="genderLegend"></div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-card-header">
+                            <div class="chart-card-title title-level">
+                                <i class="fas fa-chart-column"></i>
+                                <div>
+                                    <div>Students per Level</div>
+                                    <p class="chart-card-sub">Jumlah siswa per level kelas</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-wrap-peserta">
+                            <canvas id="levelChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card chart-card-full">
+                        <div class="chart-card-header">
+                            <div class="chart-card-title title-top">
+                                <i class="fas fa-ranking-star"></i>
+                                <div>
+                                    <div>Top 5 Levels by Student Count</div>
+                                    <p class="chart-card-sub">5 level dengan jumlah siswa terbanyak</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-wrap-peserta" style="height: 240px;">
+                            <canvas id="topChart"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TOOLBAR + TABLE PESERTA ===== -->
+        <section class="section" style="padding-top: 0;">
+            <div class="container">
+                <div class="peserta-toolbar">
+                    <div class="peserta-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Cari nama peserta..." />
+                    </div>
+                    <div class="peserta-filter">
+                        <button class="filter-btn active" data-level="all">
+                            <i class="fas fa-layer-group"></i>
+                            <span>All Levels</span>
+                        </button>
+                        <button class="filter-btn" data-level="LS-A">LS-A</button>
+                        <button class="filter-btn" data-level="LS-B">LS-B</button>
+                        <button class="filter-btn" data-level="LS-C">LS-C</button>
+                        <button class="filter-btn" data-level="LS-D">LS-D</button>
+                        <button class="filter-btn" data-level="LS-E">LS-E</button>
+                        <button class="filter-btn" data-level="LS-F">LS-F</button>
+                        <button class="filter-btn" data-level="HB-A">HB-A</button>
+                        <button class="filter-btn" data-level="HB-B">HB-B</button>
+                        <button class="filter-btn" data-level="JT">JT</button>
+                    </div>
+                </div>
+
+                <div class="peserta-table-wrap">
+                    <table class="peserta-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 60px;">No.</th>
+                                <th style="min-width: 240px;">Nama Peserta</th>
+                                <th style="width: 140px; text-align: center;">Jenis Kelamin</th>
+                                <th style="width: 240px;">Level</th>
+                                <th style="min-width: 240px;">Jadwal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pesertaBody"></tbody>
+                    </table>
+                </div>
+                <div id="pesertaEmpty" style="display: none; text-align: center; padding: 60px 20px;">
+                    <i class="fas fa-user-slash"
+                        style="font-size: 3rem; color: var(--text3); margin-bottom: 16px; display: inline-block;"></i>
+                    <p style="color: var(--text2); font-size: 1rem;">No participants found.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TABLE TUTOR ===== -->
+        <section class="section"
+            style="background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+            <div class="container">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <p class="section-label">Teaching Schedule</p>
+                    <h2 class="section-title">
+                        <span>Tutor</span>
+                        <span class="gradient-text">Weekly Schedule</span>
+                    </h2>
+                    <p class="section-desc" style="margin: 0 auto;">
+                        Weekly teaching schedule for each tutor. Cells highlighted in
+                        <span
+                            style="display: inline-block; padding: 2px 10px; background: linear-gradient(135deg, #FEF3C7, #FDE68A); border: 1px solid #F59E0B; border-radius: 6px; font-weight: 700; color: #92400E; font-size: 0.8rem;">yellow</span>
+                        indicate active teaching days.
+                    </p>
+                </div>
+                <div class="tutor-table-wrap">
+                    <table class="tutor-table">
+                        <thead>
+                            <tr>
+                                <th class="tutor-name-col">Tutor</th>
+                                <th>Senin</th>
+                                <th>Selasa</th>
+                                <th>Rabu</th>
+                                <th>Kamis</th>
+                                <th>Jumat</th>
+                                <th>Sabtu</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tutorBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== NOTE ===== -->
+        <section class="section-sm">
+            <div class="container">
+                <div style="text-align: center;">
+                    <div class="quote-box" style="display: inline-block; text-align: left; max-width: 820px;">
+                        <strong>Note:</strong> Gender information is auto-detected from names. Some entries may be
+                        marked <em>"—"</em> when uncertain — please verify with official SKB Asmat records.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 15. FOOTER ===== -->
+        <footer style="border-top: 1px solid var(--border); background: var(--bg2);">
+            <div class="container">
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; padding: 40px 0 20px; text-align: left;">
+        
+                    <div>
+                        <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;" data-i18n="footer_contact">
+                            Contact</h4>
+                        <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 0;">
+                            <i class="fas fa-map-marker-alt" style="color: var(--c1); width: 16px;"></i>
+                            Jl. Postel, Kabupaten Asmat,<br />Papua Selatan, Indonesia
+                        </p>
+                        <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 8px 0 0;">
+                            <i class="fas fa-clock" style="color: var(--c1); width: 16px;"></i>
+                            Office Hours: 15.00 - 18.00 P.M
+                        </p>
+                    </div>
+        
+                    <div>
+                        <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;" data-i18n="footer_phone">
+                            Phone / WhatsApp</h4>
+                        <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 0;">
+                            <i class="fab fa-whatsapp" style="color: var(--c1); width: 16px;"></i>
+                            Mam Delfin: 08218887004
+                        </p>
+                        <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 4px 0 0;">
+                            <i class="fab fa-whatsapp" style="color: var(--c1); width: 16px;"></i>
+                            Miss Putri: 085691296762
+                        </p>
+                    </div>
+        
+                    <div>
+                        <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;" data-i18n="footer_institution">
+                            Institution</h4>
+                        <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 0;">
+                            Kursus Bahasa Inggris,<br />
+                            Sanggar Kegiatan Belajar (SKB) Asmat<br />
+                            <em>Pendidikan Paul &amp; PNF</em><br />
+                            Dinas Pendidikan Kabupaten Asmat
+                        </p>
+                    </div>
+        
+                    <div>
+                        <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;" data-i18n="footer_follow">
+                            Follow Us</h4>
+                        <div style="display: flex; gap: 12px; margin-top: 4px;">
+        
+                            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
+                                style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 1rem; transition: all .25s ease;"
+                                onmouseover="this.style.background='#1877F2';this.style.color='#fff';this.style.borderColor='#1877F2';this.style.transform='translateY(-2px)';"
+                                onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+        
+                            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="TikTok"
+                                style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 1rem; transition: all .25s ease;"
+                                onmouseover="this.style.background='#000';this.style.color='#fff';this.style.borderColor='#000';this.style.transform='translateY(-2px)';"
+                                onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+        
+                        </div>
+                    </div>
+        
+                </div>
+        
+                <div style="border-top: 1px solid var(--border); padding-top: 20px; text-align: center;">
+                    <p style="font-size: 0.82rem; color: var(--text2);">
+                        © <span data-year>2026</span> English Prime Course. All Rights Are Reserved.
+                    </p>
+                    <p style="font-size: 0.78rem; margin-top: 8px; color: var(--text3);">
+                        Designed by
+                        <a href="https://guru-kreatif.vercel.app/" target="_blank" rel="noopener noreferrer"
+                            class="footer-credit-link">
+                            <strong>Yantho Rundy</strong> 💗
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </footer>
+        <br>
+        </div>
+    </div>
+
+    <script>
+        /* ============================================================
+           DATA
+           ============================================================ */
+        const LEVEL_INFO = {
+            'LS-A': { nama: 'Little Starter A', hari: ['Senin', 'Kamis', 'Jumat'], jam: '15.00–18.00' },
+            'LS-B': { nama: 'Little Starter B', hari: ['Selasa', 'Kamis', 'Jumat'], jam: '15.00–18.00' },
+            'LS-C': { nama: 'Little Starter C', hari: ['Senin', 'Selasa', 'Rabu'], jam: '16.35–18.00' },
+            'LS-D': { nama: 'Little Starter D', hari: ['Senin', 'Selasa', 'Rabu'], jam: '16.35–18.05' },
+            'LS-E': { nama: 'Little Starter E', hari: ['Rabu', 'Kamis', 'Jumat'], jam: '16.35–18.05' },
+            'LS-F': { nama: 'Little Starter F', hari: ['Senin', 'Selasa', 'Rabu'], jam: '15.00–18.00' },
+            'HB-A': { nama: 'Happy Beginners A', hari: ['Selasa', 'Rabu', 'Jumat'], jam: '15.00–18.00' },
+            'HB-B': { nama: 'Happy Beginners B', hari: ['Kamis', 'Jumat'], jam: '16.35–18.05' },
+            'JT': { nama: 'Junior Talk', hari: ['Senin', 'Selasa', 'Kamis'], jam: '16.35–18.05' }
+        };
+
+        const TUTORS = [
+            { nama: 'Maria Delfina Dhae', role: 'English Course Director · Tutor', levels: ['JT'] },
+            { nama: 'Martha Clautilda Mindipko', role: 'English Instructor', levels: ['LS-A', 'HB-A'] },
+            { nama: 'Todd Myers Nuh De Larson Fonataba', role: 'English Instructor', levels: ['LS-B', 'LS-E'] },
+            { nama: 'Indika Khoifin', role: 'English Instructor', levels: ['LS-C', 'HB-B'] },
+            { nama: 'Putri A. Fembes', role: 'English Instructor', levels: ['LS-D', 'LS-F'] }
+        ];
+
+        const DATA_SISWA = {
+            'LS-A': [
+                { nama: 'Thalia Maryen', gender: 'F' }, { nama: 'Muhammad Alfat Ramli B.', gender: 'M' },
+                { nama: 'Razita Balais', gender: 'F' }, { nama: 'Gabriel Tarimanik', gender: 'M' },
+                { nama: 'Elia Juliana Tarung', gender: 'F' }, { nama: 'Adolfo Arsenio Pabana', gender: 'M' },
+                { nama: 'Elyakim Soleman', gender: 'M' }, { nama: 'Samantha Fidelya Arung', gender: 'F' },
+                { nama: 'Maria Katarina Mezzaluna Serin', gender: 'F' }, { nama: 'Gesierin F.C', gender: 'F' },
+                { nama: 'Clarissa L.T', gender: 'F' }, { nama: 'Regina', gender: 'F' },
+                { nama: 'Putri Agtis Velove', gender: 'F' }, { nama: 'Wangli Agelkasi Seilatuw', gender: 'F' },
+                { nama: 'Nur Aisyah Alfian', gender: 'F' }, { nama: 'Fhelicia', gender: 'F' },
+                { nama: 'Andira Berlian Tandi', gender: 'F' }, { nama: 'Lintang Samudra', gender: 'M' },
+                { nama: 'Muhammad Abdillah', gender: 'M' }, { nama: 'Katarina Lin Oeleu', gender: 'F' },
+                { nama: 'Felicita Ivy', gender: 'F' }
+            ],
+            'LS-B': [
+                { nama: 'Dhea angelica manuhelu', gender: 'F' }, { nama: 'Janeta Pramuda', gender: 'F' },
+                { nama: 'Permata aulia candra', gender: 'F' }, { nama: 'Arsy hilma fadhilah', gender: 'F' },
+                { nama: 'Syafiqa fatin', gender: 'F' }, { nama: 'Naura yuan rahmadani', gender: 'F' },
+                { nama: 'Justin gabriel nasution', gender: 'M' }, { nama: 'Nayla maulidyah matdoan', gender: 'F' },
+                { nama: 'Faraz razka adinata', gender: 'M' }, { nama: 'Mario fransiskus lorok', gender: 'M' },
+                { nama: 'Maria trisany melsasail', gender: 'F' }, { nama: 'Yohanis dean horota', gender: 'M' },
+                { nama: 'Evaengelina Kayla kinawa', gender: 'F' }, { nama: 'Samuel Aditya maru', gender: 'M' },
+                { nama: 'Rugaya rahma seknum', gender: 'F' }, { nama: 'Vidy rizki ardian syahputra', gender: 'M' },
+                { nama: 'Raca aditya candra', gender: 'M' }, { nama: 'Maura shaqueena humaira arwin', gender: 'F' },
+                { nama: 'Zafirah', gender: 'F' }, { nama: 'Ariqa assyifatu haifa', gender: 'F' },
+                { nama: 'Najwa septia lestari', gender: 'F' }, { nama: 'Vincentia siforo kende', gender: 'F' },
+                { nama: 'Adhyastra Arsalaan Abizar', gender: 'M' }, { nama: 'Benzion David Miracle', gender: 'M' }
+            ],
+            'LS-C': [
+                { nama: 'Beatriks Nancy Kumbukop', gender: 'F' }, { nama: 'Astin Beatrix S', gender: 'F' },
+                { nama: 'Nelsiana Bertha Hafera R.', gender: 'F' }, { nama: 'Cleon Tolanda', gender: 'M' },
+                { nama: 'Glorio Adelio Ruimasa', gender: 'M' }, { nama: 'Christania Josefita Kimkonop Bebut', gender: 'F' },
+                { nama: 'Allandhiasta Elsius Umpenawany', gender: 'M' }, { nama: 'Sancia Jubeliana. S.Y', gender: 'F' },
+                { nama: 'Trinita D. Vivian Yohame', gender: 'F' }, { nama: 'Giobara Blazen Gommies Razen', gender: '—' },
+                { nama: 'Puspa Tyas P. Aditana', gender: 'F' }, { nama: 'Inka Tiranda P.', gender: 'F' },
+                { nama: 'Nur Aisyah Aqila', gender: 'F' }, { nama: 'Joverin Yakop Silambi', gender: 'M' },
+                { nama: 'Gracia Aurelia Ratu', gender: 'F' }, { nama: 'Beryl tolanda', gender: '—' },
+                { nama: 'A.A G D Ariwibowo', gender: 'M' }, { nama: 'Risardi Panji Al-Khalifi', gender: 'M' },
+                { nama: 'Raja Gerasiomos N. Situmeang', gender: 'M' },
+                { nama: 'alexandra xaverin Raylia Icasia Moyes', gender: 'F' },
+                { nama: 'Severin Charmelita Experanza Ranolat', gender: 'F' }
+            ],
+            'LS-D': [
+                { nama: 'Quinno imanuel aryo jamlean', gender: 'M' }, { nama: 'Maria Letisya Oktovina D', gender: 'F' },
+                { nama: 'Jevaniel omega', gender: 'M' }, { nama: 'Maria Achiera Calafia Siwa', gender: 'F' },
+                { nama: 'Treresia frisila siwa', gender: 'F' }, { nama: 'gregorius siwa', gender: 'M' },
+                { nama: 'Novi Klarista Owenkari', gender: 'F' }, { nama: 'Kristian Frianto Paulus Brir', gender: 'M' },
+                { nama: 'Daniel richardo resubun', gender: 'M' }, { nama: 'Selvisina ivak laisila', gender: 'F' },
+                { nama: 'Maria yohana ngoranubun', gender: 'F' }, { nama: 'Maria imakulata ngoranubun', gender: 'F' },
+                { nama: 'Cirilo Ebiet Pio Tandiling', gender: 'M' }, { nama: 'Joy Eucaristia Laa Bua', gender: 'F' },
+                { nama: 'Lizha Revanny Gommies', gender: 'F' }, { nama: 'Ibnu Dzaky Haufanhazza', gender: 'M' },
+                { nama: 'Helena Takndare', gender: 'F' }, { nama: 'Vinnysinya Sambo Palavolian', gender: 'F' },
+                { nama: 'Alvaro Stephen Kay Ull', gender: 'M' }, { nama: 'Rehuellah Pasquila Emma', gender: 'F' }
+            ],
+            'LS-E': [
+                { nama: 'Ardila', gender: 'F' }, { nama: 'Elora audrey paliling', gender: 'F' },
+                { nama: 'Winanti carlisse pawara', gender: 'F' }, { nama: "Petra shine laa bua'", gender: 'F' },
+                { nama: 'Atalia pitna', gender: 'F' }, { nama: 'Griselda junifer gabriella jatmiko', gender: 'F' },
+                { nama: 'Natasya iriyanty tampang', gender: 'F' }, { nama: 'Tania ria rinding', gender: 'F' },
+                { nama: 'Hansel eliezher sinaga', gender: 'M' }, { nama: 'Imanuel viver kuntel', gender: 'M' },
+                { nama: 'Marlina salomina anace rumere', gender: 'F' }, { nama: 'Nazril zaky ahza', gender: 'M' },
+                { nama: 'Irene mahestri palumpun rantesalu', gender: 'F' }, { nama: 'Nadia chindy rumkorem', gender: 'F' },
+                { nama: 'Alexandra etih felicia sanamase', gender: 'F' }, { nama: 'Wulan zyah putri', gender: 'F' },
+                { nama: 'Safa adzkiya laika', gender: 'F' }, { nama: 'Anastasya kirene ubra', gender: 'F' },
+                { nama: 'Onam mario gabriel ubra', gender: 'M' }, { nama: 'Fabiana christy toanabun', gender: 'F' },
+                { nama: 'Natalia tandi', gender: 'F' }, { nama: 'Gratias imanuela', gender: 'F' },
+                { nama: 'Natasya novianti tammu', gender: 'F' }, { nama: 'Virgia afanginoni', gender: 'F' },
+                { nama: 'Cllaudya elisabeth desnam', gender: 'F' }, { nama: 'Locklan Alvarez', gender: 'M' },
+                { nama: 'Alfian Niel Tammu', gender: 'M' }
+            ],
+            'LS-F': [
+                { nama: 'Aswin Mato', gender: 'M' }, { nama: 'Elia Juliano Traung', gender: 'M' },
+                { nama: 'Rezky Leonard Pabana', gender: 'M' }, { nama: 'Lindan chandy yunior', gender: 'M' },
+                { nama: 'Maria esterlina ngoranubun', gender: 'F' }, { nama: 'Gian alvaro erbabley', gender: 'M' },
+                { nama: 'Gilly angelo erbabley', gender: 'M' }, { nama: 'Aura delfi gabriella ubra', gender: 'F' }
+            ],
+            'HB-A': [
+                { nama: 'Zulhelga Aisyah Lausiry', gender: 'F' }, { nama: 'Angelo S. Ohoiwirin', gender: 'M' },
+                { nama: 'Kresentia Qianzi Betteng', gender: 'F' }, { nama: 'Ansel Siala Palulun', gender: 'M' },
+                { nama: 'Quartus Lartutul', gender: 'M' }, { nama: 'Logan Richel Sahertian', gender: 'M' },
+                { nama: 'Inara Athiyah Soe Harso', gender: 'F' }, { nama: 'Putri Agtis Velove', gender: 'F' },
+                { nama: 'Ivania Tela', gender: 'F' }, { nama: 'Germany Sean Unawekla', gender: 'M' },
+                { nama: 'Aprilio Geovano Pabana', gender: 'M' }, { nama: 'A.A. Gd Putra David Pramana', gender: 'M' },
+                { nama: 'Anak Agung Istri Asti Dewi', gender: 'F' }, { nama: 'Alesha Kiandra S', gender: 'F' },
+                { nama: 'Arzharel Arka Mahardika', gender: 'M' }, { nama: 'Yesyurun Bintoen Palulun', gender: 'M' },
+                { nama: 'Regamarch Maripi', gender: 'M' }, { nama: 'Anasytasya E.Ranolat', gender: 'F' },
+                { nama: 'Raguel M.Senda', gender: 'M' }, { nama: 'Christian Manda Rerung', gender: 'M' }
+            ],
+            'HB-B': [
+                { nama: 'Zulhelga Aisyah Lausiry', gender: 'F' }, { nama: 'Angelo S. Ohoiwirin', gender: 'M' }
+            ],
+            'JT': [
+                { nama: 'Jorel Kiana Betteng', gender: 'F' }, { nama: 'Febby Indriyani Lumban', gender: 'F' },
+                { nama: 'Damian Kawindra Pratama Nadi', gender: 'M' }, { nama: 'Rhaffa Ramadhana', gender: 'M' },
+                { nama: 'Gleantield Siahaya Lopulisa', gender: 'F' }
+            ]
+        };
+
+        /* ============================================================
+           HELPER
+           ============================================================ */
+        function escapeHtml(s) {
+            return String(s)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        function getGenderBadge(code) {
+            if (code === 'M') return '<span class="gender-badge gender-m"><i class="fas fa-mars"></i> Laki-laki</span>';
+            if (code === 'F') return '<span class="gender-badge gender-f"><i class="fas fa-venus"></i> Perempuan</span>';
+            return '<span class="gender-badge gender-x">—</span>';
+        }
+
+        function getLevelClass(idLevel) {
+            return 'level-badge level-' + idLevel.toLowerCase().replace('-', '');
+        }
+
+        /* ============================================================
+           BUILD TABLE PESERTA
+           ============================================================ */
+        function buildPeserta() {
+            const tbody = document.getElementById('pesertaBody');
+            if (!tbody) return;
+
+            const levelOrder = ['LS-A', 'LS-B', 'LS-C', 'LS-D', 'LS-E', 'LS-F', 'HB-A', 'HB-B', 'JT'];
+            const parts = [];
+            let nomor = 1;
+
+            for (let i = 0; i < levelOrder.length; i++) {
+                const idLevel = levelOrder[i];
+                const list = DATA_SISWA[idLevel] || [];
+                const info = LEVEL_INFO[idLevel];
+                const hariStr = info.hari.join(', ');
+                const levelClass = getLevelClass(idLevel);
+
+                for (let j = 0; j < list.length; j++) {
+                    const item = list[j];
+                    parts.push(
+                        '<tr data-level="', idLevel, '" data-nama="', escapeHtml(item.nama.toLowerCase()), '">',
+                        '<td class="col-no">', nomor, '</td>',
+                        '<td class="col-nama"><strong>', escapeHtml(item.nama), '</strong></td>',
+                        '<td class="col-gender" style="text-align:center;">', getGenderBadge(item.gender), '</td>',
+                        '<td class="col-level"><span class="', levelClass, '">', idLevel, '</span>',
+                        '<span class="level-full">', escapeHtml(info.nama), '</span></td>',
+                        '<td class="col-jadwal">',
+                        '<div class="jadwal-hari"><i class="fas fa-calendar-day"></i> ', escapeHtml(hariStr), '</div>',
+                        '<div class="jadwal-jam"><i class="fas fa-clock"></i> ', escapeHtml(info.jam), ' WIT</div>',
+                        '</td></tr>'
+                    );
+                    nomor++;
+                }
+            }
+
+            tbody.innerHTML = parts.join('');
+            console.log('✅ Tabel peserta: ' + (nomor - 1) + ' baris');
+        }
+
+        /* ============================================================
+           BUILD TABLE TUTOR
+           ============================================================ */
+        function buildTutor() {
+            const tbody = document.getElementById('tutorBody');
+            if (!tbody) return;
+
+            const DAYS = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const parts = [];
+
+            for (let i = 0; i < TUTORS.length; i++) {
+                const tutor = TUTORS[i];
+                parts.push('<tr>');
+                parts.push(
+                    '<td class="tutor-name-cell">', escapeHtml(tutor.nama),
+                    '<span class="tutor-role">', escapeHtml(tutor.role), '</span></td>'
+                );
+
+                for (let d = 0; d < DAYS.length; d++) {
+                    const day = DAYS[d];
+                    const today = tutor.levels.filter(id => LEVEL_INFO[id].hari.indexOf(day) !== -1);
+                    if (today.length === 0) {
+                        parts.push('<td><span class="schedule-cell empty">—</span></td>');
+                    } else {
+                        parts.push('<td>');
+                        for (let t = 0; t < today.length; t++) {
+                            const id = today[t];
+                            parts.push(
+                                '<span class="schedule-cell active">',
+                                '<span class="sc-level">', id, '</span>',
+                                '<span class="sc-jam">', LEVEL_INFO[id].jam, '</span>',
+                                '</span> '
+                            );
+                        }
+                        parts.push('</td>');
+                    }
+                }
+                parts.push('</tr>');
+            }
+
+            tbody.innerHTML = parts.join('');
+            console.log('✅ Tabel tutor: ' + TUTORS.length + ' baris');
+        }
+
+        /* ============================================================
+           FILTER & SEARCH
+           ============================================================ */
+        function initToolbar() {
+            const searchInput = document.getElementById('searchInput');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const empty = document.getElementById('pesertaEmpty');
+            const tbody = document.getElementById('pesertaBody');
+            if (!tbody) return;
+
+            const rows = tbody.querySelectorAll('tr');
+            const rowData = new Array(rows.length);
+            for (let i = 0; i < rows.length; i++) {
+                rowData[i] = {
+                    el: rows[i],
+                    level: rows[i].dataset.level,
+                    nama: rows[i].dataset.nama
+                };
+            }
+
+            let activeLevel = 'all';
+            let searchQuery = '';
+            let rafId = null;
+
+            function applyFilter() {
+                if (rafId) cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(() => {
+                    let visible = 0;
+                    for (let i = 0; i < rowData.length; i++) {
+                        const d = rowData[i];
+                        const matchLevel = activeLevel === 'all' || d.level === activeLevel;
+                        const matchSearch = !searchQuery || d.nama.indexOf(searchQuery) !== -1;
+                        const show = matchLevel && matchSearch;
+                        d.el.style.display = show ? '' : 'none';
+                        if (show) visible++;
+                    }
+                    empty.style.display = visible === 0 ? 'block' : 'none';
+                });
+            }
+
+            if (searchInput) {
+                let timeout;
+                searchInput.addEventListener('input', function (e) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function () {
+                        searchQuery = e.target.value.toLowerCase().trim();
+                        applyFilter();
+                    }, 150);
+                });
+            }
+
+            for (let i = 0; i < filterBtns.length; i++) {
+                filterBtns[i].addEventListener('click', function () {
+                    for (let j = 0; j < filterBtns.length; j++) {
+                        filterBtns[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    activeLevel = this.dataset.level;
+                    applyFilter();
+                });
+            }
+        }
+
+        /* ============================================================
+           COUNTER
+           ============================================================ */
+        function runCounters() {
+            const counters = document.querySelectorAll('.counter');
+            for (let i = 0; i < counters.length; i++) {
+                (function (el) {
+                    const target = parseInt(el.getAttribute('data-target'), 10) || 0;
+                    const duration = 1200;
+                    const start = performance.now();
+                    function tick(now) {
+                        const progress = Math.min((now - start) / duration, 1);
+                        const eased = 1 - (1 - progress) * (1 - progress);
+                        el.textContent = Math.floor(eased * target);
+                        if (progress < 1) requestAnimationFrame(tick);
+                        else el.textContent = target;
+                    }
+                    requestAnimationFrame(tick);
+                })(counters[i]);
+            }
+        }
+
+        /* ============================================================
+           SCROLL REVEAL
+           ============================================================ */
+        function initScrollReveal() {
+            const els = document.querySelectorAll('.reveal');
+            if (!els.length) return;
+
+            if (!('IntersectionObserver' in window)) {
+                for (let i = 0; i < els.length; i++) els[i].classList.add('visible');
+                return;
+            }
+
+            const observer = new IntersectionObserver(function (entries) {
+                for (let i = 0; i < entries.length; i++) {
+                    if (entries[i].isIntersecting) {
+                        entries[i].target.classList.add('visible');
+                        observer.unobserve(entries[i].target);
+                    }
+                }
+            }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+
+            for (let i = 0; i < els.length; i++) observer.observe(els[i]);
+        }
+
+        /* ============================================================
+           COMPUTE STATS
+           ============================================================ */
+        function computeStats() {
+            const gender = { M: 0, F: 0, X: 0 };
+            const perLevel = {};
+            let total = 0;
+            const levelKeys = Object.keys(DATA_SISWA);
+            for (let i = 0; i < levelKeys.length; i++) {
+                const id = levelKeys[i];
+                const list = DATA_SISWA[id] || [];
+                perLevel[id] = list.length;
+                total += list.length;
+                for (let j = 0; j < list.length; j++) {
+                    const g = list[j].gender;
+                    if (g === 'M') gender.M++;
+                    else if (g === 'F') gender.F++;
+                    else gender.X++;
+                }
+            }
+            return { gender: gender, perLevel: perLevel, total: total };
+        }
+
+        /* ============================================================
+           RENDER CHARTS
+           ============================================================ */
+        function renderCharts() {
+            if (!window.Chart) {
+                console.warn('⚠️ Chart.js belum tersedia');
+                return;
+            }
+
+            Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
+            Chart.defaults.font.size = 12;
+            Chart.defaults.color = '#475569';
+
+            const stats = computeStats();
+            const gender = stats.gender;
+            const perLevel = stats.perLevel;
+
+            /* Doughnut */
+            const gctx = document.getElementById('genderChart');
+            if (gctx) {
+                new Chart(gctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Laki-laki', 'Perempuan', 'Belum diketahui'],
+                        datasets: [{
+                            data: [gender.M, gender.F, gender.X],
+                            backgroundColor: ['#3B82F6', '#EC4899', '#94A3B8'],
+                            borderColor: '#ffffff',
+                            borderWidth: 3,
+                            hoverOffset: 12
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '65%',
+                        animation: { animateRotate: true, animateScale: true, duration: 1200, easing: 'easeOutQuart' },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#0f172a', padding: 12, cornerRadius: 10,
+                                callbacks: {
+                                    label: function (ctx) {
+                                        const total = gender.M + gender.F + gender.X;
+                                        const pct = total > 0 ? ((ctx.parsed / total) * 100).toFixed(1) : 0;
+                                        return ' ' + ctx.label + ': ' + ctx.parsed + ' (' + pct + '%)';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                const legend = document.getElementById('genderLegend');
+                if (legend) {
+                    const total = gender.M + gender.F + gender.X;
+                    const pM = total > 0 ? ((gender.M / total) * 100).toFixed(1) : 0;
+                    const pF = total > 0 ? ((gender.F / total) * 100).toFixed(1) : 0;
+                    const pX = total > 0 ? ((gender.X / total) * 100).toFixed(1) : 0;
+                    legend.innerHTML =
+                        '<div class="legend-item"><span class="legend-dot" style="background:#3B82F6;"></span><span>Laki-laki</span><span class="legend-value">' + gender.M + ' (' + pM + '%)</span></div>' +
+                        '<div class="legend-item"><span class="legend-dot" style="background:#EC4899;"></span><span>Perempuan</span><span class="legend-value">' + gender.F + ' (' + pF + '%)</span></div>' +
+                        (gender.X > 0 ? '<div class="legend-item"><span class="legend-dot" style="background:#94A3B8;"></span><span>Belum diketahui</span><span class="legend-value">' + gender.X + ' (' + pX + '%)</span></div>' : '');
+                }
+            }
+
+            /* Level Bar */
+            const lctx = document.getElementById('levelChart');
+            if (lctx) {
+                const order = ['LS-A', 'LS-B', 'LS-C', 'LS-D', 'LS-E', 'LS-F', 'HB-A', 'HB-B', 'JT'];
+                const dataArr = order.map(id => perLevel[id] || 0);
+                const colorsArr = order.map(id => id.indexOf('LS') === 0 ? '#4ECDC4' : (id.indexOf('HB') === 0 ? '#FFE66D' : '#FF6B6B'));
+                new Chart(lctx, {
+                    type: 'bar',
+                    data: {
+                        labels: order,
+                        datasets: [{
+                            label: 'Jumlah Siswa',
+                            data: dataArr,
+                            backgroundColor: colorsArr,
+                            borderRadius: 10,
+                            borderSkipped: false,
+                            barThickness: 32
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: { duration: 1200, easing: 'easeOutQuart', delay: ctx => ctx.dataIndex * 60 },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#0f172a', padding: 12, cornerRadius: 10,
+                                callbacks: { label: ctx => ' ' + ctx.parsed.y + ' siswa' }
+                            }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, ticks: { stepSize: 5 }, grid: { color: 'rgba(226,232,240,0.5)' } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+
+            /* Top 5 */
+            const tctx = document.getElementById('topChart');
+            if (tctx) {
+                const sorted = Object.keys(perLevel)
+                    .map(id => ({ id: id, nama: LEVEL_INFO[id].nama, count: perLevel[id] }))
+                    .sort((a, b) => b.count - a.count)
+                    .slice(0, 5);
+                new Chart(tctx, {
+                    type: 'bar',
+                    data: {
+                        labels: sorted.map(x => x.id + ' · ' + x.nama),
+                        datasets: [{
+                            label: 'Jumlah Siswa',
+                            data: sorted.map(x => x.count),
+                            backgroundColor: ['#FF6B6B', '#4ECDC4', '#FFE66D', '#A8E6CF', '#FF8B94'],
+                            borderRadius: 8,
+                            borderSkipped: false,
+                            barThickness: 26
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: { duration: 1200, easing: 'easeOutQuart', delay: ctx => ctx.dataIndex * 100 },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#0f172a', padding: 12, cornerRadius: 10,
+                                callbacks: { label: ctx => ' ' + ctx.parsed.x + ' siswa' }
+                            }
+                        },
+                        scales: {
+                            x: { beginAtZero: true, ticks: { stepSize: 5 }, grid: { color: 'rgba(226,232,240,0.5)' } },
+                            y: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+
+            console.log('✅ Charts berhasil di-render');
+        }
+
+        /* ============================================================
+           BOOT
+           ============================================================ */
+        function boot() {
+            const t0 = performance.now();
+
+            buildPeserta();
+            buildTutor();
+            initToolbar();
+            runCounters();
+            initScrollReveal();
+
+            if (window.Chart) {
+                renderCharts();
+            } else {
+                window.addEventListener('load', function () {
+                    if (window.Chart) renderCharts();
+                });
+            }
+
+            const t1 = performance.now();
+            console.log('⏱️ Semua render: ' + (t1 - t0).toFixed(0) + 'ms');
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', boot);
+        } else {
+            boot();
+        }
+    </script>
+
+    <script src="js/main.js" defer></script>
+    <script src="js/navbar.js" defer></script>
+</body>
+
+</html>

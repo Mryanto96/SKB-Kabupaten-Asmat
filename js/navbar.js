@@ -4,8 +4,9 @@
 // ============================================
 
 /* --------------------------------------------
+  /* ============================================================
    LANGUAGE / i18n
--------------------------------------------- */
+   ============================================================ */
 const TRANSLATIONS = {
     en: {
         nav_home: 'Home',
@@ -13,6 +14,7 @@ const TRANSLATIONS = {
         nav_video: 'Video',
         nav_activities: 'Activities',
         nav_attendance: 'Attendance',
+        nav_peserta: 'Students',              // ← TAMBAH INI
         nav_contact: 'Contact',
 
         // Sub-menu Activities
@@ -29,6 +31,7 @@ const TRANSLATIONS = {
         nav_video: 'Video',
         nav_activities: 'Kegiatan',
         nav_attendance: 'Kehadiran',
+        nav_peserta: 'Peserta',               // ← TAMBAH INI
         nav_contact: 'Kontak',
 
         // Sub-menu Kegiatan
@@ -42,7 +45,9 @@ const TRANSLATIONS = {
 };
 
 
-
+/* --------------------------------------------
+   Language Helpers
+-------------------------------------------- */
 const LANG_STORAGE_KEY = 'skb-asmat-lang';
 const DEFAULT_LANG = 'en';
 
@@ -63,6 +68,7 @@ function t(key) {
         || key;
 }
 
+
 /* --------------------------------------------
    MENU STRUCTURE (uses i18n keys)
    NOTE: 
@@ -70,6 +76,8 @@ function t(key) {
    - Quiz & Video jadi menu utama.
    - About tidak ada di menu karena kontennya
      sudah tergabung di index.html (cukup scroll).
+   - Peserta/Students ditambah sebagai menu utama
+     (setelah Attendance, sebelum Contact).
 -------------------------------------------- */
 const MENU_STRUCTURE = [
     { key: 'nav_home', url: 'index.html' },
@@ -84,9 +92,9 @@ const MENU_STRUCTURE = [
         ]
     },
     { key: 'nav_attendance', url: 'attendance.html' },
+    { key: 'nav_peserta', url: 'peserta.html' },     // ← TAMBAH INI
     { key: 'nav_contact', url: 'contact.html' }
 ];
-
 /* --------------------------------------------
    RENDER HELPERS
 -------------------------------------------- */
