@@ -9,31 +9,13 @@
 const TRANSLATIONS = {
     en: {
         nav_home: 'Home',
-        nav_about: 'About',
-        nav_programs: 'Programs',
-        nav_courses: 'Courses',
+        nav_quiz: 'Quiz',
+        nav_video: 'Video',
         nav_activities: 'Activities',
-        nav_news: 'News',
-        nav_gallery: 'Gallery',
-        // nav_absent: 'Absent',
         nav_attendance: 'Attendance',
         nav_contact: 'Contact',
 
-        sub_about_skb: 'About SKB',
-        sub_history: 'History',
-        sub_vision_mission: 'Vision & Mission',
-        sub_management: 'Management',
-
-        sub_edu_programs: 'Education Programs',
-        sub_equiv_programs: 'Equivalency Programs',
-        sub_skills_programs: 'Skills Programs',
-        sub_community_programs: 'Community Programs',
-
-        sub_english_course: 'English Course',
-        sub_other_courses: 'Other Courses',
-        sub_quiz_courses: 'Interactive Quiz',
-        sub_video_courses: 'Video Courses',
-
+        // Sub-menu Activities
         sub_activities: 'Activities',
         sub_events: 'Events',
         sub_documentation: 'Documentation',
@@ -43,31 +25,13 @@ const TRANSLATIONS = {
     },
     id: {
         nav_home: 'Beranda',
-        nav_about: 'Tentang',
-        nav_programs: 'Program',
-        nav_courses: 'Kursus',
+        nav_quiz: 'Kuis',
+        nav_video: 'Video',
         nav_activities: 'Kegiatan',
-        nav_news: 'Berita',
-        nav_gallery: 'Galeri',
-        // nav_absent: 'Absensi',
         nav_attendance: 'Kehadiran',
         nav_contact: 'Kontak',
 
-        sub_about_skb: 'Tentang SKB',
-        sub_history: 'Sejarah',
-        sub_vision_mission: 'Visi & Misi',
-        sub_management: 'Manajemen',
-
-        sub_edu_programs: 'Program Pendidikan',
-        sub_equiv_programs: 'Program Kesetaraan',
-        sub_skills_programs: 'Program Keterampilan',
-        sub_community_programs: 'Program Masyarakat',
-
-        sub_english_course: 'Kursus Bahasa Inggris',
-        sub_other_courses: 'Kursus Lainnya',
-        sub_quiz_courses: 'Kuis Interaktif',
-        sub_video_courses: 'Video Courses',
-
+        // Sub-menu Kegiatan
         sub_activities: 'Kegiatan',
         sub_events: 'Acara',
         sub_documentation: 'Dokumentasi',
@@ -76,6 +40,8 @@ const TRANSLATIONS = {
         hamburger_label: 'Menu'
     }
 };
+
+
 
 const LANG_STORAGE_KEY = 'skb-asmat-lang';
 const DEFAULT_LANG = 'en';
@@ -99,36 +65,16 @@ function t(key) {
 
 /* --------------------------------------------
    MENU STRUCTURE (uses i18n keys)
+   NOTE: 
+   - Courses sudah dihapus.
+   - Quiz & Video jadi menu utama.
+   - About tidak ada di menu karena kontennya
+     sudah tergabung di index.html (cukup scroll).
 -------------------------------------------- */
 const MENU_STRUCTURE = [
     { key: 'nav_home', url: 'index.html' },
-    {
-        key: 'nav_about',
-        dropdown: [
-            { key: 'sub_about_skb', url: 'about.html' },
-            { key: 'sub_history', url: 'about.html#history' },
-            { key: 'sub_vision_mission', url: 'about.html#vision-mission' },
-            { key: 'sub_management', url: 'about.html#management' }
-        ]
-    },
-    {
-        key: 'nav_programs',
-        dropdown: [
-            { key: 'sub_edu_programs', url: 'programs.html#education' },
-            { key: 'sub_equiv_programs', url: 'programs.html#equivalency' },
-            { key: 'sub_skills_programs', url: 'programs.html#skills' },
-            { key: 'sub_community_programs', url: 'programs.html#community' }
-        ]
-    },
-    {
-        key: 'nav_courses',
-        dropdown: [
-            { key: 'sub_english_course', url: 'courses.html#english' },
-            { key: 'sub_other_courses', url: 'courses.html#other' },
-            { key: 'sub_quiz_courses', url: 'quiz.html#interactive-quiz' },
-            { key: 'sub_video_courses', url: 'video.html' }
-        ]
-    },
+    { key: 'nav_quiz', url: 'quiz.html' },
+    { key: 'nav_video', url: 'video.html' },
     {
         key: 'nav_activities',
         dropdown: [
@@ -137,12 +83,10 @@ const MENU_STRUCTURE = [
             { key: 'sub_documentation', url: 'activities.html#documentation' }
         ]
     },
-    { key: 'nav_news', url: 'news.html' },
-    { key: 'nav_gallery', url: 'gallery.html' },
-    // { key: 'nav_absent', url: 'absent.html' },
     { key: 'nav_attendance', url: 'attendance.html' },
     { key: 'nav_contact', url: 'contact.html' }
 ];
+
 /* --------------------------------------------
    RENDER HELPERS
 -------------------------------------------- */
@@ -198,7 +142,7 @@ function renderNavbar() {
           <img src="images/Logo1.png" alt="SKB Asmat Logo" class="logo-img">
           <div class="logo-text">
             <span class="logo-title">SKB KABUPATEN ASMAT</span>
-            <span class="logo-sub">ASMAT ENGLISH COURSE</span>
+            <span class="logo-sub">ENGLISH PRIME COURSE</span>
           </div>
         </a>
 
@@ -520,4 +464,4 @@ window.addEventListener('popstate', () => {
     setTimeout(updateActiveNavLink, 50);
 });
 
-window.addEventListener('hashchange', updateActiveNavLink);s
+window.addEventListener('hashchange', updateActiveNavLink);

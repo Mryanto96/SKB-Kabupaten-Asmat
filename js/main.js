@@ -193,10 +193,47 @@ document.addEventListener('DOMContentLoaded', () => {
   initFooterYear();
 });
 
-// let x = 10
-// if (x > 5) {
-//   console.log("x is greater than 5");
-// }   
-// if (x <= 5) {
-//     console.log("x is less than or equal to 5");    
-// }
+/* ============================================================
+   SCROLL REVEAL — Intersection Observer
+   ============================================================
+   Otomatis mendeteksi elemen dengan class:
+   .fade-up, .fade-left, .fade-right, .fade-in, .zoom-in, .stagger
+   dan menambahkan class .visible saat masuk viewport.
+   ============================================================ */
+function initScrollReveal() {
+  const selectors = '.fade-up, .fade-left, .fade-right, .fade-in, .zoom-in, .stagger';
+  const elements = document.querySelectorAll(selectors);
+
+  if (!elements.length) return;
+
+  // Fallback: kalau browser tidak support IntersectionObserver
+  if (!('IntersectionObserver' in window)) {
+    elements.forEach(el => el.classList.add('visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Optional: stop observing setelah muncul (biar tidak repeat)
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.12,           // muncul saat 12% elemen terlihat
+    rootMargin: '0px 0px -50px 0px'  // trigger sedikit sebelum elemen masuk
+  });
+
+  elements.forEach(el => observer.observe(el));
+}
+
+// Jalankan setelah DOM siap
+document.addEventListener('DOMContentLoaded', () => {
+  initScrollReveal();
+});
+
+// Optional: re-run kalau konten baru ditambahkan via JS
+window.addEventListener('load', () => {
+  initScrollReveal();
+});
