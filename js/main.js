@@ -1,14 +1,24 @@
 // ============================================
 // MAIN JAVASCRIPT
-// SKB ASMAT
-// General website functions: scroll effects,
-// back-to-top, animations, counters, notifications.
+// SKB ASMAT — English Prime Course
+// ============================================
+// General website functions:
+// - Notifications (toast)
+// - Fade-up on scroll
+// - Back-to-top button
+// - Stat counters
+// - Smooth scroll for anchors
+// - Sticky navbar shadow
+// - Auto-update footer year
+// - Scroll reveal (fade-up, fade-left, fade-right, fade-in, zoom-in, stagger)
+// - FAQ accordion (with auto-close)
 // Navigation logic lives in navbar.js.
 // ============================================
 
-/* --------------------------------------------
-   NOTIFICATIONS (used by other modules)
--------------------------------------------- */
+
+/* ============================================================
+   1. NOTIFICATIONS (TOAST)
+   ============================================================ */
 function showNotif(text, type = 'success') {
   const existing = document.querySelector('.notif');
   if (existing) existing.remove();
@@ -28,15 +38,15 @@ function showNotif(text, type = 'success') {
   }, 3000);
 }
 
-/* --------------------------------------------
-   FADE-UP ON SCROLL
--------------------------------------------- */
+
+/* ============================================================
+   2. FADE-UP ON SCROLL (LEGACY)
+   ============================================================ */
 function initFadeUp() {
   const els = document.querySelectorAll('.fade-up');
   if (!els.length) return;
 
   if (!('IntersectionObserver' in window)) {
-    // Fallback: show everything
     els.forEach(el => el.classList.add('visible'));
     return;
   }
@@ -53,9 +63,10 @@ function initFadeUp() {
   els.forEach(el => observer.observe(el));
 }
 
-/* --------------------------------------------
-   BACK TO TOP BUTTON
--------------------------------------------- */
+
+/* ============================================================
+   3. BACK TO TOP BUTTON
+   ============================================================ */
 function initBackToTop() {
   let btn = document.getElementById('backToTop');
 
@@ -80,10 +91,11 @@ function initBackToTop() {
   onScroll();
 }
 
-/* --------------------------------------------
-   STAT COUNTERS
+
+/* ============================================================
+   4. STAT COUNTERS
    Usage: <span class="counter" data-target="250">0</span>
--------------------------------------------- */
+   ============================================================ */
 function initCounters() {
   const counters = document.querySelectorAll('.counter');
   if (!counters.length) return;
@@ -95,8 +107,7 @@ function initCounters() {
 
     const tick = (now) => {
       const progress = Math.min((now - start) / duration, 1);
-      // easeOutQuad
-      const eased = 1 - (1 - progress) * (1 - progress);
+      const eased = 1 - (1 - progress) * (1 - progress); // easeOutQuad
       el.textContent = Math.floor(eased * target).toLocaleString();
       if (progress < 1) requestAnimationFrame(tick);
       else el.textContent = target.toLocaleString();
@@ -121,9 +132,10 @@ function initCounters() {
   counters.forEach(c => observer.observe(c));
 }
 
-/* --------------------------------------------
-   SMOOTH SCROLL FOR IN-PAGE ANCHORS
--------------------------------------------- */
+
+/* ============================================================
+   5. SMOOTH SCROLL FOR IN-PAGE ANCHORS
+   ============================================================ */
 function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', function (e) {
@@ -142,9 +154,10 @@ function initSmoothScroll() {
   });
 }
 
-/* --------------------------------------------
-   STICKY NAVBAR SHADOW ON SCROLL
--------------------------------------------- */
+
+/* ============================================================
+   6. STICKY NAVBAR SHADOW ON SCROLL
+   ============================================================ */
 function initNavbarScroll() {
   const nav = document.querySelector('.navbar');
   if (!nav) return;
@@ -157,48 +170,24 @@ function initNavbarScroll() {
   onScroll();
 }
 
-/* --------------------------------------------
-   CURRENT YEAR IN FOOTER
+
+/* ============================================================
+   7. AUTO-UPDATE FOOTER YEAR
    Usage: <span data-year></span>
--------------------------------------------- */
+   ============================================================ */
 function initFooterYear() {
   document.querySelectorAll('[data-year]').forEach(el => {
     el.textContent = new Date().getFullYear();
   });
 }
 
-/* --------------------------------------------
-   LANGUAGE-CHANGED HOOK
-   navbar.js fires this. Pages that inject
-   dynamic text can listen and re-render.
--------------------------------------------- */
-document.addEventListener('languageChanged', (e) => {
-  const lang = e.detail?.lang || 'en';
-  document.documentElement.setAttribute('lang', lang);
-});
-
-/* --------------------------------------------
-   INIT
--------------------------------------------- */
-document.addEventListener('DOMContentLoaded', () => {
-  // Set <html lang> from saved preference (navbar.js handles storage)
-  const savedLang = localStorage.getItem('skb-asmat-lang') || 'en';
-  document.documentElement.setAttribute('lang', savedLang);
-
-  initFadeUp();
-  initBackToTop();
-  initCounters();
-  initSmoothScroll();
-  initNavbarScroll();
-  initFooterYear();
-});
 
 /* ============================================================
-   SCROLL REVEAL — Intersection Observer
+   8. SCROLL REVEAL — INTERSECTION OBSERVER
    ============================================================
-   Otomatis mendeteksi elemen dengan class:
-   .fade-up, .fade-left, .fade-right, .fade-in, .zoom-in, .stagger
-   dan menambahkan class .visible saat masuk viewport.
+   Detects elements with these classes:
+     .fade-up, .fade-left, .fade-right, .fade-in, .zoom-in, .stagger
+   Adds .visible class when element enters viewport.
    ============================================================ */
 function initScrollReveal() {
   const selectors = '.fade-up, .fade-left, .fade-right, .fade-in, .zoom-in, .stagger';
@@ -206,7 +195,6 @@ function initScrollReveal() {
 
   if (!elements.length) return;
 
-  // Fallback: kalau browser tidak support IntersectionObserver
   if (!('IntersectionObserver' in window)) {
     elements.forEach(el => el.classList.add('visible'));
     return;
@@ -216,24 +204,156 @@ function initScrollReveal() {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        // Optional: stop observing setelah muncul (biar tidak repeat)
         observer.unobserve(entry.target);
       }
     });
   }, {
-    threshold: 0.12,           // muncul saat 12% elemen terlihat
-    rootMargin: '0px 0px -50px 0px'  // trigger sedikit sebelum elemen masuk
+    threshold: 0.12,
+    rootMargin: '0px 0px -50px 0px'
   });
 
   elements.forEach(el => observer.observe(el));
 }
 
-// Jalankan setelah DOM siap
-document.addEventListener('DOMContentLoaded', () => {
-  initScrollReveal();
+
+/* ============================================================
+   9. FAQ ACCORDION
+   ============================================================
+   Features:
+   1. Click a question → toggle that item
+   2. Opening one FAQ → closes the others (exclusive mode)
+   3. Click outside .faq-list → closes all FAQs
+   4. Press Escape → closes all FAQs
+   5. Scroll away from .faq-list → closes all FAQs
+      (optional — disable by setting FAQ_CLOSE_ON_SCROLL = false)
+   ============================================================ */
+const FAQ_CLOSE_ON_SCROLL = true;
+
+function initFAQ() {
+  const faqItems = document.querySelectorAll('.faq-item');
+  if (!faqItems.length) return;
+
+  const faqList = document.querySelector('.faq-list');
+
+  /* --------------------------------------------
+     Helper: close all FAQs
+  -------------------------------------------- */
+  const closeAllFAQ = () => {
+    faqItems.forEach(item => {
+      item.classList.remove('open');
+      const btn = item.querySelector('.faq-question');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    });
+  };
+
+  /* --------------------------------------------
+     Helper: close all FAQs except current
+  -------------------------------------------- */
+  const closeOthersFAQ = (currentItem) => {
+    faqItems.forEach(other => {
+      if (other !== currentItem) {
+        other.classList.remove('open');
+        const otherBtn = other.querySelector('.faq-question');
+        if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  };
+
+  /* --------------------------------------------
+     1. Click question → toggle + close others
+  -------------------------------------------- */
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+    if (!question) return;
+
+    question.addEventListener('click', (e) => {
+      e.stopPropagation(); // prevent outside-click handler from firing
+
+      const isOpen = item.classList.contains('open');
+
+      closeOthersFAQ(item);
+
+      item.classList.toggle('open');
+      question.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+
+  /* --------------------------------------------
+     2. Click outside FAQ → close all
+  -------------------------------------------- */
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.faq-list')) return;
+
+    if (document.querySelector('.faq-item.open')) {
+      closeAllFAQ();
+    }
+  });
+
+  /* --------------------------------------------
+     3. Press Escape → close all
+  -------------------------------------------- */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.querySelector('.faq-item.open')) {
+      closeAllFAQ();
+    }
+  });
+
+  /* --------------------------------------------
+     4. Scroll away from FAQ → close all
+  -------------------------------------------- */
+  if (FAQ_CLOSE_ON_SCROLL && faqList) {
+    const scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) {
+          if (document.querySelector('.faq-item.open')) {
+            closeAllFAQ();
+          }
+        }
+      });
+    }, {
+      threshold: 0,
+      rootMargin: '-80px 0px -80px 0px'
+    });
+
+    scrollObserver.observe(faqList);
+  }
+}
+
+
+/* ============================================================
+   10. LANGUAGE-CHANGED HOOK
+   navbar.js fires this event.
+   ============================================================ */
+document.addEventListener('languageChanged', (e) => {
+  const lang = e.detail?.lang || 'en';
+  document.documentElement.setAttribute('lang', lang);
 });
 
-// Optional: re-run kalau konten baru ditambahkan via JS
+
+/* ============================================================
+   11. INIT — run once when DOM is ready
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  // Set <html lang> from saved preference
+  const savedLang = localStorage.getItem('skb-asmat-lang') || 'en';
+  document.documentElement.setAttribute('lang', savedLang);
+
+  // Initialize all modules
+  initFadeUp();
+  initBackToTop();
+  initCounters();
+  initSmoothScroll();
+  initNavbarScroll();
+  initFooterYear();
+  initScrollReveal();
+  initFAQ();
+});
+
+
+/* ============================================================
+   12. RE-RUN SCROLL REVEAL AFTER FULL LOAD
+   Useful if images/fonts shift the layout after DOM ready.
+   ============================================================ */
 window.addEventListener('load', () => {
   initScrollReveal();
 });

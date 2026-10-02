@@ -4,32 +4,63 @@
    CSS VARIABLES
    ============================================================ */
 :root {
+    /* Backgrounds */
     --bg: #ffffff;
     --bg2: #f8fafc;
     --bg3: #f1f5f9;
+    --card-bg: #ffffff;
+
+    /* Text */
     --text: #0f172a;
     --text2: #475569;
     --text3: #94a3b8;
+
+    /* Primary accent */
     --accent: #2563eb;
     --accent2: #1d4ed8;
+    --accent-soft: rgba(37, 99, 235, 0.10);
+    --accent-ring: rgba(37, 99, 235, 0.18);
+
+    /* Borders & shadows */
     --border: #e2e8f0;
-    --card-bg: #ffffff;
+    --border-strong: #cbd5e1;
     --nav-bg: rgba(255, 255, 255, 0.85);
+    --shadow-xs: 0 1px 3px rgba(15, 23, 42, 0.04);
     --shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
     --shadow-lg: 0 12px 48px rgba(15, 23, 42, 0.14);
+    --shadow-xl: 0 24px 64px rgba(15, 23, 42, 0.18);
 
+    /* Brand palette */
     --c1: #FF6B6B;
     --c2: #4ECDC4;
     --c3: #FFE66D;
     --c4: #A8E6CF;
     --c5: #FF8B94;
 
+    /* System */
     --font: 'Plus Jakarta Sans', sans-serif;
     --container: 1280px;
     --nav-h: 68px;
     --radius: 16px;
     --radius-sm: 10px;
-    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius-lg: 20px;
+    --radius-pill: 99px;
+
+    /* ------------------------------------------------------------
+       SMOOTH TRANSITION SYSTEM
+       ------------------------------------------------------------
+       Semua transition pakai cubic-bezier "ease-out-quart":
+       - Mulai cepat (responsif)
+       - Berhenti sangat halus (tidak kaku)
+       ------------------------------------------------------------ */
+    --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+
+    --transition-fast: 0.2s var(--ease-smooth);
+    --transition: 0.4s var(--ease-smooth);
+    --transition-slow: 0.6s var(--ease-smooth);
+    --transition-bounce: 0.5s var(--ease-bounce);
 
     /* Fluid type scale */
     --fs-h1: clamp(1.9rem, 1.4rem + 2.6vw, 3.4rem);
@@ -46,6 +77,7 @@
     --s-4: clamp(1.4rem, 1.1rem + 1.2vw, 2rem);
     --s-5: clamp(2rem, 1.4rem + 2.4vw, 3.5rem);
     --s-6: clamp(2.8rem, 1.8rem + 4vw, 5rem);
+    --gutter: clamp(1rem, 4vw, 1.75rem);
 }
 
 /* ============================================================
@@ -62,6 +94,7 @@
 html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--nav-h) + 12px);
 }
 
 body {
@@ -72,11 +105,13 @@ body {
     line-height: 1.65;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
 a {
     text-decoration: none;
     color: inherit;
+    transition: color var(--transition-fast);
 }
 
 img,
@@ -94,14 +129,30 @@ button {
     border: none;
     background: none;
     color: inherit;
+    transition: all var(--transition);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+::selection {
+    background: var(--accent);
+    color: #fff;
 }
 
 /* ============================================================
    SCROLLBAR
    ============================================================ */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -111,6 +162,8 @@ button {
 ::-webkit-scrollbar-thumb {
     background: var(--border);
     border-radius: 99px;
+    border: 2px solid var(--bg2);
+    transition: background var(--transition);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -124,7 +177,7 @@ button {
     width: 100%;
     max-width: var(--container);
     margin: 0 auto;
-    padding-inline: clamp(1rem, 4vw, 1.5rem);
+    padding-inline: var(--gutter);
 }
 
 /* ============================================================
@@ -188,10 +241,12 @@ button {
     0%,
     100% {
         transform: scale(1);
+        opacity: 1;
     }
 
     50% {
-        transform: scale(1.05);
+        transform: scale(1.08);
+        opacity: 0.85;
     }
 }
 
@@ -201,28 +256,43 @@ button {
     }
 }
 
-/* ============================================================
-   SCROLL REVEAL ANIMATIONS
-   ============================================================
-   Cara pakai: tambahkan class .fade-up, .fade-left, .fade-right,
-   .zoom-in, atau .fade-in pada elemen. Intersection Observer di
-   js/main.js akan menambahkan class .visible saat elemen masuk
-   viewport.
-   ============================================================ */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
 
-/* Base state untuk semua elemen yang akan dianimasikan */
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+@keyframes floatY {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
 .fade-up,
 .fade-left,
 .fade-right,
 .fade-in,
 .zoom-in {
     opacity: 0;
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+        opacity 0.9s var(--ease-out-soft),
+        transform 0.9s var(--ease-out-soft);
     will-change: opacity, transform;
 }
 
-/* Variasi arah gerakan */
 .fade-up {
     transform: translateY(40px);
 }
@@ -243,7 +313,6 @@ button {
     transform: scale(0.92);
 }
 
-/* State akhir setelah elemen terlihat */
 .fade-up.visible,
 .fade-left.visible,
 .fade-right.visible,
@@ -253,17 +322,13 @@ button {
     transform: translate(0, 0) scale(1);
 }
 
-/* ============================================================
-   STAGGER (untuk grid / card bertahap)
-   ============================================================
-   Tambahkan class .stagger pada parent, dan setiap anak
-   akan muncul dengan delay bertingkat.
-   ============================================================ */
+/* Stagger */
 .stagger>* {
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
-        transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+        opacity 0.8s var(--ease-out-soft),
+        transform 0.8s var(--ease-out-soft);
 }
 
 .stagger.visible>* {
@@ -303,8 +368,16 @@ button {
     transition-delay: 0.54s;
 }
 
-/* Respect user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 
     .fade-up,
     .fade-left,
@@ -312,10 +385,6 @@ button {
     .fade-in,
     .zoom-in,
     .stagger>* {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
         opacity: 1 !important;
         transform: none !important;
     }
@@ -334,20 +403,34 @@ button {
 }
 
 /* ============================================================
-   BADGE
+   BADGE — smooth hover
    ============================================================ */
 .badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 6px 14px;
-    border-radius: 99px;
+    border-radius: var(--radius-pill);
     font-size: var(--fs-xs);
     font-weight: 600;
     background: var(--bg3);
     border: 1px solid var(--border);
     color: var(--text2);
     letter-spacing: 0.3px;
+    transition:
+        transform 0.4s var(--ease-smooth),
+        border-color 0.4s var(--ease-smooth),
+        background 0.4s var(--ease-smooth),
+        color 0.4s var(--ease-smooth),
+        box-shadow 0.4s var(--ease-smooth);
+}
+
+.badge:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px var(--accent-ring);
 }
 
 .badge-dot {
@@ -359,7 +442,7 @@ button {
 }
 
 /* ============================================================
-   BUTTONS
+   BUTTONS — smooth hover dengan shine effect
    ============================================================ */
 .btn {
     display: inline-flex;
@@ -367,13 +450,36 @@ button {
     justify-content: center;
     gap: 8px;
     padding: clamp(10px, 1.5vw, 14px) clamp(18px, 3vw, 28px);
-    border-radius: 99px;
+    border-radius: var(--radius-pill);
     font-size: var(--fs-sm);
     font-weight: 600;
-    transition: all var(--transition);
+    transition:
+        transform 0.4s var(--ease-smooth),
+        box-shadow 0.4s var(--ease-smooth),
+        background 0.4s var(--ease-smooth),
+        border-color 0.4s var(--ease-smooth),
+        color 0.4s var(--ease-smooth);
     border: none;
     cursor: pointer;
     white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
+}
+
+/* Shine sweep */
+.btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.7s var(--ease-smooth);
+    pointer-events: none;
+}
+
+.btn:hover::after {
+    transform: translateX(100%);
 }
 
 .btn-primary {
@@ -385,8 +491,13 @@ button {
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 28px rgba(255, 107, 107, 0.45);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 12px 32px rgba(255, 107, 107, 0.45);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px) scale(0.99);
+    transition: transform 0.1s ease;
 }
 
 .btn-outline {
@@ -398,13 +509,20 @@ button {
 .btn-outline:hover {
     border-color: var(--accent);
     color: var(--accent);
-    background: var(--bg3);
+    background: var(--accent-soft);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px var(--accent-ring);
+}
+
+.btn-outline:active {
+    transform: translateY(-1px);
+    transition: transform 0.1s ease;
 }
 
 .btn-wa {
     background: linear-gradient(135deg, #25D366, #128C7E);
     color: #fff;
-    border-radius: 99px;
+    border-radius: var(--radius-pill);
     padding: 14px 28px;
     font-weight: 700;
     box-shadow: 0 4px 20px rgba(37, 211, 102, 0.35);
@@ -412,25 +530,27 @@ button {
 }
 
 .btn-wa:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(37, 211, 102, 0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(37, 211, 102, 0.5);
 }
 
 .btn-sm {
     font-size: var(--fs-xs);
     padding: 6px 16px;
-    border-radius: 99px;
+    border-radius: var(--radius-pill);
     background: var(--bg3);
     color: var(--text2);
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    transition: all var(--transition);
+    transition: all 0.35s var(--ease-smooth);
 }
 
 .btn-sm:hover {
     background: var(--accent);
     color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px var(--accent-ring);
 }
 
 /* ============================================================
@@ -443,6 +563,7 @@ button {
     text-transform: uppercase;
     color: var(--accent);
     margin-bottom: var(--s-1);
+    display: inline-block;
 }
 
 .section-title {
@@ -473,20 +594,24 @@ button {
 }
 
 /* ============================================================
-   CARDS
+   CARDS — smooth lift on hover
    ============================================================ */
 .card {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: clamp(1.2rem, 3vw, 1.75rem);
-    transition: all var(--transition);
+    transition:
+        transform 0.5s var(--ease-smooth),
+        box-shadow 0.5s var(--ease-smooth),
+        border-color 0.5s var(--ease-smooth);
     position: relative;
     overflow: hidden;
+    will-change: transform;
 }
 
 .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
     box-shadow: var(--shadow-lg);
     border-color: var(--accent);
 }
@@ -508,7 +633,7 @@ footer span {
 }
 
 /* ============================================================
-   STAT CARDS
+   STAT CARDS — smooth & interactive
    ============================================================ */
 .stats-row {
     display: grid;
@@ -523,13 +648,36 @@ footer span {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    transition: all var(--transition);
+    transition:
+        transform 0.45s var(--ease-smooth),
+        box-shadow 0.45s var(--ease-smooth),
+        border-color 0.45s var(--ease-smooth);
     min-width: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--c1), var(--c2), var(--c3));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease-smooth);
 }
 
 .stat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent);
+}
+
+.stat-card:hover::before {
+    transform: scaleX(1);
 }
 
 .stat-value {
@@ -563,7 +711,7 @@ footer span {
 }
 
 /* ============================================================
-   SERVICE ICON BOXES
+   SERVICE ICON BOXES — glow + rotate on hover
    ============================================================ */
 .service-icon-box {
     width: clamp(52px, 7vw, 60px);
@@ -574,11 +722,38 @@ footer span {
     justify-content: center;
     margin: 0 auto var(--s-3);
     font-size: clamp(1.3rem, 3vw, 1.6rem);
-    transition: all var(--transition);
+    transition:
+        transform 0.5s var(--ease-bounce),
+        box-shadow 0.5s var(--ease-smooth);
+    position: relative;
+}
+
+.service-icon-box i {
+    transition: transform 0.5s var(--ease-bounce);
+}
+
+.service-icon-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    filter: blur(14px);
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-smooth);
+    z-index: -1;
 }
 
 .card:hover .service-icon-box {
-    transform: scale(1.05) translateY(-2px);
+    transform: scale(1.1) translateY(-4px) rotate(-5deg);
+}
+
+.card:hover .service-icon-box i {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.card:hover .service-icon-box::after {
+    opacity: 0.7;
 }
 
 .si-umum {
@@ -625,6 +800,7 @@ footer span {
     justify-content: center;
     font-size: clamp(1rem, 2.2vw, 1.2rem);
     flex-shrink: 0;
+    transition: transform 0.5s var(--ease-bounce);
 }
 
 .ii-location {
@@ -643,8 +819,13 @@ footer span {
 }
 
 .ii-service {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05));
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(37, 99, 235, 0.05));
     color: var(--accent);
+}
+
+/* Info item hover */
+div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
+    transform: scale(1.1) rotate(-5deg);
 }
 
 /* ============================================================
@@ -674,6 +855,7 @@ footer span {
         radial-gradient(ellipse at 20% 80%, rgba(255, 107, 107, 0.06) 0%, transparent 50%),
         radial-gradient(ellipse at 50% 0%, rgba(255, 230, 109, 0.05) 0%, transparent 50%);
     pointer-events: none;
+    animation: gradientShift 15s ease infinite;
 }
 
 .hero-inner {
@@ -689,7 +871,6 @@ footer span {
     .hero-inner {
         grid-template-columns: 1fr 1fr;
         gap: 60px;
-        align-items: center;
     }
 }
 
@@ -755,8 +936,11 @@ footer span {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    transition:
+        transform 0.6s var(--ease-smooth),
+        box-shadow 0.6s var(--ease-smooth);
     isolation: isolate;
+    animation: floatY 6s ease-in-out infinite;
 }
 
 .hero-image-wrapper::before {
@@ -770,6 +954,7 @@ footer span {
     filter: blur(14px);
     opacity: 0.35;
     z-index: -1;
+    transition: opacity 0.6s var(--ease-smooth);
 }
 
 .hero-image-wrapper img {
@@ -780,18 +965,23 @@ footer span {
     display: block;
     border-radius: calc(var(--radius) - 6px);
     background: var(--bg2);
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.8s var(--ease-smooth);
 }
 
 .hero-image-wrapper:hover {
-    transform: translateY(-4px);
+    transform: translateY(-8px) scale(1.01);
     box-shadow:
-        0 8px 28px rgba(15, 23, 42, 0.1),
-        0 20px 60px rgba(15, 23, 42, 0.16);
+        0 12px 36px rgba(15, 23, 42, 0.12),
+        0 24px 72px rgba(15, 23, 42, 0.18);
+    animation-play-state: paused;
+}
+
+.hero-image-wrapper:hover::before {
+    opacity: 0.55;
 }
 
 .hero-image-wrapper:hover img {
-    transform: scale(1.015);
+    transform: scale(1.03);
 }
 
 @media (max-width: 991px) {
@@ -813,6 +1003,95 @@ footer span {
 }
 
 /* ============================================================
+   HERO TAGLINE — Milestone Pills
+   ============================================================ */
+.hero-tagline {
+    font-family: var(--font);
+}
+
+.tagline-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.2px;
+    transition: all 0.45s var(--ease-smooth);
+    box-shadow: var(--shadow-xs);
+    cursor: default;
+    will-change: transform;
+}
+
+.tagline-pill i {
+    font-size: 0.78rem;
+    color: var(--c1);
+    transition: transform 0.45s var(--ease-bounce);
+}
+
+.tagline-pill:hover {
+    background: var(--c1);
+    color: #fff;
+    border-color: var(--c1);
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 10px 24px rgba(255, 107, 107, 0.28);
+}
+
+.tagline-pill:hover i {
+    color: #fff;
+    transform: scale(1.2) rotate(-8deg);
+}
+
+.tagline-pill-accent {
+    background: linear-gradient(135deg, var(--c1), var(--c2));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 4px 14px rgba(255, 107, 107, 0.28);
+}
+
+.tagline-pill-accent i {
+    color: #fff;
+}
+
+.tagline-pill-accent:hover {
+    transform: translateY(-5px) scale(1.06);
+    box-shadow: 0 12px 28px rgba(255, 107, 107, 0.42);
+}
+
+.tagline-arrow {
+    color: var(--text3);
+    font-size: 0.75rem;
+    opacity: 0.6;
+    display: inline-flex;
+    align-items: center;
+    animation: pulse 2.5s ease-in-out infinite;
+    transition: opacity 0.4s var(--ease-smooth);
+}
+
+.hero-tagline:hover .tagline-arrow {
+    opacity: 1;
+}
+
+@media (max-width: 640px) {
+    .hero-tagline {
+        gap: 8px;
+    }
+
+    .tagline-pill {
+        font-size: 0.76rem;
+        padding: 6px 12px;
+    }
+
+    .tagline-arrow {
+        font-size: 0.65rem;
+    }
+}
+
+/* ============================================================
    DECORATIVE DOTS
    ============================================================ */
 .dots-grid {
@@ -824,6 +1103,7 @@ footer span {
     opacity: 0.6;
     pointer-events: none;
     display: none;
+    animation: float 8s ease-in-out infinite;
 }
 
 @media (min-width: 768px) {
@@ -833,7 +1113,7 @@ footer span {
 }
 
 /* ============================================================
-   WELCOME / SAMBUTAN
+   WELCOME / SAMBUTAN — smooth hover
    ============================================================ */
 .sambutan-section {
     margin-top: var(--s-4);
@@ -877,6 +1157,16 @@ footer span {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition:
+        transform 0.5s var(--ease-smooth),
+        border-color 0.5s var(--ease-smooth),
+        box-shadow 0.5s var(--ease-smooth);
+}
+
+.kapus-portrait-wrapper .kapus-frame:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-6px) scale(1.02);
 }
 
 .kapus-portrait-wrapper .kapus-frame img {
@@ -884,6 +1174,11 @@ footer span {
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.7s var(--ease-smooth);
+}
+
+.kapus-portrait-wrapper .kapus-frame:hover img {
+    transform: scale(1.06);
 }
 
 .kapus-portrait-wrapper .kapus-frame .placeholder-icon {
@@ -913,14 +1208,36 @@ footer span {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: clamp(1.1rem, 3vw, 1.75rem) clamp(1rem, 3vw, 1.75rem);
-    transition: all var(--transition);
+    padding: clamp(1.1rem, 3vw, 1.75rem);
+    transition:
+        transform 0.5s var(--ease-smooth),
+        box-shadow 0.5s var(--ease-smooth),
+        border-color 0.5s var(--ease-smooth);
     text-align: left;
+    position: relative;
+}
+
+.sambutan-text-wrapper::before {
+    content: '"';
+    position: absolute;
+    top: -8px;
+    left: 16px;
+    font-size: 3rem;
+    color: var(--c1);
+    opacity: 0.15;
+    font-family: Georgia, serif;
+    line-height: 1;
+    transition: opacity 0.5s var(--ease-smooth);
 }
 
 .sambutan-text-wrapper:hover {
     box-shadow: var(--shadow-lg);
     border-color: var(--c1);
+    transform: translateY(-4px);
+}
+
+.sambutan-text-wrapper:hover::before {
+    opacity: 0.3;
 }
 
 .sambutan-text-wrapper .sambutan-text {
@@ -942,7 +1259,7 @@ footer span {
 }
 
 /* ============================================================
-   QUICK LINKS
+   QUICK LINKS — smooth hover
    ============================================================ */
 .quick-links {
     display: flex;
@@ -959,27 +1276,36 @@ footer span {
     padding: clamp(8px, 1.5vw, 10px) clamp(14px, 2.5vw, 22px);
     font-size: var(--fs-sm);
     font-weight: 500;
-    transition: all var(--transition);
+    transition: all 0.45s var(--ease-smooth);
     color: var(--text);
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    cursor: default;
+    will-change: transform;
 }
 
 .quick-link-item i {
     font-size: 0.95em;
     color: var(--accent);
+    transition: transform 0.45s var(--ease-bounce);
 }
 
 .quick-link-item:hover {
-    background: var(--bg2);
-    transform: translateY(-3px);
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-4px) scale(1.03);
     border-color: var(--accent);
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 10px 24px var(--accent-ring);
+}
+
+.quick-link-item:hover i {
+    color: #fff;
+    transform: scale(1.2);
 }
 
 /* ============================================================
-   QUOTE BOX
+   QUOTE BOX — smooth hover
    ============================================================ */
 .quote-box {
     background: linear-gradient(135deg, rgba(255, 107, 107, 0.06), rgba(78, 205, 196, 0.06), rgba(255, 230, 109, 0.04));
@@ -993,6 +1319,16 @@ footer span {
     font-size: clamp(0.9rem, 1.6vw, 1.02rem);
     line-height: 1.7;
     position: relative;
+    transition:
+        padding 0.5s var(--ease-smooth),
+        background 0.5s var(--ease-smooth),
+        box-shadow 0.5s var(--ease-smooth);
+}
+
+.quote-box:hover {
+    padding-left: calc(clamp(1.2rem, 3vw, 1.75rem) + 4px);
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.10), rgba(78, 205, 196, 0.10), rgba(255, 230, 109, 0.07));
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.08);
 }
 
 .quote-box::before {
@@ -1047,12 +1383,17 @@ footer span {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: clamp(1.2rem, 3vw, 1.75rem);
-    transition: all var(--transition);
+    transition:
+        transform 0.5s var(--ease-smooth),
+        box-shadow 0.5s var(--ease-smooth),
+        background 0.5s var(--ease-smooth);
+    position: relative;
+    will-change: transform;
 }
 
 .feature-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow);
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
     border-color: transparent;
     background:
         linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
@@ -1069,6 +1410,11 @@ footer span {
     justify-content: center;
     font-size: clamp(1.05rem, 2vw, 1.2rem);
     margin-bottom: 16px;
+    transition: transform 0.5s var(--ease-bounce);
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.15) rotate(-8deg);
 }
 
 @media (max-width: 639px) {
@@ -1115,7 +1461,7 @@ footer span {
 }
 
 /* ============================================================
-   PAGE HEADER (inner pages)
+   PAGE HEADER
    ============================================================ */
 .page-header {
     padding: var(--s-5) 0 var(--s-4);
@@ -1136,8 +1482,7 @@ footer span {
 }
 
 /* ============================================================
-   BERITA / NEWS CARDS
-   (masih dipakai untuk section "Our Classes" & "Vision & Mission")
+   BERITA / NEWS CARDS — smooth lift + inner glow
    ============================================================ */
 .berita-grid {
     display: grid;
@@ -1163,14 +1508,19 @@ footer span {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
-    transition: all var(--transition);
+    transition:
+        transform 0.55s var(--ease-smooth),
+        box-shadow 0.55s var(--ease-smooth),
+        border-color 0.55s var(--ease-smooth);
     display: flex;
     flex-direction: column;
+    position: relative;
+    will-change: transform;
 }
 
 .berita-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
     border-color: var(--accent);
 }
 
@@ -1183,12 +1533,43 @@ footer span {
     font-size: clamp(2rem, 5vw, 3rem);
     color: var(--accent);
     overflow: hidden;
+    transition: background 0.5s var(--ease-smooth);
+    position: relative;
+}
+
+.berita-thumb::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%);
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-smooth);
+    pointer-events: none;
+}
+
+.berita-card:hover .berita-thumb::before {
+    opacity: 1;
+    animation: shimmer 1.5s ease;
+}
+
+.berita-thumb i {
+    transition: transform 0.6s var(--ease-bounce);
+}
+
+.berita-card:hover .berita-thumb i {
+    transform: scale(1.2) rotate(-6deg);
 }
 
 .berita-thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.8s var(--ease-smooth);
+}
+
+.berita-card:hover .berita-thumb img {
+    transform: scale(1.1);
 }
 
 .berita-body {
@@ -1212,6 +1593,11 @@ footer span {
     font-size: clamp(0.95rem, 1.6vw, 1.02rem);
     margin-bottom: 6px;
     line-height: 1.35;
+    transition: color 0.4s var(--ease-smooth);
+}
+
+.berita-card:hover .berita-body h4 {
+    color: var(--accent);
 }
 
 .berita-body p {
@@ -1223,7 +1609,7 @@ footer span {
 }
 
 /* ============================================================
-   CONTACT PAGE
+   CONTACT PAGE — smooth hover
    ============================================================ */
 .contact-grid {
     display: grid;
@@ -1244,6 +1630,14 @@ footer span {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: clamp(1.25rem, 3vw, 2rem);
+    transition:
+        box-shadow 0.5s var(--ease-smooth),
+        transform 0.5s var(--ease-smooth);
+}
+
+.contact-info-box:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
 }
 
 .contact-item {
@@ -1252,6 +1646,14 @@ footer span {
     gap: clamp(12px, 2vw, 16px);
     padding: clamp(14px, 2vw, 18px) 0;
     border-bottom: 1px solid var(--border);
+    transition:
+        padding-left 0.4s var(--ease-smooth),
+        background 0.4s var(--ease-smooth);
+    border-radius: 8px;
+}
+
+.contact-item:hover {
+    padding-left: 8px;
 }
 
 .contact-item:last-of-type {
@@ -1267,6 +1669,11 @@ footer span {
     justify-content: center;
     font-size: clamp(0.9rem, 1.8vw, 1rem);
     flex-shrink: 0;
+    transition: transform 0.5s var(--ease-bounce);
+}
+
+.contact-item:hover .contact-icon {
+    transform: scale(1.1) rotate(-5deg);
 }
 
 .ci-wa {
@@ -1301,6 +1708,11 @@ footer span {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: clamp(1.25rem, 3vw, 2rem);
+    transition: box-shadow 0.5s var(--ease-smooth);
+}
+
+.contact-form-box:hover {
+    box-shadow: var(--shadow-lg);
 }
 
 .form-group {
@@ -1325,15 +1737,26 @@ footer span {
     color: var(--text);
     font-family: var(--font);
     font-size: var(--fs-sm);
-    transition: all var(--transition);
+    transition:
+        border-color 0.4s var(--ease-smooth),
+        box-shadow 0.4s var(--ease-smooth),
+        background 0.4s var(--ease-smooth),
+        transform 0.4s var(--ease-smooth);
     outline: none;
     resize: vertical;
+}
+
+.form-group input:hover,
+.form-group textarea:hover {
+    border-color: var(--border-strong);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    box-shadow: 0 0 0 4px var(--accent-ring);
+    background: #fff;
+    transform: translateY(-1px);
 }
 
 .form-group textarea {
@@ -1350,88 +1773,7 @@ footer span {
 }
 
 /* ============================================================
-   HERO TAGLINE — Milestone Pills
-   ============================================================ */
-.hero-tagline {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-}
-
-.tagline-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: 0.2px;
-    transition: all .25s ease;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
-}
-
-.tagline-pill i {
-    font-size: 0.78rem;
-    color: var(--c1);
-    transition: transform .25s ease;
-}
-
-.tagline-pill:hover {
-    background: var(--c1);
-    color: #fff;
-    border-color: var(--c1);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, .08);
-}
-
-.tagline-pill:hover i {
-    color: #fff;
-    transform: scale(1.1);
-}
-
-.tagline-pill-accent {
-    background: linear-gradient(135deg, var(--c1), var(--c2, var(--c1)));
-    color: #fff;
-    border-color: transparent;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
-}
-
-.tagline-pill-accent i {
-    color: #fff;
-}
-
-.tagline-pill-accent:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, .18);
-}
-
-.tagline-arrow {
-    color: var(--text2);
-    font-size: 0.75rem;
-    opacity: 0.6;
-    display: inline-flex;
-    align-items: center;
-}
-
-@media (max-width: 640px) {
-    .hero-tagline {
-        gap: 8px;
-    }
-
-    .tagline-pill {
-        font-size: 0.76rem;
-        padding: 6px 12px;
-    }
-
-    .tagline-arrow {
-        font-size: 0.65rem;
-    }
-}
-
-/* ============================================================
-   NAVBAR
+   NAVBAR — smooth & subtle
    ============================================================ */
 .navbar {
     position: fixed;
@@ -1441,11 +1783,14 @@ footer span {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
-    transition: box-shadow var(--transition), background var(--transition);
+    transition:
+        box-shadow 0.5s var(--ease-smooth),
+        background 0.5s var(--ease-smooth);
 }
 
 .navbar.scrolled {
     box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+    background: rgba(255, 255, 255, 0.95);
 }
 
 .nav-inner {
@@ -1462,6 +1807,11 @@ footer span {
     gap: 10px;
     font-weight: 800;
     min-width: 0;
+    transition: transform 0.4s var(--ease-smooth);
+}
+
+.logo:hover {
+    transform: scale(1.03);
 }
 
 .logo-img {
@@ -1469,6 +1819,11 @@ footer span {
     height: clamp(35px, 5vw, 45px);
     object-fit: contain;
     flex-shrink: 0;
+    transition: transform 0.5s var(--ease-bounce);
+}
+
+.logo:hover .logo-img {
+    transform: rotate(-8deg) scale(1.08);
 }
 
 .logo-text {
@@ -1485,7 +1840,7 @@ footer span {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-size: clamp(0.80rem, 2vw, 0.70rem);
+    font-size: clamp(0.80rem, 2vw, 0.90rem);
     font-weight: 800;
     letter-spacing: -0.3px;
     white-space: nowrap;
@@ -1496,7 +1851,7 @@ footer span {
 .logo-sub {
     font-size: clamp(0.65rem, 1.4vw, 0.70rem);
     color: var(--text2);
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 0.3px;
     white-space: nowrap;
     overflow: hidden;
@@ -1522,13 +1877,17 @@ footer span {
     font-size: 0.88rem;
     font-weight: 500;
     color: var(--text2);
-    transition: color var(--transition), background var(--transition);
+    transition:
+        color 0.35s var(--ease-smooth),
+        background 0.35s var(--ease-smooth),
+        transform 0.35s var(--ease-smooth);
     position: relative;
 }
 
 .nav-links a:hover {
     color: var(--text);
     background-color: var(--bg3);
+    transform: translateY(-1px);
 }
 
 .nav-links a.active {
@@ -1569,7 +1928,7 @@ footer span {
     font-weight: 700;
     font-size: var(--fs-xs);
     letter-spacing: 0.3px;
-    transition: all var(--transition);
+    transition: all 0.4s var(--ease-smooth);
     white-space: nowrap;
 }
 
@@ -1577,7 +1936,8 @@ footer span {
     background: var(--accent);
     color: #fff;
     border-color: var(--accent);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--accent-ring);
 }
 
 .hamburger {
@@ -1600,7 +1960,7 @@ footer span {
     height: 2px;
     background: var(--text);
     border-radius: 99px;
-    transition: all 0.3s;
+    transition: all 0.4s var(--ease-smooth);
     transform-origin: center;
 }
 
@@ -1617,7 +1977,7 @@ footer span {
 }
 
 /* ============================================================
-   DESKTOP DROPDOWN
+   DESKTOP DROPDOWN — smooth
    ============================================================ */
 .nav-links li {
     position: relative;
@@ -1633,10 +1993,14 @@ footer span {
     min-width: 220px;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-10px);
-    transition: opacity .2s ease, transform .2s ease, visibility .2s;
+    transform: translateY(-10px) scale(0.98);
+    transform-origin: top left;
+    transition:
+        opacity 0.3s var(--ease-smooth),
+        transform 0.35s var(--ease-smooth),
+        visibility 0.3s;
     z-index: 1000;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-lg);
     list-style: none;
     padding: 8px 0;
     margin: 0;
@@ -1654,11 +2018,16 @@ footer span {
     color: var(--text);
     border-radius: 0;
     background: transparent;
+    transition:
+        padding-left 0.35s var(--ease-smooth),
+        background 0.35s var(--ease-smooth),
+        color 0.35s var(--ease-smooth);
 }
 
 .dropdown-menu a:hover {
     background: var(--bg2);
     color: var(--accent);
+    padding-left: 24px;
 }
 
 .nav-links li:hover .dropdown-menu,
@@ -1666,7 +2035,7 @@ footer span {
 .dropdown-menu.open {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
 .has-dropdown>a::after {
@@ -1674,6 +2043,12 @@ footer span {
     font-size: 0.65rem;
     margin-left: 4px;
     opacity: 0.7;
+    display: inline-block;
+    transition: transform 0.4s var(--ease-smooth);
+}
+
+.has-dropdown:hover>a::after {
+    transform: rotate(180deg);
 }
 
 /* ============================================================
@@ -1687,7 +2062,7 @@ footer span {
     height: calc(100dvh - var(--nav-h));
     background: var(--card-bg);
     border-right: 1px solid var(--border);
-    transition: left 0.3s ease;
+    transition: left 0.4s var(--ease-smooth);
     z-index: 99;
     overflow-y: auto;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
@@ -1712,13 +2087,17 @@ footer span {
     font-weight: 500;
     font-size: 1.02rem;
     line-height: 1.5;
-    transition: all var(--transition);
+    transition:
+        padding-left 0.35s var(--ease-smooth),
+        background 0.35s var(--ease-smooth),
+        color 0.35s var(--ease-smooth);
 }
 
 .mobile-menu>a:hover,
 .mobile-menu>a.active {
     background: var(--bg2);
     color: var(--accent);
+    padding-left: 26px;
 }
 
 .mobile-dropdown-item {
@@ -1735,7 +2114,7 @@ footer span {
     font-size: 1.02rem;
     line-height: 1.5;
     color: var(--text);
-    transition: background var(--transition);
+    transition: background 0.35s var(--ease-smooth);
 }
 
 .mobile-dropdown-toggle:hover {
@@ -1744,7 +2123,7 @@ footer span {
 
 .mobile-dropdown-toggle .toggle-icon {
     font-size: 0.75rem;
-    transition: transform 0.2s;
+    transition: transform 0.4s var(--ease-smooth);
     opacity: 0.7;
 }
 
@@ -1755,7 +2134,7 @@ footer span {
 .mobile-submenu {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease;
+    transition: max-height 0.4s var(--ease-smooth);
     background: var(--bg2);
 }
 
@@ -1765,11 +2144,16 @@ footer span {
     font-size: 0.96rem;
     line-height: 1.5;
     color: var(--text2);
+    transition:
+        padding-left 0.35s var(--ease-smooth),
+        background 0.35s var(--ease-smooth),
+        color 0.35s var(--ease-smooth);
 }
 
 .mobile-submenu a:hover {
     background: var(--bg3);
     color: var(--accent);
+    padding-left: 46px;
 }
 
 body.menu-open {
@@ -1793,7 +2177,7 @@ body.menu-open {
 }
 
 /* ============================================================
-   BACK TO TOP
+   BACK TO TOP — smooth
    ============================================================ */
 .back-to-top {
     position: fixed;
@@ -1812,20 +2196,24 @@ body.menu-open {
     box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(20px);
-    transition: all var(--transition);
+    transform: translateY(20px) scale(0.9);
+    transition:
+        opacity 0.4s var(--ease-smooth),
+        visibility 0.4s var(--ease-smooth),
+        transform 0.4s var(--ease-bounce),
+        box-shadow 0.4s var(--ease-smooth);
     z-index: 90;
 }
 
 .back-to-top.visible {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
 .back-to-top:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 10px 26px rgba(255, 107, 107, 0.55);
+    transform: translateY(-4px) scale(1.1);
+    box-shadow: 0 12px 30px rgba(255, 107, 107, 0.55);
 }
 
 @media (min-width: 768px) {
@@ -1855,7 +2243,9 @@ body.menu-open {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     transform: translateY(120%);
     opacity: 0;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition:
+        transform 0.4s var(--ease-bounce),
+        opacity 0.4s var(--ease-smooth);
 }
 
 @media (min-width: 560px) {
@@ -1904,12 +2294,12 @@ body.menu-open {
 }
 
 /* ============================================================
-   TEAM CARD — Horizontal Layout (foto kiri, deskripsi kanan)
-============================================ */
+   TEAM CARD — Smooth Horizontal Layout (Best Version)
+   ============================================================ */
 .team-list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 22px;
     margin-top: 40px;
 }
 
@@ -1921,17 +2311,42 @@ body.menu-open {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 24px;
-    transition: all var(--transition);
+    padding: 26px 28px;
+    transition:
+        transform 0.55s var(--ease-smooth),
+        box-shadow 0.55s var(--ease-smooth),
+        border-color 0.55s var(--ease-smooth);
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
+}
+
+/* Gradient bar kiri (muncul saat hover) */
+.team-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--c1), var(--c2), var(--c3));
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.5s var(--ease-smooth);
+    z-index: 1;
+}
+
+.team-card:hover::before {
+    transform: scaleY(1);
 }
 
 .team-card:hover {
-    /* transform: translateY(-4px); */
     box-shadow: var(--shadow-lg);
     border-color: var(--c1);
+    transform: translateX(6px);
 }
 
-/* --- Foto & Nama (kiri) --- */
+/* ---------- Kiri: Foto + Nama + Role ---------- */
 .team-aside {
     display: flex;
     flex-direction: column;
@@ -1943,36 +2358,44 @@ body.menu-open {
 
 .team-photo {
     width: 130px;
-    height: 160px;
-    /* ← tinggi lebih besar dari lebar = portrait */
-    border-radius: 8px;
-    /* ← SEGI EMPAT dengan sudut sedikit rounded */
+    height: auto;
+    min-height: 160px;
+    max-height: 200px;
+    border-radius: 10px;
     overflow: hidden;
     border: 2px solid var(--border);
-    /* ← border tipis */
-    background: var(--bg3);
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 14px;
-    transition: all var(--transition);
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+    transition:
+        transform 0.5s var(--ease-bounce),
+        border-color 0.5s var(--ease-smooth),
+        box-shadow 0.5s var(--ease-smooth);
+    box-shadow: var(--shadow-xs);
 }
 
 .team-card:hover .team-photo {
     border-color: var(--c1);
-    /* ← border berubah warna saat hover */
-    /* transform: translateY(-2px); */
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.16);
+    transform: scale(1.05) rotate(-1.5deg);
 }
 
 .team-photo img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    /* ← biar muka tidak kepotong */
+    max-height: 200px;
+    border-radius: 10px;
+    object-fit: contain;
+    object-position: center;
     display: block;
+    padding: 2px;
+    transition: transform 0.7s var(--ease-smooth);
+}
+
+.team-card:hover .team-photo img {
+    transform: scale(1.04);
 }
 
 .team-photo .placeholder-icon {
@@ -1982,28 +2405,41 @@ body.menu-open {
 }
 
 .team-name {
-    font-weight: 700;
-    font-size: 0.9rem;
+    font-weight: 800;
+    font-size: 0.95rem;
     line-height: 1.3;
     color: var(--text);
     margin-bottom: 6px;
     word-break: break-word;
+    letter-spacing: -0.2px;
+    transition: color 0.4s var(--ease-smooth);
+}
+
+.team-card:hover .team-name {
+    color: var(--c1);
 }
 
 .team-role {
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--c1);
     line-height: 1.35;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    transition: color 0.4s var(--ease-smooth);
 }
 
-/* --- Tugas / Task badge --- */
+.team-card:hover .team-role {
+    color: var(--accent);
+}
+
+/* ---------- Task badge (opsional) ---------- */
 .team-task {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     margin-top: 10px;
-    padding: 5px 10px;
+    padding: 5px 12px;
     background: var(--bg3);
     border: 1px solid var(--border);
     border-radius: 99px;
@@ -2013,12 +2449,26 @@ body.menu-open {
     line-height: 1.3;
     text-align: left;
     max-width: 100%;
+    transition: all 0.4s var(--ease-smooth);
+}
+
+.team-task:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--accent-ring);
 }
 
 .team-task i {
     font-size: 0.68rem;
     color: var(--c1);
     flex-shrink: 0;
+    transition: transform 0.4s var(--ease-bounce);
+}
+
+.team-task:hover i {
+    transform: rotate(-8deg) scale(1.15);
 }
 
 .team-task span {
@@ -2026,21 +2476,67 @@ body.menu-open {
     word-break: break-word;
 }
 
-/* --- Deskripsi (kanan) --- */
+/* ---------- Kanan: Deskripsi + Tugas ---------- */
 .team-description {
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     color: var(--text2);
-    line-height: 1.75;
-    padding-top: 6px;
+    line-height: 1.8;
+    padding-top: 8px;
 }
 
-/* --- Responsive: mobile → stack vertikal --- */
+.team-description p {
+    margin: 0;
+}
+
+.team-description p + p {
+    margin-top: 12px;
+}
+
+/* ============================================================
+   TEAM CARD — RESPONSIVE
+   ============================================================ */
+
+/* Tablet kecil */
+@media (max-width: 900px) {
+    .team-card {
+        gap: 22px;
+        padding: 22px 24px;
+    }
+
+    .team-aside {
+        width: 130px;
+    }
+
+    .team-photo {
+        width: 110px;
+        min-height: 140px;
+        max-height: 180px;
+    }
+
+    .team-photo img {
+        max-height: 180px;
+    }
+}
+
+/* Mobile — jadi vertikal */
 @media (max-width: 640px) {
+    .team-list {
+        gap: 18px;
+    }
+
     .team-card {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: 18px;
         padding: 22px;
         text-align: center;
+    }
+
+    .team-card:hover {
+        transform: translateY(-4px);
+    }
+
+    .team-card::before {
+        width: 3px;
     }
 
     .team-aside {
@@ -2049,7 +2545,13 @@ body.menu-open {
 
     .team-photo {
         width: 120px;
-        height: 150px;
+        min-height: 150px;
+        max-height: 190px;
+        margin-inline: auto;
+    }
+
+    .team-photo img {
+        max-height: 190px;
     }
 
     .team-description {
@@ -2059,5 +2561,294 @@ body.menu-open {
 
     .team-task {
         margin-inline: auto;
+    }
+}
+
+/* Mobile sangat kecil */
+@media (max-width: 400px) {
+    .team-card {
+        padding: 18px;
+        gap: 14px;
+    }
+
+    .team-photo {
+        width: 100px;
+        min-height: 130px;
+        max-height: 160px;
+    }
+
+    .team-photo img {
+        max-height: 160px;
+    }
+
+    .team-name {
+        font-size: 0.88rem;
+    }
+
+    .team-role {
+        font-size: 0.7rem;
+    }
+
+    .team-description {
+        font-size: 0.85rem;
+        line-height: 1.75;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .team-card,
+    .team-card::before,
+    .team-photo,
+    .team-photo img,
+    .team-name,
+    .team-role,
+    .team-task {
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ============================================================
+   PRINT STYLES
+   ============================================================ */
+@media print {
+
+    .navbar,
+    .back-to-top,
+    .notif,
+    .mobile-menu,
+    .hamburger {
+        display: none !important;
+    }
+
+    .page-content {
+        padding-top: 0;
+    }
+
+    body {
+        background: #fff;
+        color: #000;
+    }
+
+    .card,
+    .feature-card,
+    .berita-card,
+    .team-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}
+
+/* ============================================================
+   FAQ SECTION — Accordion with Smooth Grid Reveal
+   ============================================================ */
+.faq-list {
+    max-width: 820px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.faq-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition:
+        border-color 0.5s var(--ease-smooth),
+        box-shadow 0.5s var(--ease-smooth),
+        transform 0.5s var(--ease-smooth),
+        background 0.5s var(--ease-smooth);
+    position: relative;
+    will-change: transform;
+}
+
+.faq-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--c1), var(--c2), var(--c3));
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.55s var(--ease-smooth);
+    z-index: 1;
+}
+
+.faq-item:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
+    transform: translateY(-3px);
+}
+
+.faq-item:hover::before,
+.faq-item.open::before {
+    transform: scaleY(1);
+}
+
+.faq-item.open {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.025), rgba(78, 205, 196, 0.025));
+}
+
+.faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    padding: 20px 24px;
+    background: transparent;
+    border: none;
+    text-align: left;
+    font-family: var(--font);
+    font-size: clamp(0.92rem, 1.6vw, 1rem);
+    font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
+    transition:
+        color 0.4s var(--ease-smooth),
+        background 0.4s var(--ease-smooth),
+        padding 0.4s var(--ease-smooth);
+    line-height: 1.4;
+    position: relative;
+}
+
+.faq-question:hover {
+    color: var(--accent);
+    background: var(--bg2);
+}
+
+.faq-question:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+    border-radius: 0;
+}
+
+.faq-question:active {
+    transform: scale(0.997);
+    transition: transform 0.15s ease;
+}
+
+.faq-icon {
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    color: var(--accent);
+    transition:
+        transform 0.55s var(--ease-bounce),
+        color 0.4s var(--ease-smooth),
+        background 0.4s var(--ease-smooth);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    padding: 6px;
+}
+
+.faq-question:hover .faq-icon {
+    background: var(--accent);
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.faq-item.open .faq-question {
+    color: var(--accent);
+}
+
+.faq-item.open .faq-icon {
+    transform: rotate(180deg) scale(1.05);
+    background: var(--accent);
+    color: #fff;
+}
+
+/* ============================================================
+   FAQ ANSWER — Smooth grid reveal
+   ============================================================ */
+.faq-answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition:
+        grid-template-rows 0.55s var(--ease-smooth),
+        opacity 0.5s var(--ease-smooth) 0.05s,
+        padding 0.4s var(--ease-smooth);
+    opacity: 0;
+    padding: 0 24px;
+    overflow: hidden;
+}
+
+.faq-answer>div {
+    overflow: hidden;
+}
+
+.faq-item.open .faq-answer {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    padding: 0 24px 22px 24px;
+}
+
+.faq-answer p {
+    font-size: clamp(0.85rem, 1.4vw, 0.92rem);
+    color: var(--text2);
+    line-height: 1.8;
+    margin: 0;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    transform: translateY(-8px);
+    transition: transform 0.6s var(--ease-out-soft) 0.1s;
+}
+
+.faq-item.open .faq-answer p {
+    transform: translateY(0);
+}
+
+.faq-answer strong {
+    color: var(--text);
+    font-weight: 700;
+}
+
+@media (max-width: 640px) {
+    .faq-question {
+        padding: 16px 18px;
+        font-size: 0.88rem;
+        gap: 12px;
+    }
+
+    .faq-icon {
+        width: 22px;
+        height: 22px;
+        padding: 5px;
+    }
+
+    .faq-answer {
+        padding: 0 18px;
+    }
+
+    .faq-item.open .faq-answer {
+        padding: 0 18px 18px 18px;
+    }
+
+    .faq-answer p {
+        font-size: 0.82rem;
+        line-height: 1.75;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .faq-item,
+    .faq-item::before,
+    .faq-question,
+    .faq-icon,
+    .faq-answer,
+    .faq-answer p {
+        transition-duration: 0.01ms !important;
     }
 }
