@@ -48,6 +48,10 @@
 
     /* ------------------------------------------------------------
        SMOOTH TRANSITION SYSTEM
+       ------------------------------------------------------------
+       Semua transition pakai cubic-bezier "ease-out-quart":
+       - Mulai cepat (responsif)
+       - Berhenti sangat halus (tidak kaku)
        ------------------------------------------------------------ */
     --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
     --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -88,12 +92,9 @@
 }
 
 html {
-    /* ✅ SMOOTH SCROLL — gunakan auto agar tidak "kaku" saat JS intercept */
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     scroll-padding-top: calc(var(--nav-h) + 12px);
-    /* ✅ Cegah horizontal bounce di iOS */
-    overscroll-behavior-x: none;
 }
 
 body {
@@ -104,12 +105,7 @@ body {
     line-height: 1.65;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    /* ✅ Smooth momentum scroll di iOS */
-    -webkit-overflow-scrolling: touch;
-    /* ✅ Cegah overscroll bounce berlebihan */
-    overscroll-behavior-y: none;
 }
 
 a {
@@ -134,8 +130,6 @@ button {
     background: none;
     color: inherit;
     transition: all var(--transition);
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
 }
 
 button:focus-visible,
@@ -285,7 +279,7 @@ select:focus-visible {
 }
 
 /* ============================================================
-   SCROLL REVEAL — lebih halus & tidak "kaku"
+   SCROLL REVEAL
    ============================================================ */
 .fade-up,
 .fade-left,
@@ -294,23 +288,21 @@ select:focus-visible {
 .zoom-in {
     opacity: 0;
     transition:
-        opacity 1s var(--ease-out-soft),
-        transform 1s var(--ease-out-soft);
+        opacity 0.9s var(--ease-out-soft),
+        transform 0.9s var(--ease-out-soft);
     will-change: opacity, transform;
-    /* ✅ Isolasi render agar tidak memicu reflow layout lain */
-    contain: layout style paint;
 }
 
 .fade-up {
-    transform: translate3d(0, 40px, 0);
+    transform: translateY(40px);
 }
 
 .fade-left {
-    transform: translate3d(-50px, 0, 0);
+    transform: translateX(-50px);
 }
 
 .fade-right {
-    transform: translate3d(50px, 0, 0);
+    transform: translateX(50px);
 }
 
 .fade-in {
@@ -327,25 +319,21 @@ select:focus-visible {
 .fade-in.visible,
 .zoom-in.visible {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-    will-change: auto;
-    contain: none;
+    transform: translate(0, 0) scale(1);
 }
 
 /* Stagger */
 .stagger>* {
     opacity: 0;
-    transform: translate3d(0, 30px, 0);
+    transform: translateY(30px);
     transition:
-        opacity 0.9s var(--ease-out-soft),
-        transform 0.9s var(--ease-out-soft);
-    will-change: opacity, transform;
+        opacity 0.8s var(--ease-out-soft),
+        transform 0.8s var(--ease-out-soft);
 }
 
 .stagger.visible>* {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
-    will-change: auto;
+    transform: translateY(0);
 }
 
 .stagger.visible>*:nth-child(1) {
@@ -415,7 +403,7 @@ select:focus-visible {
 }
 
 /* ============================================================
-   BADGE
+   BADGE — smooth hover
    ============================================================ */
 .badge {
     display: inline-flex;
@@ -454,7 +442,7 @@ select:focus-visible {
 }
 
 /* ============================================================
-   BUTTONS
+   BUTTONS — smooth hover dengan shine effect
    ============================================================ */
 .btn {
     display: inline-flex;
@@ -477,10 +465,9 @@ select:focus-visible {
     position: relative;
     overflow: hidden;
     will-change: transform;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
 }
 
+/* Shine sweep */
 .btn::after {
     content: '';
     position: absolute;
@@ -607,7 +594,7 @@ select:focus-visible {
 }
 
 /* ============================================================
-   CARDS
+   CARDS — smooth lift on hover
    ============================================================ */
 .card {
     background: var(--card-bg);
@@ -621,7 +608,6 @@ select:focus-visible {
     position: relative;
     overflow: hidden;
     will-change: transform;
-    contain: layout style paint;
 }
 
 .card:hover {
@@ -647,7 +633,7 @@ footer span {
 }
 
 /* ============================================================
-   STAT CARDS
+   STAT CARDS — smooth & interactive
    ============================================================ */
 .stats-row {
     display: grid;
@@ -725,7 +711,7 @@ footer span {
 }
 
 /* ============================================================
-   SERVICE ICON BOXES
+   SERVICE ICON BOXES — glow + rotate on hover
    ============================================================ */
 .service-icon-box {
     width: clamp(52px, 7vw, 60px);
@@ -837,6 +823,7 @@ footer span {
     color: var(--accent);
 }
 
+/* Info item hover */
 div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
     transform: scale(1.1) rotate(-5deg);
 }
@@ -954,9 +941,6 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
         box-shadow 0.6s var(--ease-smooth);
     isolation: isolate;
     animation: floatY 6s ease-in-out infinite;
-    /* ✅ GPU hint */
-    transform: translateZ(0);
-    backface-visibility: hidden;
 }
 
 .hero-image-wrapper::before {
@@ -1019,7 +1003,7 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
 }
 
 /* ============================================================
-   HERO TAGLINE
+   HERO TAGLINE — Milestone Pills
    ============================================================ */
 .hero-tagline {
     font-family: var(--font);
@@ -1129,7 +1113,7 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
 }
 
 /* ============================================================
-   WELCOME / SAMBUTAN
+   WELCOME / SAMBUTAN — smooth hover
    ============================================================ */
 .sambutan-section {
     margin-top: var(--s-4);
@@ -1275,7 +1259,7 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
 }
 
 /* ============================================================
-   QUICK LINKS
+   QUICK LINKS — smooth hover
    ============================================================ */
 .quick-links {
     display: flex;
@@ -1321,7 +1305,7 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
 }
 
 /* ============================================================
-   QUOTE BOX
+   QUOTE BOX — smooth hover
    ============================================================ */
 .quote-box {
     background: linear-gradient(135deg, rgba(255, 107, 107, 0.06), rgba(78, 205, 196, 0.06), rgba(255, 230, 109, 0.04));
@@ -1364,7 +1348,7 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
 }
 
 /* ============================================================
-   ABOUT GRID
+   ABOUT PORTAL GRID / ABOUT GRID
    ============================================================ */
 .about-portal-grid {
     display: grid;
@@ -1405,7 +1389,6 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
         background 0.5s var(--ease-smooth);
     position: relative;
     will-change: transform;
-    contain: layout style paint;
 }
 
 .feature-card:hover {
@@ -1499,7 +1482,7 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
 }
 
 /* ============================================================
-   BERITA / NEWS CARDS
+   BERITA / NEWS CARDS — smooth lift + inner glow
    ============================================================ */
 .berita-grid {
     display: grid;
@@ -1533,7 +1516,6 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
     flex-direction: column;
     position: relative;
     will-change: transform;
-    contain: layout style paint;
 }
 
 .berita-card:hover {
@@ -1627,7 +1609,7 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
 }
 
 /* ============================================================
-   CONTACT PAGE
+   CONTACT PAGE — smooth hover
    ============================================================ */
 .contact-grid {
     display: grid;
@@ -1791,7 +1773,7 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
 }
 
 /* ============================================================
-   NAVBAR — SMOOTH & PERFORMANT
+   NAVBAR — smooth & subtle
    ============================================================ */
 .navbar {
     position: fixed;
@@ -1802,12 +1784,8 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
     transition:
-        box-shadow 0.4s var(--ease-smooth),
-        background 0.4s var(--ease-smooth);
-    will-change: box-shadow, background;
-    /* ✅ GPU layer hint */
-    transform: translateZ(0);
-    backface-visibility: hidden;
+        box-shadow 0.5s var(--ease-smooth),
+        background 0.5s var(--ease-smooth);
 }
 
 .navbar.scrolled {
@@ -1968,8 +1946,6 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
     gap: 5px;
     padding: 6px;
     border-radius: 8px;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
 }
 
 @media (min-width: 993px) {
@@ -2001,7 +1977,7 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
 }
 
 /* ============================================================
-   DESKTOP DROPDOWN
+   DESKTOP DROPDOWN — smooth
    ============================================================ */
 .nav-links li {
     position: relative;
@@ -2028,7 +2004,6 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
     list-style: none;
     padding: 8px 0;
     margin: 0;
-    will-change: opacity, transform;
 }
 
 .dropdown-menu li {
@@ -2077,34 +2052,25 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
 }
 
 /* ============================================================
-   MOBILE MENU — SMOOTH & PERFORMANT
+   MOBILE MENU
    ============================================================ */
 .mobile-menu {
     position: fixed;
     top: var(--nav-h);
-    left: 0;
+    left: -100%;
     width: min(320px, 85vw);
     height: calc(100dvh - var(--nav-h));
     background: var(--card-bg);
     border-right: 1px solid var(--border);
-    /* ✅ Pakai transform, bukan left — jauh lebih smooth */
-    transform: translate3d(-100%, 0, 0);
-    transition: transform 0.4s var(--ease-smooth);
+    transition: left 0.4s var(--ease-smooth);
     z-index: 99;
     overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     padding: 8px 0 24px;
-    will-change: transform;
-    backface-visibility: hidden;
-    /* ✅ Isolasi render agar tidak memicu reflow halaman belakang */
-    contain: layout style paint;
 }
 
 .mobile-menu.active {
-    transform: translate3d(0, 0, 0);
+    left: 0;
 }
 
 @media (min-width: 993px) {
@@ -2125,7 +2091,6 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
         padding-left 0.35s var(--ease-smooth),
         background 0.35s var(--ease-smooth),
         color 0.35s var(--ease-smooth);
-    -webkit-tap-highlight-color: transparent;
 }
 
 .mobile-menu>a:hover,
@@ -2150,8 +2115,6 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
     line-height: 1.5;
     color: var(--text);
     transition: background 0.35s var(--ease-smooth);
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
 }
 
 .mobile-dropdown-toggle:hover {
@@ -2168,19 +2131,11 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
     transform: rotate(180deg);
 }
 
-/* ✅ Submenu pakai max-height + opacity, transisi lebih halus */
 .mobile-submenu {
     max-height: 0;
     overflow: hidden;
-    transition:
-        max-height 0.4s var(--ease-smooth),
-        opacity 0.35s var(--ease-smooth);
+    transition: max-height 0.4s var(--ease-smooth);
     background: var(--bg2);
-    opacity: 0;
-}
-
-.mobile-submenu.open {
-    opacity: 1;
 }
 
 .mobile-submenu a {
@@ -2193,7 +2148,6 @@ div[style*="border-radius: var(--radius)"]:hover .info-item-icon {
         padding-left 0.35s var(--ease-smooth),
         background 0.35s var(--ease-smooth),
         color 0.35s var(--ease-smooth);
-    -webkit-tap-highlight-color: transparent;
 }
 
 .mobile-submenu a:hover {
@@ -2223,7 +2177,7 @@ body.menu-open {
 }
 
 /* ============================================================
-   BACK TO TOP
+   BACK TO TOP — smooth
    ============================================================ */
 .back-to-top {
     position: fixed;
@@ -2242,26 +2196,23 @@ body.menu-open {
     box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
     opacity: 0;
     visibility: hidden;
-    transform: translate3d(0, 20px, 0) scale(0.9);
+    transform: translateY(20px) scale(0.9);
     transition:
         opacity 0.4s var(--ease-smooth),
         visibility 0.4s var(--ease-smooth),
         transform 0.4s var(--ease-bounce),
         box-shadow 0.4s var(--ease-smooth);
     z-index: 90;
-    will-change: transform, opacity;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
 }
 
 .back-to-top.visible {
     opacity: 1;
     visibility: visible;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0) scale(1);
 }
 
 .back-to-top:hover {
-    transform: translate3d(0, -4px, 0) scale(1.1);
+    transform: translateY(-4px) scale(1.1);
     box-shadow: 0 12px 30px rgba(255, 107, 107, 0.55);
 }
 
@@ -2290,12 +2241,11 @@ body.menu-open {
     align-items: center;
     gap: 8px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    transform: translate3d(0, 120%, 0);
+    transform: translateY(120%);
     opacity: 0;
     transition:
         transform 0.4s var(--ease-bounce),
         opacity 0.4s var(--ease-smooth);
-    will-change: transform, opacity;
 }
 
 @media (min-width: 560px) {
@@ -2308,7 +2258,7 @@ body.menu-open {
 }
 
 .notif.show {
-    transform: translate3d(0, 0, 0);
+    transform: translateY(0);
     opacity: 1;
 }
 
@@ -2344,7 +2294,7 @@ body.menu-open {
 }
 
 /* ============================================================
-   TEAM CARD — Smooth Horizontal Layout
+   TEAM CARD — Smooth Horizontal Layout (Best Version)
    ============================================================ */
 .team-list {
     display: flex;
@@ -2369,9 +2319,9 @@ body.menu-open {
     position: relative;
     overflow: hidden;
     will-change: transform;
-    contain: layout style paint;
 }
 
+/* Gradient bar kiri (muncul saat hover) */
 .team-card::before {
     content: '';
     position: absolute;
@@ -2396,6 +2346,7 @@ body.menu-open {
     transform: translateX(6px);
 }
 
+/* ---------- Kiri: Foto + Nama + Role ---------- */
 .team-aside {
     display: flex;
     flex-direction: column;
@@ -2482,6 +2433,7 @@ body.menu-open {
     color: var(--accent);
 }
 
+/* ---------- Task badge (opsional) ---------- */
 .team-task {
     display: inline-flex;
     align-items: center;
@@ -2524,6 +2476,7 @@ body.menu-open {
     word-break: break-word;
 }
 
+/* ---------- Kanan: Deskripsi + Tugas ---------- */
 .team-description {
     font-size: 0.92rem;
     color: var(--text2);
@@ -2535,9 +2488,13 @@ body.menu-open {
     margin: 0;
 }
 
-.team-description p+p {
+.team-description p + p {
     margin-top: 12px;
 }
+
+/* ============================================================
+   TEAM CARD — RESPONSIVE
+   ============================================================ */
 
 /* Tablet kecil */
 @media (max-width: 900px) {
@@ -2640,7 +2597,6 @@ body.menu-open {
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-
     .team-card,
     .team-card::before,
     .team-photo,
@@ -2707,7 +2663,6 @@ body.menu-open {
         background 0.5s var(--ease-smooth);
     position: relative;
     will-change: transform;
-    contain: layout style paint;
 }
 
 .faq-item::before {
@@ -2762,8 +2717,6 @@ body.menu-open {
         padding 0.4s var(--ease-smooth);
     line-height: 1.4;
     position: relative;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
 }
 
 .faq-question:hover {
@@ -2816,7 +2769,9 @@ body.menu-open {
     color: #fff;
 }
 
-/* FAQ ANSWER — Smooth grid reveal */
+/* ============================================================
+   FAQ ANSWER — Smooth grid reveal
+   ============================================================ */
 .faq-answer {
     display: grid;
     grid-template-rows: 0fr;
