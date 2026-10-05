@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin · Content Generator | SKB Asmat</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="author" content="SKB Asmat" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <!-- Quill CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+
+    <style>
+        /* ============================================================
+           ADMIN PANEL — Standalone styles (tidak pakai style.css)
+           ============================================================ */
+        :root {
+            --bg: #f8fafc;
+            --bg-subtle: #f1f5f9;
+            --bg-muted: #e2e8f0;
+            --surface: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #94a3b8;
+            --border: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --accent: #1a73e8;
+            --accent-hover: #1765cc;
+            --accent-soft: #e8f0fe;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-pill: 999px;
+
+            --elev-1: 0 1px 2px rgba(60, 64, 67, 0.10), 0 1px 3px rgba(60, 64, 67, 0.08);
+            --elev-2: 0 1px 3px rgba(60, 64, 67, 0.12), 0 4px 8px rgba(60, 64, 67, 0.08);
+            --elev-3: 0 4px 8px rgba(60, 64, 67, 0.12), 0 1px 3px rgba(60, 64, 67, 0.15);
+
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+            --dur-short: 150ms;
+            --dur-medium: 250ms;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --bg-subtle: #1e293b;
+            --bg-muted: #334155;
+            --surface: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border: #334155;
+            --border-strong: #475569;
+            --accent-soft: rgba(26, 115, 232, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            background: var(--bg);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: inherit;
+        }
+
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ============================================================
+           PASSWORD GATE
+           ============================================================ */
+        .gate {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        .gate-box {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 40px 32px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
+        }
+
+        .gate-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            color: var(--accent);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 20px;
+        }
+
+        .gate-box h1 {
+            font-size: 1.375rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .gate-box p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .gate-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border);
+            background: var(--bg);
+            color: var(--text-primary);
+            font-size: 0.9375rem;
+            outline: none;
+            margin-bottom: 12px;
+            transition: border-color var(--dur-short) var(--ease);
+        }
+
+        .gate-box input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .gate-box button {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9375rem;
+            transition: background var(--dur-short) var(--ease);
+        }
+
+        .gate-box button:hover {
+            background: var(--accent-hover);
+        }
+
+        .gate-error {
+            color: var(--danger);
+            font-size: 0.8125rem;
+            margin-top: 12px;
+            min-height: 20px;
+        }
+
+        /* ============================================================
+           MAIN LAYOUT
+           ============================================================ */
+        .admin {
+            display: none;
+        }
+
+        .admin.active {
+            display: block;
+        }
+
+        .admin-header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .admin-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+
+        .admin-brand-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .admin-brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .admin-brand-text strong {
+            font-size: 0.9375rem;
+        }
+
+        .admin-brand-text span {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background var(--dur-short) var(--ease), color var(--dur-short) var(--ease);
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: var(--bg-subtle);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-muted);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-icon {
+            padding: 8px 10px;
+        }
+
+        /* ============================================================
+           LAYOUT: MAIN GRID (Editor + Sidebar)
+           ============================================================ */
+        .admin-main {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            padding: 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        @media (min-width: 1024px) {
+            .admin-main {
+                grid-template-columns: minmax(0, 1fr) 340px;
+            }
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 24px;
+        }
+
+        .panel-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-title i {
+            color: var(--accent);
+        }
+
+        /* ============================================================
+           FORM FIELDS
+           ============================================================ */
+        .field {
+            margin-bottom: 16px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .field label i {
+            margin-right: 6px;
+            color: var(--accent);
+            font-size: 0.75rem;
+        }
+
+        .field-hint {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+
+        .field input[type="text"],
+        .field input[type="date"],
+        .field select,
+        .field textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border);
+            background: var(--bg);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color var(--dur-short) var(--ease),
+                box-shadow var(--dur-short) var(--ease);
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 640px) {
+            .field-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Toggle switch */
+        .switch {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--bg-subtle);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            user-select: none;
+            transition: background var(--dur-short) var(--ease);
+        }
+
+        .switch:hover {
+            background: var(--bg-muted);
+        }
+
+        .switch input {
+            appearance: none;
+            width: 36px;
+            height: 20px;
+            background: var(--border-strong);
+            border-radius: 999px;
+            position: relative;
+            cursor: pointer;
+            transition: background var(--dur-short) var(--ease);
+            flex-shrink: 0;
+        }
+
+        .switch input::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform var(--dur-short) var(--ease);
+        }
+
+        .switch input:checked {
+            background: var(--accent);
+        }
+
+        .switch input:checked::after {
+            transform: translateX(16px);
+        }
+
+        .switch-text {
+            font-size: 0.8125rem;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+           QUILL EDITOR — CUSTOM STYLING
+           ============================================================ */
+        .editor-wrap {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: border-color var(--dur-short) var(--ease);
+        }
+
+        .editor-wrap:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        /* Quill toolbar */
+        .editor-wrap .ql-toolbar.ql-snow {
+            border: none;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-subtle);
+            padding: 8px 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            align-items: center;
+        }
+
+        .editor-wrap .ql-toolbar.ql-snow .ql-formats {
+            margin-right: 8px;
+        }
+
+        /* Quill editor container */
+        .editor-wrap .ql-container.ql-snow {
+            border: none;
+            font-family: inherit;
+            font-size: 0.9375rem;
+        }
+
+        .editor-wrap .ql-editor {
+            min-height: 420px;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding: 20px 24px;
+            line-height: 1.75;
+            color: var(--text-primary);
+        }
+
+        .editor-wrap .ql-editor.ql-blank::before {
+            font-style: normal;
+            color: var(--text-tertiary);
+            left: 24px;
+        }
+
+        /* Custom toolbar buttons — Table & Formula */
+        .ql-toolbar .ql-custom-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--dur-short) var(--ease);
+            margin-left: 4px;
+        }
+
+        .ql-toolbar .ql-custom-btn:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .ql-toolbar .ql-custom-btn i {
+            font-size: 0.75rem;
+        }
+
+        /* Editor content styling */
+        .editor-wrap .ql-editor h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 20px 0 12px;
+        }
+
+        .editor-wrap .ql-editor h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 18px 0 10px;
+        }
+
+        .editor-wrap .ql-editor h3 {
+            font-size: 1.0625rem;
+            font-weight: 600;
+            margin: 16px 0 8px;
+        }
+
+        .editor-wrap .ql-editor p {
+            margin-bottom: 12px;
+        }
+
+        .editor-wrap .ql-editor blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 16px;
+            margin: 16px 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .editor-wrap .ql-editor table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+
+        .editor-wrap .ql-editor table td,
+        .editor-wrap .ql-editor table th {
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+        }
+
+        .editor-wrap .ql-editor table th {
+            background: var(--bg-subtle);
+            font-weight: 700;
+        }
+
+        .editor-wrap .ql-editor img {
+            max-width: 100%;
+            border-radius: var(--radius-sm);
+            margin: 12px 0;
+        }
+
+        /* ============================================================
+           SIDEBAR — STICKY
+           ============================================================ */
+        .sidebar {
+            position: sticky;
+            top: 88px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        @media (max-width: 1023px) {
+            .sidebar {
+                position: static;
+            }
+        }
+
+        /* ============================================================
+           MODAL
+           ============================================================ */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity var(--dur-medium) var(--ease),
+                visibility var(--dur-medium) var(--ease);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            max-width: 560px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
+            transform: translateY(20px);
+            transition: transform var(--dur-medium) var(--ease);
+        }
+
+        .modal.active .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-box.wide {
+            max-width: 900px;
+        }
+
+        .modal-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-title i {
+            color: var(--accent);
+        }
+
+        .modal-sub {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Code output */
+        .code-output {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.75rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            max-height: 400px;
+            white-space: pre;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .code-output code {
+            color: #e2e8f0;
+        }
+
+        /* Syntax highlight (basic) */
+        .code-output .k {
+            color: #c792ea;
+        }
+
+        /* keyword */
+        .code-output .s {
+            color: #c3e88d;
+        }
+
+        /* string */
+        .code-output .p {
+            color: #82aaff;
+        }
+
+        /* property */
+        .code-output .n {
+            color: #f78c6c;
+        }
+
+        /* number */
+
+        /* ============================================================
+           TOAST
+           ============================================================ */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+            box-shadow: var(--elev-2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            max-width: 360px;
+            transform: translateX(400px);
+            transition: transform var(--dur-medium) var(--ease);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left-color: var(--success);
+        }
+
+        .toast.success i {
+            color: var(--success);
+        }
+
+        .toast.error {
+            border-left-color: var(--danger);
+        }
+
+        .toast.error i {
+            color: var(--danger);
+        }
+
+        .toast.warning {
+            border-left-color: var(--warning);
+        }
+
+        .toast.warning i {
+            color: var(--warning);
+        }
+
+        /* ============================================================
+           PREVIEW MODAL
+           ============================================================ */
+        .preview-content {
+            font-size: 1rem;
+            line-height: 1.75;
+            color: var(--text-primary);
+            padding: 20px 0;
+        }
+
+        .preview-content h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 24px 0 12px;
+        }
+
+        .preview-content h2 {
+            font-size: 1.375rem;
+            font-weight: 700;
+            margin: 20px 0 10px;
+        }
+
+        .preview-content h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin: 16px 0 8px;
+        }
+
+        .preview-content p {
+            margin-bottom: 14px;
+        }
+
+        .preview-content blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 16px;
+            margin: 16px 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .preview-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+
+        .preview-content table td,
+        .preview-content table th {
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+        }
+
+        .preview-content table th {
+            background: var(--bg-subtle);
+            font-weight: 700;
+        }
+
+        .preview-content img {
+            max-width: 100%;
+            border-radius: var(--radius-sm);
+            margin: 12px 0;
+        }
+
+        .preview-content ul,
+        .preview-content ol {
+            padding-left: 24px;
+            margin-bottom: 14px;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 768px) {
+            .admin-header {
+                padding: 12px 16px;
+            }
+
+            .admin-main {
+                padding: 16px;
+                gap: 16px;
+            }
+
+            .panel {
+                padding: 18px;
+            }
+
+            .editor-wrap .ql-editor {
+                min-height: 320px;
+                padding: 16px;
+            }
+
+            .editor-wrap .ql-toolbar.ql-snow {
+                padding: 6px 8px;
+            }
+
+            .editor-wrap .ql-toolbar.ql-snow .ql-formats {
+                margin-right: 4px;
+            }
+
+            .ql-toolbar .ql-custom-btn {
+                font-size: 0.7rem;
+                padding: 4px 8px;
+            }
+
+            .ql-toolbar .ql-custom-btn span {
+                display: none;
+            }
+
+            .toast-container {
+                left: 16px;
+                right: 16px;
+                bottom: 16px;
+            }
+
+            .toast {
+                max-width: none;
+            }
+        }
+
+        /* ============================================================
+           UTILITIES
+           ============================================================ */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-muted {
+            color: var(--text-secondary);
+            font-size: 0.8125rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================================
+         PASSWORD GATE
+         ============================================================ -->
+    <div class="gate" id="gate">
+        <div class="gate-box">
+            <div class="gate-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h1>Admin Access</h1>
+            <p>Masukkan password untuk mengakses content generator.</p>
+            <input type="password" id="gatePassword" placeholder="Password" autocomplete="off" autofocus>
+            <button type="button" id="gateSubmit">
+                <i class="fas fa-sign-in-alt"></i>
+                Login
+            </button>
+            <div class="gate-error" id="gateError"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         ADMIN PANEL (hidden by default)
+         ============================================================ -->
+    <div class="admin" id="admin">
+
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="admin-brand">
+                <div class="admin-brand-icon">
+                    <i class="fas fa-feather-alt"></i>
+                </div>
+                <div class="admin-brand-text">
+                    <strong>Content Generator</strong>
+                    <span>SKB Asmat · English Prime Course</span>
+                </div>
+            </div>
+
+            <div class="admin-actions">
+                <button class="btn btn-secondary btn-icon" id="themeToggle" title="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn btn-secondary" id="previewBtn">
+                    <i class="fas fa-eye"></i>
+                    Preview
+                </button>
+                <button class="btn btn-primary" id="generateBtn">
+                    <i class="fas fa-code"></i>
+                    Generate Code
+                </button>
+                <button class="btn btn-secondary btn-icon" id="logoutBtn" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Grid -->
+        <main class="admin-main">
+
+            <!-- ============================================
+                 LEFT COLUMN — Editor + Metadata
+                 ============================================ -->
+            <div>
+                <!-- Metadata Panel -->
+                <div class="panel" style="margin-bottom: 16px;">
+                    <h2 class="panel-title">
+                        <i class="fas fa-info-circle"></i>
+                        Article Metadata
+                    </h2>
+
+                    <div class="field">
+                        <label><i class="fas fa-heading"></i> Judul Artikel *</label>
+                        <input type="text" id="fTitle" placeholder="Contoh: English Day 2026: A Day of Confidence">
+                        <div class="field-hint">ID artikel akan otomatis dibuat dari judul ini.</div>
+                    </div>
+
+                    <div class="field">
+                        <label><i class="fas fa-align-left"></i> Excerpt / Ringkasan</label>
+                        <textarea id="fExcerpt"
+                            placeholder="Ringkasan 1-2 kalimat (opsional — akan auto-generate dari isi artikel)"></textarea>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label><i class="fas fa-tag"></i> Kategori *</label>
+                            <select id="fCategory">
+                                <option value="Event">Event</option>
+                                <option value="Activity">Activity</option>
+                                <option value="Announcement">Announcement</option>
+                                <option value="Achievement">Achievement</option>
+                                <option value="Workshop">Workshop</option>
+                                <option value="Competition">Competition</option>
+                                <option value="Podcast">Podcast</option>
+                                <option value="Project">Project</option>
+                                <option value="Community">Community</option>
+                                <option value="English Day">English Day</option>
+                                <option value="English Camp">English Camp</option>
+                                <option value="Native Speaker">Native Speaker</option>
+                                <option value="Tips">Tips</option>
+                                <option value="Experience">Experience</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label><i class="fas fa-calendar"></i> Tanggal *</label>
+                            <input type="date" id="fDate">
+                        </div>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label><i class="fas fa-user"></i> Author *</label>
+                            <input type="text" id="fAuthor" placeholder="Nama penulis" value="Maria Delfina Dhae">
+                        </div>
+                        <div class="field">
+                            <label><i class="fas fa-user-tag"></i> Author Role</label>
+                            <input type="text" id="fAuthorRole" placeholder="English Course Director"
+                                value="English Course Director">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label><i class="fas fa-hashtag"></i> Tags (pisahkan dengan koma)</label>
+                        <input type="text" id="fTags" placeholder="Event, Speaking, Community">
+                    </div>
+
+                    <div class="field">
+                        <label><i class="fas fa-image"></i> Thumbnail Path *</label>
+                        <input type="text" id="fThumbnail" placeholder="images/news-english-day.jpg">
+                        <div class="field-hint">
+                            <i class="fas fa-info-circle"></i>
+                            Copy file gambar Anda ke folder <code>images/</code> dengan nama unik,
+                            lalu isi path-nya di sini.
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="switch">
+                            <input type="checkbox" id="fFeatured">
+                            <span class="switch-text">
+                                <i class="fas fa-star" style="color: #f59e0b;"></i>
+                                Tampilkan sebagai <strong>Featured</strong> di hero halaman news
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Editor Panel -->
+                <div class="panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-pen-fancy"></i>
+                        Isi Artikel *
+                    </h2>
+
+                    <div class="editor-wrap">
+                        <div id="editor"></div>
+                    </div>
+
+                    <div class="field-hint" style="margin-top: 12px;">
+                        <i class="fas fa-lightbulb" style="color: var(--warning);"></i>
+                        <strong>Tips:</strong>
+                        Gunakan tombol <strong>Tabel</strong> untuk insert tabel, dan
+                        <strong>∑ Rumus</strong> untuk formula matematika dengan LaTeX
+                        (contoh: <code>$E = mc^2$</code>).
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================
+                 RIGHT COLUMN — Sidebar
+                 ============================================ -->
+            <aside class="sidebar">
+
+                <!-- Status Panel -->
+                <div class="panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-info-circle"></i>
+                        Status
+                    </h2>
+                    <div class="text-muted" style="line-height: 1.8;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Words</span>
+                            <strong id="statusWords" style="color: var(--text-primary);">0</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Characters</span>
+                            <strong id="statusChars" style="color: var(--text-primary);">0</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Reading time</span>
+                            <strong id="statusRead" style="color: var(--text-primary);">1 min</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Checklist Panel -->
+                <div class="panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-check-circle"></i>
+                        Checklist
+                    </h2>
+                    <div id="checklist" style="display: flex; flex-direction: column; gap: 8px; font-size: 0.8125rem;">
+                        <div class="checklist-item" data-check="title">
+                            <i class="far fa-circle"></i>
+                            <span>Judul terisi</span>
+                        </div>
+                        <div class="checklist-item" data-check="category">
+                            <i class="far fa-circle"></i>
+                            <span>Kategori dipilih</span>
+                        </div>
+                        <div class="checklist-item" data-check="date">
+                            <i class="far fa-circle"></i>
+                            <span>Tanggal terisi</span>
+                        </div>
+                        <div class="checklist-item" data-check="author">
+                            <i class="far fa-circle"></i>
+                            <span>Author terisi</span>
+                        </div>
+                        <div class="checklist-item" data-check="thumbnail">
+                            <i class="far fa-circle"></i>
+                            <span>Thumbnail path</span>
+                        </div>
+                        <div class="checklist-item" data-check="content">
+                            <i class="far fa-circle"></i>
+                            <span>Isi artikel</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-bolt"></i>
+                        Quick Actions
+                    </h2>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <button class="btn btn-secondary" id="loadExampleBtn" style="justify-content: flex-start;">
+                            <i class="fas fa-magic"></i>
+                            Isi Contoh Artikel
+                        </button>
+                        <button class="btn btn-secondary" id="clearBtn" style="justify-content: flex-start;">
+                            <i class="fas fa-trash-alt"></i>
+                            Kosongkan Form
+                        </button>
+                    </div>
+                </div>
+
+            </aside>
+        </main>
+    </div>
+
+    <!-- ============================================================
+         TABLE BUILDER MODAL
+         ============================================================ -->
+    <div class="modal" id="tableModal">
+        <div class="modal-box">
+            <h3 class="modal-title">
+                <i class="fas fa-table"></i>
+                Insert Table
+            </h3>
+            <p class="modal-sub">Pilih jumlah baris dan kolom untuk tabel baru.</p>
+
+            <div class="field-row">
+                <div class="field">
+                    <label>Rows (Baris)</label>
+                    <input type="number" id="tRows" min="1" max="20" value="3">
+                </div>
+                <div class="field">
+                    <label>Columns (Kolom)</label>
+                    <input type="number" id="tCols" min="1" max="10" value="3">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="switch">
+                    <input type="checkbox" id="tHeader" checked>
+                    <span class="switch-text">Sertakan header (baris pertama bold)</span>
+                </label>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" data-close="tableModal">Batal</button>
+                <button class="btn btn-primary" id="tInsert">
+                    <i class="fas fa-plus"></i>
+                    Insert Table
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         FORMULA MODAL
+         ============================================================ -->
+    <div class="modal" id="formulaModal">
+        <div class="modal-box">
+            <h3 class="modal-title">
+                <i class="fas fa-square-root-alt"></i>
+                Insert Formula
+            </h3>
+            <p class="modal-sub">Masukkan formula LaTeX. Inline pakai <code>$...$</code>, display pakai
+                <code>$$...$$</code>.</p>
+
+            <div class="field">
+                <label>Formula LaTeX</label>
+                <input type="text" id="fFormula" placeholder="E = mc^2" autocomplete="off">
+                <div class="field-hint">
+                    Contoh: <code>E = mc^2</code> · <code>\frac{a}{b}</code> · <code>\sqrt{x^2 + y^2}</code>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="switch">
+                    <input type="checkbox" id="fDisplayMode">
+                    <span class="switch-text">Display mode (blok terpisah, di tengah)</span>
+                </label>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" data-close="formulaModal">Batal</button>
+                <button class="btn btn-primary" id="fInsert">
+                    <i class="fas fa-plus"></i>
+                    Insert Formula
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         PREVIEW MODAL
+         ============================================================ -->
+    <div class="modal" id="previewModal">
+        <div class="modal-box wide">
+            <h3 class="modal-title">
+                <i class="fas fa-eye"></i>
+                Preview Artikel
+            </h3>
+            <p class="modal-sub">Tampilan artikel Anda sebelum di-publish.</p>
+
+            <div id="previewContent" class="preview-content"></div>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" data-close="previewModal">Tutup</button>
+                <button class="btn btn-primary" id="previewGenerateBtn">
+                    <i class="fas fa-code"></i>
+                    Generate Code
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         GENERATE CODE MODAL
+         ============================================================ -->
+    <div class="modal" id="generateModal">
+        <div class="modal-box wide">
+            <h3 class="modal-title">
+                <i class="fas fa-code"></i>
+                Generated JS Object
+            </h3>
+            <p class="modal-sub">
+                Copy object di bawah, lalu <strong>paste ke array <code>NEWS_DATA</code></strong>
+                di file <code>js/news-data.js</code> (paling atas array).
+            </p>
+
+            <div class="code-output" id="codeOutput"></div>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" data-close="generateModal">Tutup</button>
+                <button class="btn btn-primary" id="copyCodeBtn">
+                    <i class="fas fa-copy"></i>
+                    Copy to Clipboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================================
+         SCRIPTS
+         ============================================================ -->
+    <!-- KaTeX -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Quill -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <!-- Admin Logic -->
+    <script src="js/admin-page.js"></script>
+
+</body>
+
+</html>
