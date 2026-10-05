@@ -7,7 +7,8 @@
     <title>Contact | English Prime Course</title>
     <meta name="description"
         content="Contact English Prime Course — address, phone, and inquiry form for enrollment and general information." />
-    <meta name="keywords" content="English Prime Course Contact, Kontak English Prime Course, Alamat SKB Asmat, Pendaftaran Kursus Bahasa Inggris Asmat" />
+    <meta name="keywords"
+        content="English Prime Course Contact, Kontak English Prime Course, Alamat SKB Asmat, Pendaftaran Kursus Bahasa Inggris Asmat" />
     <meta name="author" content="English Prime Course" />
     <meta property="og:title" content="Contact | English Prime Course" />
     <meta property="og:description" content="Get in touch with English Prime Course." />
@@ -18,6 +19,223 @@
         rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+        /* ============================================================
+           CONTACT PAGE
+           ============================================================ */
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        @media (min-width: 900px) {
+            .contact-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+        }
+
+        /* ---------- Form Card ---------- */
+        .contact-form-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+        }
+
+        .contact-form-box h3 {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .contact-form-box>p {
+            color: var(--text2);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            outline: none;
+            resize: vertical;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-ring);
+        }
+
+        .form-group textarea {
+            min-height: 130px;
+        }
+
+        /* ---------- Info Card ---------- */
+        .contact-info-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+        }
+
+        .contact-info-box h3 {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .contact-info-box>p {
+            color: var(--text2);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .contact-item:last-of-type {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .ci-loc {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .ci-wa {
+            background: #ecfdf5;
+            color: #16a34a;
+        }
+
+        .ci-time {
+            background: #fff7ed;
+            color: #ea580c;
+        }
+
+        .contact-detail {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .contact-detail h4 {
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+
+        .contact-detail p {
+            font-size: 0.85rem;
+            color: var(--text2);
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        .contact-detail p strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* Social links */
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            color: var(--text2);
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .social-links a.facebook:hover {
+            background: #1877F2;
+            border-color: #1877F2;
+            color: #fff;
+        }
+
+        .social-links a.tiktok:hover {
+            background: #000;
+            border-color: #000;
+            color: #fff;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 480px) {
+
+            .contact-form-box,
+            .contact-info-box {
+                padding: 20px;
+            }
+
+            .contact-item {
+                gap: 12px;
+            }
+
+            .contact-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -40,19 +258,57 @@
             </div>
         </section>
 
-        <!-- ===== CONTACT GRID ===== -->
+        <!-- ===== CONTACT GRID — FORM KIRI, INFO KANAN ===== -->
         <section class="section" style="padding-top: 0;">
             <div class="container">
                 <div class="contact-grid">
 
-                    <!-- ===== INFO ===== -->
+                    <!-- ===== FORM (KIRI) ===== -->
+                    <div class="contact-form-box fade-up">
+                        <h3 data-i18n="contact_form_title">Send Us a Message</h3>
+                        <p data-i18n="contact_form_desc">
+                            Fill in the form below and we'll get back to you as soon as possible.
+                        </p>
+
+                        <form id="contactForm" novalidate>
+                            <div class="form-group">
+                                <label for="name" data-i18n="contact_form_name">Your Name</label>
+                                <input type="text" id="name" name="name" required
+                                    data-i18n-placeholder="contact_form_name_ph" placeholder="Enter your full name" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone" data-i18n="contact_form_phone">Phone / WhatsApp</label>
+                                <input type="tel" id="phone" name="phone" data-i18n-placeholder="contact_form_phone_ph"
+                                    placeholder="08xx-xxxx-xxxx" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subject" data-i18n="contact_form_subject">Subject</label>
+                                <input type="text" id="subject" name="subject"
+                                    data-i18n-placeholder="contact_form_subject_ph"
+                                    placeholder="What is your message about?" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message" data-i18n="contact_form_message">Message</label>
+                                <textarea id="message" name="message" required
+                                    data-i18n-placeholder="contact_form_message_ph"
+                                    placeholder="Write your message here..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary"
+                                style="width: 100%; justify-content: center; padding: 13px 24px;">
+                                <i class="fas fa-paper-plane"></i>
+                                <span data-i18n="contact_form_submit">Send Message</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- ===== INFO (KANAN) ===== -->
                     <div class="contact-info-box fade-up">
-                        <h3 style="font-weight: 800; font-size: 1.15rem; margin-bottom: 8px;"
-                            data-i18n="contact_info_title">
-                            Contact Information
-                        </h3>
-                        <p style="color: var(--text2); font-size: 0.88rem; line-height: 1.6; margin-bottom: 8px;"
-                            data-i18n="contact_info_desc">
+                        <h3 data-i18n="contact_info_title">Contact Information</h3>
+                        <p data-i18n="contact_info_desc">
                             Reach us by phone, WhatsApp, or visit our office during working hours.
                         </p>
 
@@ -61,7 +317,7 @@
                             <div class="contact-icon ci-loc"><i class="fas fa-map-marker-alt"></i></div>
                             <div class="contact-detail">
                                 <h4 data-i18n="contact_address_label">Address</h4>
-                                <p data-i18n="contact_address_value">
+                                <p data-i18n-html="contact_address_value">
                                     Jl. Postel, Kabupaten Asmat,<br />Papua Selatan, Indonesia
                                 </p>
                             </div>
@@ -90,79 +346,21 @@
 
                         <!-- Social Media -->
                         <div class="contact-item" style="border-bottom: none;">
-                            <div class="contact-icon ci-loc"
-                                style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(78, 205, 196, 0.12)); color: var(--accent);">
-                                <i class="fas fa-share-alt"></i>
-                            </div>
+                            <div class="contact-icon ci-loc"><i class="fas fa-share-alt"></i></div>
                             <div class="contact-detail">
                                 <h4 data-i18n="contact_social_label">Follow Us</h4>
-                                <div style="display: flex; gap: 10px; margin-top: 8px;">
-
+                                <div class="social-links">
                                     <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"
-                                        aria-label="Facebook"
-                                        style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 0.9rem; transition: all .25s ease;"
-                                        onmouseover="this.style.background='#1877F2';this.style.color='#fff';this.style.borderColor='#1877F2';this.style.transform='translateY(-2px)';"
-                                        onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
+                                        class="facebook" aria-label="Facebook">
                                         <i class="fab fa-facebook-f"></i>
                                     </a>
-
                                     <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer"
-                                        aria-label="TikTok"
-                                        style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 0.9rem; transition: all .25s ease;"
-                                        onmouseover="this.style.background='#000';this.style.color='#fff';this.style.borderColor='#000';this.style.transform='translateY(-2px)';"
-                                        onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
+                                        class="tiktok" aria-label="TikTok">
                                         <i class="fab fa-tiktok"></i>
                                     </a>
-
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- ===== FORM ===== -->
-                    <div class="contact-form-box fade-up">
-                        <h3 style="font-weight: 800; font-size: 1.15rem; margin-bottom: 8px;"
-                            data-i18n="contact_form_title">
-                            Send Us a Message
-                        </h3>
-                        <p style="color: var(--text2); font-size: 0.88rem; line-height: 1.6; margin-bottom: 24px;"
-                            data-i18n="contact_form_desc">
-                            Fill in the form below and we'll get back to you as soon as possible.
-                        </p>
-
-                        <form id="contactForm" novalidate>
-                            <div class="form-group">
-                                <label for="name" data-i18n="contact_form_name">Your Name</label>
-                                <input type="text" id="name" name="name" required
-                                    data-i18n-placeholder="contact_form_name_ph" placeholder="Enter your full name" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="phone" data-i18n="contact_form_phone">Phone / WhatsApp</label>
-                                <input type="tel" id="phone" name="phone"
-                                    data-i18n-placeholder="contact_form_phone_ph" placeholder="08xx-xxxx-xxxx" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="subject" data-i18n="contact_form_subject">Subject</label>
-                                <input type="text" id="subject" name="subject"
-                                    data-i18n-placeholder="contact_form_subject_ph"
-                                    placeholder="What is your message about?" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="message" data-i18n="contact_form_message">Message</label>
-                                <textarea id="message" name="message" required
-                                    data-i18n-placeholder="contact_form_message_ph"
-                                    placeholder="Write your message here..."></textarea>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary"
-                                style="width: 100%; justify-content: center; font-size: 0.95rem; padding: 14px 28px;">
-                                <i class="fas fa-paper-plane"></i>
-                                <span data-i18n="contact_form_submit">Send Message</span>
-                            </button>
-                        </form>
                     </div>
 
                 </div>
@@ -174,15 +372,15 @@
             style="background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
             <div class="container">
                 <div style="text-align: center; max-width: 580px; margin: 0 auto;" class="fade-up">
-                    <h2 style="font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px;"
+                    <h2 style="font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 14px;"
                         data-i18n="contact_cta_title">
                         Ready to Speak Like a Pro?
                     </h2>
-                    <p style="color: var(--text2); margin-bottom: 28px; line-height: 1.7;" data-i18n="contact_cta_desc">
+                    <p style="color: var(--text2); margin-bottom: 24px; line-height: 1.7;" data-i18n="contact_cta_desc">
                         Join the English Prime Course. Learn, Grow, and Shine with us.
                     </p>
                     <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                        <a href="index.html" class="btn btn-primary" style="font-size: 0.95rem; padding: 14px 28px;">
+                        <a href="index.html" class="btn btn-primary" style="padding: 12px 26px;">
                             <i class="fas fa-home"></i>
                             <span data-i18n="contact_cta_btn">Back to Home</span>
                         </a>
@@ -195,40 +393,38 @@
         <footer style="border-top: 1px solid var(--border); background: var(--bg2);">
             <div class="container">
                 <div
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; padding: 40px 0 20px; text-align: left;">
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; padding: 32px 0 16px; text-align: left;">
 
                     <div>
-                        <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;"
-                            data-i18n="footer_contact">
-                            Contact</h4>
-                        <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 0;">
+                        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;"
+                            data-i18n="footer_contact">Contact</h4>
+                        <p style="font-size: 0.8rem; color: var(--text2); line-height: 1.8; margin: 0;">
                             <i class="fas fa-map-marker-alt" style="color: var(--c1); width: 16px;"></i>
                             Jl. Postel, Kabupaten Asmat,<br />Papua Selatan, Indonesia
                         </p>
-                        <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 8px 0 0;">
+                        <p style="font-size: 0.8rem; color: var(--text2); line-height: 1.8; margin: 8px 0 0;">
                             <i class="fas fa-clock" style="color: var(--c1); width: 16px;"></i>
                             Office Hours: 15.00 - 18.00 P.M
                         </p>
                     </div>
 
                     <div>
-                        <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;" data-i18n="footer_phone">
+                        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;" data-i18n="footer_phone">
                             Phone / WhatsApp</h4>
-                        <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 0;">
+                        <p style="font-size: 0.8rem; color: var(--text2); line-height: 1.8; margin: 0;">
                             <i class="fab fa-whatsapp" style="color: var(--c1); width: 16px;"></i>
                             Mam Delfin: 08218887004
                         </p>
-                        <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 4px 0 0;">
+                        <p style="font-size: 0.8rem; color: var(--text2); line-height: 1.8; margin: 4px 0 0;">
                             <i class="fab fa-whatsapp" style="color: var(--c1); width: 16px;"></i>
                             Miss Putri: 085691296762
                         </p>
                     </div>
 
                     <div>
-                        <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;"
-                            data-i18n="footer_institution">
-                            Institution</h4>
-                        <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 0;">
+                        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;"
+                            data-i18n="footer_institution">Institution</h4>
+                        <p style="font-size: 0.8rem; color: var(--text2); line-height: 1.8; margin: 0;">
                             Kursus Bahasa Inggris,<br />
                             <strong>English Prime Course</strong><br />
                             <em>Pendidikan Paul &amp; PNF</em><br />
@@ -237,39 +433,35 @@
                     </div>
 
                     <div>
-                        <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;" data-i18n="footer_follow">
-                            Follow Us</h4>
-                        <div style="display: flex; gap: 12px; margin-top: 4px;">
-
+                        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;"
+                            data-i18n="footer_follow">Follow Us</h4>
+                        <div style="display: flex; gap: 10px; margin-top: 4px;">
                             <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"
                                 aria-label="Facebook"
-                                style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 1rem; transition: all .25s ease;"
-                                onmouseover="this.style.background='#1877F2';this.style.color='#fff';this.style.borderColor='#1877F2';this.style.transform='translateY(-2px)';"
-                                onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
+                                style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 0.9rem;">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
-
                             <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer"
                                 aria-label="TikTok"
-                                style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 1rem; transition: all .25s ease;"
-                                onmouseover="this.style.background='#000';this.style.color='#fff';this.style.borderColor='#000';this.style.transform='translateY(-2px)';"
-                                onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
+                                style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 0.9rem;">
                                 <i class="fab fa-tiktok"></i>
                             </a>
-
                         </div>
                     </div>
 
                 </div>
 
-                <div style="border-top: 1px solid var(--border); padding-top: 20px; text-align: center;">
-                    <p style="font-size: 0.82rem; color: var(--text2);">© <span data-year>2026</span>
-                        <strong>English Prime Course</strong>
+                <div style="border-top: 1px solid var(--border); padding-top: 16px; text-align: center;">
+                    <p style="font-size: 0.78rem; color: var(--text2); margin: 0;">
+                        © <span data-year>2026</span> <strong>English Prime Course</strong>
                         <span data-i18n="footer_line">· Sanggar Kegiatan Belajar Asmat</span>
                     </p>
-                    <p style="font-size: 0.75rem; margin-top: 8px; color: var(--text3);">
-                        <i class="fas fa-graduation-cap" style="color: var(--c1);"></i>
-                        <span data-i18n="footer_tagline">LEARN, GROW, and SHINE</span>
+                    <p style="font-size: 0.72rem; margin-top: 6px; color: var(--text3);">
+                        Designed by
+                        <a href="https://guru-kreatif.vercel.app/" target="_blank" rel="noopener noreferrer"
+                            class="footer-credit-link">
+                            <strong>Yantho Rundy</strong> 💗
+                        </a>
                     </p>
                 </div>
             </div>
@@ -277,15 +469,12 @@
 
     </div>
 
-    <!-- ===== CONTACT FORM SCRIPT (page-local) ===== -->
+    <!-- ===== CONTACT FORM SCRIPT ===== -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('contactForm');
             if (!form) return;
 
-            // Nomor WhatsApp tujuan (format internasional tanpa '+' dan tanpa '0' di depan)
-            // 08218887004  →  628218887004
-            // 085691296762 →  6285691296762
             const WA_NUMBERS = [
                 '628218887004',   // Mam Delfin
                 '6285691296762'   // Miss Putri
@@ -301,30 +490,25 @@
 
                 const lang = (window.SKB && window.SKB.getLang) ? window.SKB.getLang() : 'en';
 
-                // Validation messages
                 const msgs = {
                     en: {
-                        required: 'Please fill in all required fields.',
-                        success: 'Opening WhatsApp... Please send your message.',
-                        notReady: 'The contact form is not yet connected. Please contact us via WhatsApp on the left.',
+                        required: 'Please fill in your name and message.',
+                        success: 'Opening WhatsApp...',
                         sendSecond: 'Also send the same message to Miss Putri?'
                     },
                     id: {
-                        required: 'Harap isi semua kolom yang wajib diisi.',
-                        success: 'Membuka WhatsApp... Silakan kirim pesan Anda.',
-                        notReady: 'Formulir kontak belum terhubung. Silakan hubungi kami via WhatsApp di sebelah kiri.',
+                        required: 'Harap isi nama dan pesan Anda.',
+                        success: 'Membuka WhatsApp...',
                         sendSecond: 'Kirim juga pesan yang sama ke Miss Putri?'
                     }
                 };
                 const m = msgs[lang] || msgs.en;
 
-                // Validation
                 if (!name || !message) {
                     if (window.showNotif) window.showNotif(m.required, 'error');
                     return;
                 }
 
-                // ===== Build encoded message =====
                 const lines = [
                     'Halo English Prime Course,',
                     '',
@@ -337,39 +521,27 @@
                     '',
                     '--',
                     'Sent from English Prime Course website'
-                ].filter(Boolean); // hapus baris null
+                ].filter(Boolean);
 
                 const waText = encodeURIComponent(lines.join('\n'));
 
-                const primary = WA_NUMBERS[0];
-                const secondary = WA_NUMBERS[1];
-
-                // ===== Show success notification =====
                 if (window.showNotif) window.showNotif(m.success, 'success');
 
-                // ===== Open primary WhatsApp number (Mam Delfin) =====
-                const primaryUrl = `https://wa.me/${primary}?text=${waText}`;
-                const waWindow = window.open(primaryUrl, '_blank');
+                const waWindow = window.open(`https://wa.me/${WA_NUMBERS[0]}?text=${waText}`, '_blank');
 
-                // ===== Reset form hanya kalau WhatsApp berhasil dibuka =====
                 if (waWindow) {
-                    setTimeout(() => {
-                        form.reset();
-                    }, 2000);
+                    setTimeout(() => form.reset(), 2000);
                 }
 
-                // ===== After a short delay, offer to send to the second number =====
                 setTimeout(() => {
-                    const sendToSecond = window.confirm(m.sendSecond);
-                    if (sendToSecond) {
-                        const secondaryUrl = `https://wa.me/${secondary}?text=${waText}`;
-                        window.open(secondaryUrl, '_blank');
+                    if (window.confirm(m.sendSecond)) {
+                        window.open(`https://wa.me/${WA_NUMBERS[1]}?text=${waText}`, '_blank');
                     }
                 }, 800);
             });
         });
     </script>
-    
+
     <script src="js/main.js"></script>
     <script src="js/navbar.js"></script>
 </body>

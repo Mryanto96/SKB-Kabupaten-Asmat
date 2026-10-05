@@ -11,7 +11,7 @@ const TRANSLATIONS = {
     en: {
         nav_home: 'Home',
         nav_quiz: 'Quiz',
-        nav_video: 'Video',
+        // nav_video: 'Video',
         nav_management: 'Management',
         nav_activities: 'Activities',
         nav_attendance: 'Attendance',
@@ -29,7 +29,7 @@ const TRANSLATIONS = {
     id: {
         nav_home: 'Beranda',
         nav_quiz: 'Kuis',
-        nav_video: 'Video',
+        // nav_video: 'Video',
         nav_management: 'Manajemen',
         nav_activities: 'Kegiatan',
         nav_attendance: 'Kehadiran',
@@ -84,7 +84,7 @@ function t(key) {
 const MENU_STRUCTURE = [
     { key: 'nav_home', url: 'index.html' },
     { key: 'nav_quiz', url: 'quiz.html' },
-    { key: 'nav_video', url: 'video.html' },
+    // { key: 'nav_video', url: 'video.html' },
     { key: 'nav_management', url: 'management.html' },
     {
         key: 'nav_activities',
