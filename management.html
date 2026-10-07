@@ -4,15 +4,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Management Team | SKB Asmat English Prime Course</title>
+    <title>Management Team | English Prime Course</title>
     <meta name="description"
-        content="Meet the management team of English Prime Course SKB Asmat — Director and instructors dedicated to quality English education for the Asmat community." />
+        content="Meet the management team of English Prime Course — Director and instructors dedicated to quality English education for the Asmat community." />
     <meta name="keywords"
         content="SKB Asmat Management, English Prime Team, English Course Director, English Instructor, Asmat Education" />
-    <meta name="author" content="SKB Asmat" />
-    <meta property="og:title" content="Management Team | SKB Asmat English Prime Course" />
-    <meta property="og:description"
-        content="Meet the dedicated management team behind English Prime Course SKB Asmat." />
+    <meta name="author" content="English Prime Course" />
+    <meta property="og:title" content="Management Team | English Prime Course" />
+    <meta property="og:description" content="Meet the dedicated management team behind English Prime Course." />
     <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,289 +22,496 @@
 
     <style>
         /* ============================================================
-           MANAGEMENT PAGE — Local Styles (Mobile-First)
-           ============================================================ */
-
-        /* ---------- Team List (Mobile-first) ---------- */
-        .team-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        /* ---------- Team Card ---------- */
-        .team-card {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px;
-            transition:
-                transform 0.5s cubic-bezier(0.25, 1, 0.5, 1),
-                box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1),
-                border-color 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+   SUBTLE GRID LINES — Background body
+   ============================================================ */
+        body {
             position: relative;
-            overflow: hidden;
-            will-change: transform;
-            text-align: center;
         }
 
-        /* Gradient bar kiri */
-        .team-card::before {
+        body::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 4px;
-            background: linear-gradient(180deg, var(--c1), var(--c2), var(--c3));
-            transform: scaleY(0);
-            transform-origin: top;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(to right, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+        }
+
+        /* Semua konten di atas grid */
+        .page-content,
+        .navbar,
+        .mobile-menu,
+        footer {
+            position: relative;
             z-index: 1;
         }
 
-        .team-card:hover::before {
-            transform: scaleY(1);
+        /* ============================================================
+           TEAM PAGE — Zig-Zag Timeline Layout
+           ============================================================ */
+
+        :root {
+            --flow-primary: #10b981;
+            --flow-primary-dark: #059669;
+            --flow-primary-soft: rgba(16, 185, 129, 0.10);
+            --flow-secondary: #a7f3d0;
         }
 
-        .team-card:hover {
-            box-shadow: var(--shadow-lg);
-            border-color: var(--c1);
-            transform: translateY(-4px);
+        /* ---------- SECTION INTRO ---------- */
+        .section-intro {
+            text-align: center;
+            max-width: 720px;
+            margin: 0 auto 88px;
         }
 
-        /* ---------- Team Aside (photo + name + role) ---------- */
-        .team-aside {
+        /* ============================================================
+           FLOW WRAPPER
+           ============================================================ */
+        .flow {
+            position: relative;
+            padding: 24px 0;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .flow-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: visible;
+        }
+
+        /* ============================================================
+           FLOW ITEM
+           ============================================================ */
+        .flow-item {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            margin-bottom: 140px;
+            z-index: 2;
+        }
+
+        .flow-item:last-child {
+            margin-bottom: 0;
+        }
+
+        @media (min-width: 900px) {
+            .flow-item {
+                grid-template-columns: 1fr 1fr;
+                gap: 0;
+                margin-bottom: 160px;
+            }
+
+            /* ✅ FOTO DIPERKECIL: max-width 280px */
+            .flow-item .flow-media {
+                grid-column: 1;
+                justify-self: start;
+                align-self: start;
+                max-width: 280px;
+            }
+
+            .flow-item .flow-text {
+                grid-column: 2;
+                justify-self: end;
+                align-self: center;
+                max-width: 480px;
+                margin-top: 40px;
+            }
+
+            .flow-item.reverse .flow-media {
+                grid-column: 2;
+                justify-self: end;
+            }
+
+            .flow-item.reverse .flow-text {
+                grid-column: 1;
+                justify-self: start;
+                align-self: center;
+            }
+        }
+
+        /* ============================================================
+           FLOW MEDIA — Foto portrait dengan frame
+           ============================================================ */
+        .flow-media {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            text-align: center;
+            gap: 12px;
             width: 100%;
         }
 
-        .team-photo {
-            width: 140px;
-            height: 180px;
-            border-radius: 12px;
+        .flow-media-frame {
+            position: relative;
+            border-radius: var(--radius);
             overflow: hidden;
-            border: 3px solid var(--border);
-            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 14px;
+            background: var(--bg2);
+            border: 2px solid var(--border);
+            padding: 8px;
+            box-shadow:
+                0 6px 20px rgba(15, 23, 42, 0.08),
+                0 16px 48px rgba(15, 23, 42, 0.10);
             transition:
-                transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-                border-color 0.5s ease,
-                box-shadow 0.5s ease;
-            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+                transform 0.5s var(--ease-smooth),
+                box-shadow 0.5s var(--ease-smooth),
+                border-color 0.5s var(--ease-smooth);
+            cursor: pointer;
+            isolation: isolate;
+            /* ✅ Aspect ratio 4:5 portrait */
+            aspect-ratio: 4 / 5;
         }
 
-        .team-card:hover .team-photo {
-            border-color: var(--c2);
-            box-shadow: 0 12px 28px rgba(78, 205, 196, 0.25);
-            transform: scale(1.05) rotate(-1.5deg);
+        .flow-item:hover .flow-media-frame {
+            transform: translateY(-6px) scale(1.01);
+            border-color: var(--flow-primary);
+            box-shadow:
+                0 10px 30px rgba(16, 185, 129, 0.18),
+                0 24px 64px rgba(15, 23, 42, 0.20);
         }
 
-        .team-photo img {
+        .flow-media-frame img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center top;
+            object-position: center 20%;
             display: block;
-            transition: transform 0.7s ease;
+            border-radius: calc(var(--radius) - 8px);
+            background: var(--bg3);
+            transition: transform 0.6s var(--ease-smooth);
+            will-change: transform;
         }
 
-        .team-card:hover .team-photo img {
-            transform: scale(1.06);
+        .flow-item:hover .flow-media-frame img {
+            transform: scale(1.04);
         }
 
-        .team-photo .placeholder-icon {
-            font-size: 3rem;
-            color: var(--c1);
-            opacity: 0.4;
+        /* Overlay gradient */
+        .flow-media-frame::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border-radius: calc(var(--radius) - 8px);
+            background: linear-gradient(to top,
+                    rgba(6, 78, 59, 0.65) 0%,
+                    rgba(6, 78, 59, 0.30) 40%,
+                    transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s var(--ease-smooth);
+            pointer-events: none;
+            z-index: 2;
         }
 
-        .team-name {
+        .flow-item:hover .flow-media-frame::before {
+            opacity: 1;
+        }
+
+        /* Icon view */
+        .flow-media-frame::after {
+            content: '\f007';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.6);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--flow-primary);
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+            opacity: 0;
+            transition:
+                opacity 0.35s var(--ease-smooth),
+                transform 0.4s var(--ease-bounce);
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .flow-item:hover .flow-media-frame::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Nomor dekoratif */
+        .flow-media-num {
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--flow-primary);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 800;
-            font-size: 1rem;
+            font-size: 0.82rem;
+            font-variant-numeric: tabular-nums;
+            box-shadow:
+                0 4px 12px rgba(16, 185, 129, 0.40),
+                0 0 0 4px var(--bg);
+            z-index: 5;
+            transition:
+                transform 0.4s var(--ease-bounce),
+                background 0.4s var(--ease-smooth),
+                box-shadow 0.4s var(--ease-smooth);
+        }
+
+        .flow-item:hover .flow-media-num {
+            transform: scale(1.15) rotate(-8deg);
+            background: var(--flow-primary-dark);
+            box-shadow:
+                0 6px 18px rgba(16, 185, 129, 0.55),
+                0 0 0 4px var(--bg);
+        }
+
+        /* ---------- Nama + Role di bawah foto ---------- */
+        .flow-media-meta {
+            text-align: left;
+            padding: 0 4px;
+        }
+
+        .flow-media-name {
+            font-weight: 800;
+            font-size: 0.92rem;
             line-height: 1.35;
             color: var(--text);
             margin-bottom: 6px;
             letter-spacing: -0.2px;
             word-break: break-word;
+            transition: color 0.3s var(--ease-smooth);
         }
 
-        .team-role {
+        .flow-item:hover .flow-media-name {
+            color: var(--flow-primary-dark);
+        }
+
+        .flow-media-role {
             display: inline-block;
-            padding: 4px 14px;
-            border-radius: 99px;
-            background: linear-gradient(135deg, rgba(78, 205, 196, 0.15), rgba(168, 230, 207, 0.15));
-            color: #0d9488;
-            font-size: 0.72rem;
+            padding: 4px 12px;
+            border-radius: var(--radius-pill);
+            background: var(--flow-primary-soft);
+            color: var(--flow-primary-dark);
+            font-size: 0.68rem;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
             text-transform: uppercase;
             line-height: 1.4;
+            transition:
+                background 0.3s var(--ease-smooth),
+                color 0.3s var(--ease-smooth);
         }
 
-        /* ---------- Team Description ---------- */
-        .team-description {
-            font-size: 0.9rem;
-            color: var(--text2);
-            line-height: 1.75;
-            text-align: left;
+        .flow-item:hover .flow-media-role {
+            background: var(--flow-primary);
+            color: #fff;
         }
 
-        .team-description p {
-            margin: 0;
+        /* ============================================================
+           FLOW TEXT — Bio + Responsibilities
+           ============================================================ */
+        .flow-text {
+            display: flex;
+            flex-direction: column;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: clamp(1.2rem, 2.5vw, 1.75rem);
+            position: relative;
+            transition:
+                box-shadow 0.4s var(--ease-smooth),
+                border-color 0.4s var(--ease-smooth),
+                transform 0.4s var(--ease-smooth);
         }
 
-        .team-description p+p {
-            margin-top: 12px;
+        .flow-item:hover .flow-text {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--flow-primary);
+            transform: translateY(-3px);
         }
 
-        /* ---------- Team Duty (tupoksi) ---------- */
-        .team-duty {
-            font-size: 0.85rem;
+        .flow-text::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            width: 40px;
+            height: 40px;
+            border-right: 3px solid var(--flow-primary);
+            border-bottom: 3px solid var(--flow-primary);
+            border-radius: 0 0 var(--radius-sm) 0;
+            opacity: 0.35;
+            transition: opacity 0.4s var(--ease-smooth);
+        }
+
+        .flow-item:hover .flow-text::after {
+            opacity: 1;
+        }
+
+        .flow-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            align-self: flex-start;
+            padding: 4px 12px;
+            background: var(--flow-primary-soft);
+            color: var(--flow-primary-dark);
+            border-radius: var(--radius-pill);
+            font-size: var(--fs-xs);
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .flow-title {
+            font-size: clamp(1.15rem, 2vw, 1.4rem);
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        .flow-bio {
+            font-size: clamp(0.875rem, 1.3vw, 0.95rem);
             color: var(--text2);
             line-height: 1.7;
-            padding: 14px 18px;
-            background: linear-gradient(135deg, rgba(78, 205, 196, 0.06), rgba(168, 230, 207, 0.04));
-            border-left: 3px solid var(--c2);
-            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-            transition: all 0.4s ease;
+            margin: 0 0 14px;
         }
 
-        .team-duty strong {
-            color: #0d9488;
+        /* Duty box di dalam flow-text */
+        .flow-duty {
+            font-size: 0.82rem;
+            color: var(--text2);
+            line-height: 1.65;
+            padding: 12px 16px;
+            background: var(--flow-primary-soft);
+            border-left: 3px solid var(--flow-primary);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 0;
+            transition:
+                background 0.3s var(--ease-smooth),
+                border-color 0.3s var(--ease-smooth),
+                padding-left 0.3s var(--ease-smooth);
+        }
+
+        .flow-duty strong {
+            color: var(--flow-primary-dark);
             font-weight: 700;
         }
 
-        .team-card:hover .team-duty {
-            background: linear-gradient(135deg, rgba(78, 205, 196, 0.12), rgba(168, 230, 207, 0.08));
-            border-left-color: var(--c1);
+        .flow-item:hover .flow-duty {
+            background: rgba(16, 185, 129, 0.14);
             border-left-width: 4px;
-            padding-left: 22px;
-        }
-
-        .team-card:hover .team-duty strong {
-            color: var(--c1);
+            padding-left: 20px;
         }
 
         /* ============================================================
-           TABLET (min-width: 640px)
+           RESPONSIVE
            ============================================================ */
-        @media (min-width: 640px) {
-            .team-list {
-                gap: 22px;
-            }
-
-            .team-card {
-                grid-template-columns: auto 1fr;
+        @media (max-width: 899px) {
+            .flow-item {
                 gap: 28px;
-                align-items: flex-start;
-                padding: 28px;
-                text-align: left;
+                margin-bottom: 96px;
             }
 
-            .team-card:hover {
-                transform: translateX(6px);
+            .flow-media,
+            .flow-media-frame,
+            .flow-text {
+                max-width: 100%;
             }
 
-            .team-aside {
-                width: 160px;
-                flex-shrink: 0;
+            /* Mobile: foto max 240px */
+            .flow-media {
+                max-width: 240px;
+                margin: 0 auto;
             }
 
-            .team-photo {
-                width: 150px;
-                height: 190px;
+            .flow-media-meta {
+                text-align: center;
             }
 
-            .team-name {
-                font-size: 1.02rem;
+            .flow-media-num {
+                width: 36px;
+                height: 36px;
+                font-size: 0.75rem;
+                top: -10px;
+                left: -10px;
             }
 
-            .team-role {
-                font-size: 0.74rem;
+            .flow-item:hover .flow-media-frame img {
+                transform: none;
             }
 
-            .team-description {
-                padding-top: 8px;
-                font-size: 0.92rem;
+            .flow-item:hover .flow-media-frame {
+                transform: none;
             }
 
-            .team-duty {
-                font-size: 0.86rem;
+            .section-intro {
+                margin-bottom: 56px;
             }
         }
 
-        /* ============================================================
-           DESKTOP (min-width: 992px)
-           ============================================================ */
-        @media (min-width: 992px) {
-            .team-list {
-                gap: 24px;
-                margin-top: 48px;
+        @media (max-width: 640px) {
+            .flow-item {
+                margin-bottom: 72px;
             }
 
-            .team-card {
-                padding: 32px;
-                gap: 32px;
+            .flow-text::after {
+                display: none;
             }
 
-            .team-aside {
-                width: 180px;
-            }
-
-            .team-photo {
-                width: 170px;
-                height: 220px;
-            }
-
-            .team-name {
-                font-size: 1.08rem;
-            }
-
-            .team-description {
-                font-size: 0.95rem;
-                line-height: 1.8;
-            }
-
-            .team-duty {
+            .flow-media-frame::after {
+                width: 40px;
+                height: 40px;
                 font-size: 0.9rem;
-                padding: 16px 22px;
+            }
+
+            .flow-media-name {
+                font-size: 0.88rem;
+            }
+
+            .flow-media-role {
+                font-size: 0.62rem;
+                padding: 3px 10px;
+            }
+
+            .flow-duty {
+                font-size: 0.78rem;
+                padding: 10px 14px;
             }
         }
 
-        /* ---------- Reduced Motion ---------- */
         @media (prefers-reduced-motion: reduce) {
 
-            .team-card,
-            .team-card::before,
-            .team-photo,
-            .team-photo img,
-            .team-duty {
+            .flow-media-frame,
+            .flow-media-frame img,
+            .flow-media-frame::before,
+            .flow-media-frame::after,
+            .flow-text,
+            .flow-media-num,
+            .flow-media-name,
+            .flow-media-role,
+            .flow-duty {
                 transition-duration: 0.01ms !important;
             }
-        }
-
-        /* ============================================================
-   MANAGEMENT PAGE — Team Photo Fit Adjustment
-   ============================================================ */
-        .team-photo {
-            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-        }
-
-        .team-photo img {
-            object-fit: cover;
-            object-position: center 25%;
-            /* fokus ke wajah (25% dari atas) */
         }
     </style>
 </head>
@@ -314,7 +520,9 @@
 
     <div class="page-content">
 
-        <!-- ===== PAGE HEADER ===== -->
+        <!-- ============================================================
+             PAGE HEADER
+             ============================================================ -->
         <section class="page-header">
             <div class="page-header-bg"></div>
             <div class="container" style="position: relative; z-index: 1; text-align: center;">
@@ -330,245 +538,469 @@
             </div>
         </section>
 
-        <!-- ===== MANAGEMENT TEAM ===== -->
-        <section class="section" style="padding-top: 0;">
-            <div class="container">
-                <div class="team-list">
+        <div class="flow" data-flow>
 
-                    <!-- Team Member 1 - Director -->
-                    <div class="team-card fade-up">
-                        <div class="team-aside">
-                            <div class="team-photo">
-                                <img src="images/Delfin.png" alt="Maria Delfina Dhae"
-                                    onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-user-tie placeholder-icon\'></i>'" />
-                            </div>
-                            <div class="team-name">Maria Delfina Dhae, S.Pd., M.Hum</div>
-                            <div class="team-role" data-i18n="team_role_director">English Course Director</div>
-                        </div>
-                        <div class="team-description">
-                            <p data-i18n="team_bio_director">
-                                A cum laude postgraduate English Language Studies specialist with expertise in
-                                education, linguistics, and language teaching, empowering Asmat children to
-                                communicate confidently and meaningfully.
-                            </p>
-                            <p class="team-duty" data-i18n="team_duty_director">
-                                <strong>Responsibilities:</strong> Leads the strategic direction of the English Prime
-                                Course, manages curriculum design and academic quality, mentors instructors,
-                                coordinates with the Asmat Education Office, and ensures every class meets
-                                international CEFR standards.
-                            </p>
+            <!-- Team Member 1 - Director -->
+            <div class="flow-item fade-up">
+                <div class="flow-media">
+                    <div class="flow-media-frame">
+                        <span class="flow-media-num">01</span>
+                        <img src="images/Delfin.png" alt="Maria Delfina Dhae"
+                            onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-user-tie placeholder-icon\'></i>'" />
+                    </div>
+                    <div class="flow-media-meta">
+                        <div class="flow-media-name">Maria Delfina Dhae, S.Pd., M.Hum</div>
+                        <div class="flow-media-role" data-i18n="team_role_director">English Course Director
                         </div>
                     </div>
-
-                    <!-- Team Member 2 - Instructor -->
-                    <div class="team-card fade-up">
-                        <div class="team-aside">
-                            <div class="team-photo">
-                                <img src="images/Indika.png" alt="Miss Indika Khoifin"
-                                    onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-chalkboard-teacher placeholder-icon\'></i>'" />
-                            </div>
-                            <div class="team-name">Miss Indika Khoifin</div>
-                            <div class="team-role" data-i18n="team_role_instructor">English Instructor</div>
-                        </div>
-                        <div class="team-description">
-                            <p data-i18n="team_bio_indika">
-                                An English educator with a strong foundation in education and linguistics, dedicated
-                                to clear, meaningful, and learner-centered instruction for Asmat children.
-                            </p>
-                            <p class="team-duty" data-i18n="team_duty_indika">
-                                <strong>Responsibilities:</strong> Teaches Little Starter and Happy Beginner classes,
-                                designs daily lesson plans, guides students through communicative activities, and
-                                tracks learner progress through formative and summative assessments.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Team Member 3 - Instructor -->
-                    <div class="team-card fade-up">
-                        <div class="team-aside">
-                            <div class="team-photo">
-                                <img src="images/Marta.png" alt="Miss Martha Clautilda Mindipko"
-                                    onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-microphone-alt placeholder-icon\'></i>'" />
-                            </div>
-                            <div class="team-name">Miss Martha Clautilda Mindipko</div>
-                            <div class="team-role" data-i18n="team_role_instructor">English Instructor</div>
-                        </div>
-                        <div class="team-description">
-                            <p data-i18n="team_bio_martha">
-                                An accomplished English educator with strong academic expertise in English language
-                                studies and advanced pronunciation skills.
-                            </p>
-                            <p class="team-duty" data-i18n="team_duty_martha">
-                                <strong>Responsibilities:</strong> Focuses on pronunciation, intonation, and speaking
-                                fluency across all levels, leads English Day sessions and podcast activities, and
-                                provides individual coaching to help learners speak with confidence.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Team Member 4 - Instructor -->
-                    <div class="team-card fade-up">
-                        <div class="team-aside">
-                            <div class="team-photo">
-                                <img src="images/Putri.png" alt="Miss Putri A. Fembes"
-                                    onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-book-reader placeholder-icon\'></i>'" />
-                            </div>
-                            <div class="team-name">Miss Putri A. Fembes</div>
-                            <div class="team-role" data-i18n="team_role_instructor">English Instructor</div>
-                        </div>
-                        <div class="team-description">
-                            <p data-i18n="team_bio_putri">
-                                An English Literature graduate with extensive teaching experience in English language
-                                institutions, skilled in clear, engaging, and accessible instruction.
-                            </p>
-                            <p class="team-duty" data-i18n="team_duty_putri">
-                                <strong>Responsibilities:</strong> Leads reading and writing activities, guides
-                                students through stories and reflection reports, coordinates English Day events, and
-                                ensures learners build strong literacy foundations across all course levels.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Team Member 5 - Instructor -->
-                    <div class="team-card fade-up">
-                        <div class="team-aside">
-                            <div class="team-photo">
-                                <img src="images/Todd.png" alt="Sir Todd Myers Nuh de Larson Fonataba"
-                                    onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-map-marked-alt placeholder-icon\'></i>'" />
-                            </div>
-                            <div class="team-name">Sir Todd Myers Nuh de Larson Fonataba</div>
-                            <div class="team-role" data-i18n="team_role_instructor">English Instructor</div>
-                        </div>
-                        <div class="team-description">
-                            <p data-i18n="team_bio_todd">
-                                An English Education specialist with valuable experience as a tour guide and direct
-                                interaction with native English speakers, bringing authentic real-world communication
-                                into the classroom.
-                            </p>
-                            <p class="team-duty" data-i18n="team_duty_todd">
-                                <strong>Responsibilities:</strong> Facilitates real-world conversation practice and
-                                native-speaker sessions, leads intercultural education activities, and mentors students
-                                in practical English for tourism, community life, and daily communication.
-                            </p>
-                        </div>
-                    </div>
-
                 </div>
-            </div>
-        </section>
-
-        <!-- ===== CTA ===== -->
-        <section class="section"
-            style="background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
-            <div class="container">
-                <div style="text-align: center; max-width: 580px; margin: 0 auto;" class="fade-up">
-                    <h2 style="font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px;"
-                        data-i18n="team_cta_title">
-                        Want to Join Our Team or Programs?
-                    </h2>
-                    <p style="color: var(--text2); margin-bottom: 28px; line-height: 1.7;" data-i18n="team_cta_desc">
-                        Reach out to the English Prime Course for enrollment, partnership, or
-                        becoming part of our teaching team.
+                <div class="flow-text">
+                    <span class="flow-label">Leadership</span>
+                    <h3 class="flow-title">Director</h3>
+                    <p class="flow-bio" data-i18n="team_bio_director">
+                        A cum laude postgraduate English Language Studies specialist with expertise in
+                        education, linguistics, and language teaching, empowering Asmat children to
+                        communicate confidently and meaningfully.
                     </p>
-                    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                        <a href="contact.html" class="btn btn-primary" style="font-size: 0.95rem; padding: 14px 28px;">
-                            <i class="fas fa-envelope"></i>
-                            <span data-i18n="cta_btn_contact">Contact Us</span>
-                        </a>
-                        <a href="index.html" class="btn btn-outline" style="font-size: 0.95rem; padding: 14px 28px;">
-                            <i class="fas fa-home"></i>
-                            <span data-i18n="cta_btn_home">Back to Home</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== FOOTER ===== -->
-        <footer style="border-top: 1px solid var(--border); background: var(--bg2);">
-            <div class="container">
-                <div
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 32px 0 16px; text-align: left;">
-
-                    <div>
-                        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;"
-                            data-i18n="footer_contact">Contact</h4>
-                        <p style="font-size: 0.78rem; color: var(--text2); line-height: 1.8; margin: 0;">
-                            <i class="fas fa-map-marker-alt" style="color: var(--c1); width: 16px;"></i>
-                            Jl. Postel, Kabupaten Asmat,<br />Papua Selatan, Indonesia
-                        </p>
-                        <p style="font-size: 0.78rem; color: var(--text2); line-height: 1.8; margin: 8px 0 0;">
-                            <i class="fas fa-clock" style="color: var(--c1); width: 16px;"></i>
-                            Office Hours: 15.00 - 18.00 P.M
-                        </p>
-                    </div>
-
-                    <div>
-                        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;" data-i18n="footer_phone">
-                            Phone / WhatsApp</h4>
-                        <p style="font-size: 0.78rem; color: var(--text2); line-height: 1.8; margin: 0;">
-                            <i class="fab fa-whatsapp" style="color: var(--c1); width: 16px;"></i>
-                            Mam Delfin: 08218887004
-                        </p>
-                        <p style="font-size: 0.78rem; color: var(--text2); line-height: 1.8; margin: 4px 0 0;">
-                            <i class="fab fa-whatsapp" style="color: var(--c1); width: 16px;"></i>
-                            Miss Putri: 085691296762
-                        </p>
-                    </div>
-
-                    <div>
-                        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;"
-                            data-i18n="footer_institution">Institution</h4>
-                        <p style="font-size: 0.78rem; color: var(--text2); line-height: 1.8; margin: 0;">
-                            Kursus Bahasa Inggris,<br />
-                            Sanggar Kegiatan Belajar (SKB) Asmat<br />
-                            <em>Pendidikan Paul &amp; PNF</em><br />
-                            Dinas Pendidikan Kabupaten Asmat
-                        </p>
-                    </div>
-
-                    <div>
-                        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;"
-                            data-i18n="footer_follow">Follow Us</h4>
-                        <div style="display: flex; gap: 10px; margin-top: 4px;">
-
-                            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
-                                style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 0.95rem; transition: all .25s ease;"
-                                onmouseover="this.style.background='#1877F2';this.style.color='#fff';this.style.borderColor='#1877F2';this.style.transform='translateY(-2px)';"
-                                onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-
-                            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="TikTok"
-                                style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 0.95rem; transition: all .25s ease;"
-                                onmouseover="this.style.background='#000';this.style.color='#fff';this.style.borderColor='#000';this.style.transform='translateY(-2px)';"
-                                onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
-                                <i class="fab fa-tiktok"></i>
-                            </a>
-
-                        </div>
-                    </div>
-
-                </div>
-
-                <div style="border-top: 1px solid var(--border); padding-top: 16px; text-align: center;">
-                    <p style="font-size: 0.78rem; color: var(--text2); margin: 0;">
-                        © <span data-year>2026</span> English Prime Course. All Rights Are Reserved.
-                    </p>
-                    <p style="font-size: 0.72rem; margin-top: 6px; color: var(--text3);">
-                        Designed by
-                        <a href="https://guru-kreatif.vercel.app/" target="_blank" rel="noopener noreferrer"
-                            class="footer-credit-link">
-                            <strong>Yantho Rundy</strong> 💗
-                        </a>
+                    <p class="flow-duty" data-i18n="team_duty_director">
+                        <strong>Responsibilities:</strong> Leads the strategic direction of the English Prime
+                        Course, manages curriculum design and academic quality, mentors instructors,
+                        coordinates with the Asmat Education Office, and ensures every class meets
+                        international CEFR standards.
                     </p>
                 </div>
             </div>
-        </footer>
+
+            <!-- Team Member 2 - Instructor (reverse) -->
+            <div class="flow-item reverse fade-up">
+                <div class="flow-media">
+                    <div class="flow-media-frame">
+                        <span class="flow-media-num">02</span>
+                        <img src="images/Indika.png" alt="Miss Indika Khoifin"
+                            onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-chalkboard-teacher placeholder-icon\'></i>'" />
+                    </div>
+                    <div class="flow-media-meta">
+                        <div class="flow-media-name">Miss Indika Khoifin</div>
+                        <div class="flow-media-role" data-i18n="team_role_instructor">English Instructor</div>
+                    </div>
+                </div>
+                <div class="flow-text">
+                    <span class="flow-label">Teaching Team</span>
+                    <h3 class="flow-title">Instructor</h3>
+                    <p class="flow-bio" data-i18n="team_bio_indika">
+                        An English educator with a strong foundation in education and linguistics, dedicated
+                        to clear, meaningful, and learner-centered instruction for Asmat children.
+                    </p>
+                    <p class="flow-duty" data-i18n="team_duty_indika">
+                        <strong>Responsibilities:</strong> Teaches Little Starter and Happy Beginner classes,
+                        designs daily lesson plans, guides students through communicative activities, and
+                        tracks learner progress through formative and summative assessments.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Team Member 3 - Instructor -->
+            <div class="flow-item fade-up">
+                <div class="flow-media">
+                    <div class="flow-media-frame">
+                        <span class="flow-media-num">03</span>
+                        <img src="images/Marta.png" alt="Miss Martha Clautilda Mindipko"
+                            onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-microphone-alt placeholder-icon\'></i>'" />
+                    </div>
+                    <div class="flow-media-meta">
+                        <div class="flow-media-name">Miss Martha Clautilda Mindipko</div>
+                        <div class="flow-media-role" data-i18n="team_role_instructor">English Instructor</div>
+                    </div>
+                </div>
+                <div class="flow-text">
+                    <span class="flow-label">Teaching Team</span>
+                    <h3 class="flow-title">Instructor</h3>
+                    <p class="flow-bio" data-i18n="team_bio_martha">
+                        An accomplished English educator with strong academic expertise in English language
+                        studies and advanced pronunciation skills.
+                    </p>
+                    <p class="flow-duty" data-i18n="team_duty_martha">
+                        <strong>Responsibilities:</strong> Focuses on pronunciation, intonation, and speaking
+                        fluency across all levels, leads English Day sessions and podcast activities, and
+                        provides individual coaching to help learners speak with confidence.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Team Member 4 - Instructor (reverse) -->
+            <div class="flow-item reverse fade-up">
+                <div class="flow-media">
+                    <div class="flow-media-frame">
+                        <span class="flow-media-num">04</span>
+                        <img src="images/Putri.png" alt="Miss Putri A. Fembes"
+                            onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-book-reader placeholder-icon\'></i>'" />
+                    </div>
+                    <div class="flow-media-meta">
+                        <div class="flow-media-name">Miss Putri A. Fembes</div>
+                        <div class="flow-media-role" data-i18n="team_role_instructor">English Instructor</div>
+                    </div>
+                </div>
+                <div class="flow-text">
+                    <span class="flow-label">Teaching Team</span>
+                    <h3 class="flow-title">Instructor</h3>
+                    <p class="flow-bio" data-i18n="team_bio_putri">
+                        An English Literature graduate with extensive teaching experience in English language
+                        institutions, skilled in clear, engaging, and accessible instruction.
+                    </p>
+                    <p class="flow-duty" data-i18n="team_duty_putri">
+                        <strong>Responsibilities:</strong> Leads reading and writing activities, guides
+                        students through stories and reflection reports, coordinates English Day events, and
+                        ensures learners build strong literacy foundations across all course levels.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Team Member 5 - Instructor -->
+            <div class="flow-item fade-up">
+                <div class="flow-media">
+                    <div class="flow-media-frame">
+                        <span class="flow-media-num">05</span>
+                        <img src="images/Todd.png" alt="Sir Todd Myers Nuh de Larson Fonataba"
+                            onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-map-marked-alt placeholder-icon\'></i>'" />
+                    </div>
+                    <div class="flow-media-meta">
+                        <div class="flow-media-name">Sir Todd Myers Nuh de Larson Fonataba</div>
+                        <div class="flow-media-role" data-i18n="team_role_instructor">English Instructor</div>
+                    </div>
+                </div>
+                <div class="flow-text">
+                    <span class="flow-label">Teaching Team</span>
+                    <h3 class="flow-title">Instructor</h3>
+                    <p class="flow-bio" data-i18n="team_bio_todd">
+                        An English Education specialist with valuable experience as a tour guide and direct
+                        interaction with native English speakers, bringing authentic real-world communication
+                        into the classroom.
+                    </p>
+                    <p class="flow-duty" data-i18n="team_duty_todd">
+                        <strong>Responsibilities:</strong> Facilitates real-world conversation practice and
+                        native-speaker sessions, leads intercultural education activities, and mentors students
+                        in practical English for tourism, community life, and daily communication.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </section>
+
+    <!-- ============================================================
+             CTA
+             ============================================================ -->
+    <section class="section"
+        style="background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+        <div class="container">
+            <div style="text-align: center; max-width: 580px; margin: 0 auto;" class="fade-up">
+                <h2 style="font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px;"
+                    data-i18n="team_cta_title">
+                    Want to Join Our Team or Programs?
+                </h2>
+                <p style="color: var(--text2); margin-bottom: 28px; line-height: 1.7;" data-i18n="team_cta_desc">
+                    Reach out to the English Prime Course for enrollment, partnership, or
+                    becoming part of our teaching team.
+                </p>
+                <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                    <a href="contact.html" class="btn btn-primary" style="font-size: 0.95rem; padding: 14px 28px;">
+                        <i class="fas fa-envelope"></i>
+                        <span data-i18n="cta_btn_contact">Contact Us</span>
+                    </a>
+                    <a href="index.html" class="btn btn-outline" style="font-size: 0.95rem; padding: 14px 28px;">
+                        <i class="fas fa-home"></i>
+                        <span data-i18n="cta_btn_home">Back to Home</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+             FOOTER
+             ============================================================ -->
+    <footer style="border-top: 1px solid var(--border); background: var(--bg2);">
+        <div class="container">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 32px 0 16px; text-align: left;">
+
+                <div>
+                    <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;" data-i18n="footer_contact">
+                        Contact</h4>
+                    <p style="font-size: 0.78rem; color: var(--text2); line-height: 1.8; margin: 0;">
+                        <i class="fas fa-map-marker-alt" style="color: var(--c1); width: 16px;"></i>
+                        Jl. Postel, Kabupaten Asmat,<br />Papua Selatan, Indonesia
+                    </p>
+                    <p style="font-size: 0.78rem; color: var(--text2); line-height: 1.8; margin: 8px 0 0;">
+                        <i class="fas fa-clock" style="color: var(--c1); width: 16px;"></i>
+                        Office Hours: 15.00 - 18.00 P.M
+                    </p>
+                </div>
+
+                <div>
+                    <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;" data-i18n="footer_phone">
+                        Phone / WhatsApp</h4>
+                    <p style="font-size: 0.78rem; color: var(--text2); line-height: 1.8; margin: 0;">
+                        <i class="fab fa-whatsapp" style="color: var(--c1); width: 16px;"></i>
+                        Mam Delfin: 08218887004
+                    </p>
+                    <p style="font-size: 0.78rem; color: var(--text2); line-height: 1.8; margin: 4px 0 0;">
+                        <i class="fab fa-whatsapp" style="color: var(--c1); width: 16px;"></i>
+                        Miss Putri: 085691296762
+                    </p>
+                </div>
+
+                <div>
+                    <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;"
+                        data-i18n="footer_institution">Institution</h4>
+                    <p style="font-size: 0.78rem; color: var(--text2); line-height: 1.8; margin: 0;">
+                        Kursus Bahasa Inggris,<br />
+                        Sanggar Kegiatan Belajar (SKB) Asmat<br />
+                        <em>Pendidikan Paul &amp; PNF</em><br />
+                        Dinas Pendidikan Kabupaten Asmat
+                    </p>
+                </div>
+
+                <div>
+                    <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;" data-i18n="footer_follow">
+                        Follow Us</h4>
+                    <div style="display: flex; gap: 10px; margin-top: 4px;">
+
+                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
+                            style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 0.95rem; transition: all .25s ease;"
+                            onmouseover="this.style.background='#1877F2';this.style.color='#fff';this.style.borderColor='#1877F2';this.style.transform='translateY(-2px)';"
+                            onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+
+                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="TikTok"
+                            style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 0.95rem; transition: all .25s ease;"
+                            onmouseover="this.style.background='#000';this.style.color='#fff';this.style.borderColor='#000';this.style.transform='translateY(-2px)';"
+                            onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="border-top: 1px solid var(--border); padding-top: 16px; text-align: center;">
+                <p style="font-size: 0.78rem; color: var(--text2); margin: 0;">
+                    © <span data-year>2026</span> English Prime Course. All Rights Are Reserved.
+                </p>
+                <p style="font-size: 0.72rem; margin-top: 6px; color: var(--text3);">
+                    Designed by
+                    <a href="https://guru-kreatif.vercel.app/" target="_blank" rel="noopener noreferrer"
+                        class="footer-credit-link">
+                        <strong>Yantho Rundy</strong> 💗
+                    </a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
     </div>
 
     <script src="js/main.js" defer></script>
     <script src="js/navbar.js" defer></script>
+
+    <!-- ============================================================
+         DIAGONAL CONNECTOR SCRIPT — Emerald version
+         ============================================================ -->
+    <script>
+        (function () {
+            'use strict';
+
+            const SVG_NS = 'http://www.w3.org/2000/svg';
+
+            // 🎨 Warna garis (Emerald)
+            const COLOR_PRIMARY = '#10b981';
+            const COLOR_SECONDARY = '#a7f3d0';
+
+            function drawConnectors(flowEl) {
+                const oldSvg = flowEl.querySelector('.flow-svg');
+                if (oldSvg) oldSvg.remove();
+
+                const svg = document.createElementNS(SVG_NS, 'svg');
+                svg.setAttribute('class', 'flow-svg');
+                svg.setAttribute('preserveAspectRatio', 'none');
+
+                const flowRect = flowEl.getBoundingClientRect();
+                svg.setAttribute('viewBox', `0 0 ${flowRect.width} ${flowRect.height}`);
+                svg.setAttribute('width', flowRect.width);
+                svg.setAttribute('height', flowRect.height);
+
+                const defs = document.createElementNS(SVG_NS, 'defs');
+
+                const markerMain = createArrowMarker('flow-arrow-main', COLOR_PRIMARY);
+                defs.appendChild(markerMain);
+
+                const markerFlow = createArrowMarker('flow-arrow-flow', COLOR_SECONDARY);
+                defs.appendChild(markerFlow);
+
+                svg.appendChild(defs);
+
+                const items = flowEl.querySelectorAll('.flow-item');
+
+                for (let i = 0; i < items.length; i++) {
+                    const item = items[i];
+                    const media = item.querySelector('.flow-media-frame');
+                    const text = item.querySelector('.flow-text');
+
+                    if (!media || !text) continue;
+
+                    const mediaRect = media.getBoundingClientRect();
+                    const textRect = text.getBoundingClientRect();
+                    const isReverse = item.classList.contains('reverse');
+
+                    // Foto → Teks PASANGANNYA
+                    let startX, startY, endX, endY;
+
+                    if (isReverse) {
+                        startX = mediaRect.left - flowRect.left + 6;
+                        startY = mediaRect.bottom - flowRect.top - 6;
+                        endX = textRect.right - flowRect.left - 6;
+                        endY = textRect.top - flowRect.top + 6;
+                    } else {
+                        startX = mediaRect.right - flowRect.left - 6;
+                        startY = mediaRect.bottom - flowRect.top - 6;
+                        endX = textRect.left - flowRect.left + 6;
+                        endY = textRect.top - flowRect.top + 6;
+                    }
+
+                    const dx = endX - startX;
+                    const dy = endY - startY;
+
+                    const cp1x = startX + dx * 0.2;
+                    const cp1y = startY + dy * 0.55;
+                    const cp2x = startX + dx * 0.8;
+                    const cp2y = startY + dy * 0.9;
+
+                    const pathMain = document.createElementNS(SVG_NS, 'path');
+                    pathMain.setAttribute('d',
+                        `M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`
+                    );
+                    pathMain.setAttribute('fill', 'none');
+                    pathMain.setAttribute('stroke', COLOR_PRIMARY);
+                    pathMain.setAttribute('stroke-width', '2');
+                    pathMain.setAttribute('stroke-dasharray', '8 5');
+                    pathMain.setAttribute('stroke-linecap', 'round');
+                    pathMain.setAttribute('marker-end', 'url(#flow-arrow-main)');
+                    pathMain.setAttribute('opacity', '0.75');
+                    pathMain.setAttribute('class', 'flow-connector-main');
+
+                    svg.appendChild(pathMain);
+
+                    // Teks → Foto berikutnya
+                    if (i < items.length - 1) {
+                        const nextItem = items[i + 1];
+                        const nextMedia = nextItem.querySelector('.flow-media-frame');
+                        const nextIsReverse = nextItem.classList.contains('reverse');
+
+                        if (nextMedia) {
+                            const nextMediaRect = nextMedia.getBoundingClientRect();
+
+                            let startX2, startY2, endX2, endY2;
+
+                            if (isReverse) {
+                                startX2 = textRect.left - flowRect.left + 6;
+                                startY2 = textRect.bottom - flowRect.top - 6;
+                            } else {
+                                startX2 = textRect.right - flowRect.left - 6;
+                                startY2 = textRect.bottom - flowRect.top - 6;
+                            }
+
+                            if (nextIsReverse) {
+                                endX2 = nextMediaRect.right - flowRect.left - 6;
+                                endY2 = nextMediaRect.top - flowRect.top + 6;
+                            } else {
+                                endX2 = nextMediaRect.left - flowRect.left + 6;
+                                endY2 = nextMediaRect.top - flowRect.top + 6;
+                            }
+
+                            const dx2 = endX2 - startX2;
+                            const dy2 = endY2 - startY2;
+
+                            const cp1x2 = startX2 + dx2 * 0.1;
+                            const cp1y2 = startY2 + dy2 * 0.4;
+                            const cp2x2 = startX2 + dx2 * 0.85;
+                            const cp2y2 = startY2 + dy2 * 0.7;
+
+                            const pathFlow = document.createElementNS(SVG_NS, 'path');
+                            pathFlow.setAttribute('d',
+                                `M ${startX2} ${startY2} C ${cp1x2} ${cp1y2}, ${cp2x2} ${cp2y2}, ${endX2} ${endY2}`
+                            );
+                            pathFlow.setAttribute('fill', 'none');
+                            pathFlow.setAttribute('stroke', COLOR_SECONDARY);
+                            pathFlow.setAttribute('stroke-width', '1.5');
+                            pathFlow.setAttribute('stroke-dasharray', '4 4');
+                            pathFlow.setAttribute('stroke-linecap', 'round');
+                            pathFlow.setAttribute('marker-end', 'url(#flow-arrow-flow)');
+                            pathFlow.setAttribute('opacity', '0.6');
+                            pathFlow.setAttribute('class', 'flow-connector-flow');
+
+                            svg.appendChild(pathFlow);
+                        }
+                    }
+                }
+
+                flowEl.insertBefore(svg, flowEl.firstChild);
+            }
+
+            function createArrowMarker(id, color) {
+                const marker = document.createElementNS(SVG_NS, 'marker');
+                marker.setAttribute('id', id);
+                marker.setAttribute('viewBox', '0 0 10 10');
+                marker.setAttribute('refX', '9');
+                marker.setAttribute('refY', '5');
+                marker.setAttribute('markerWidth', '7');
+                marker.setAttribute('markerHeight', '7');
+                marker.setAttribute('orient', 'auto-start-reverse');
+
+                const path = document.createElementNS(SVG_NS, 'path');
+                path.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
+                path.setAttribute('fill', color);
+                marker.appendChild(path);
+
+                return marker;
+            }
+
+            function drawAll() {
+                document.querySelectorAll('[data-flow]').forEach(drawConnectors);
+            }
+
+            window.addEventListener('load', drawAll);
+
+            let resizeTimer;
+            window.addEventListener('resize', function () {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(drawAll, 200);
+            });
+
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(drawAll);
+            }
+
+            const observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (m) {
+                    if (m.type === 'attributes' && m.attributeName === 'class') {
+                        if (m.target.classList.contains('visible')) {
+                            setTimeout(drawAll, 120);
+                        }
+                    }
+                });
+            });
+
+            document.querySelectorAll('.fade-up').forEach(function (el) {
+                observer.observe(el, { attributes: true });
+            });
+
+            setTimeout(drawAll, 1000);
+            setTimeout(drawAll, 2000);
+        })();
+    </script>
 </body>
 
 </html>

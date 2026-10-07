@@ -25,6 +25,36 @@
 
     <style>
         /* ============================================================
+   SUBTLE GRID LINES — Background body
+   ============================================================ */
+        body {
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(to right, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+        }
+
+        /* Semua konten di atas grid */
+        .page-content,
+        .navbar,
+        .mobile-menu,
+        footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============================================================
        VIDEO LIBRARY PAGE — Local Styles
        ============================================================ */
 
@@ -1737,88 +1767,89 @@
             <div class="video-modal-info" id="modalInfo"></div>
         </div>
     </div>
-<!-- ===== 15. FOOTER ===== -->
-<footer style="border-top: 1px solid var(--border); background: var(--bg2);">
-    <div class="container">
-        <div
-            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; padding: 40px 0 20px; text-align: left;">
+    <!-- ===== 15. FOOTER ===== -->
+    <footer style="border-top: 1px solid var(--border); background: var(--bg2);">
+        <div class="container">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; padding: 40px 0 20px; text-align: left;">
 
-            <div>
-                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;" data-i18n="footer_contact">
-                    Contact</h4>
-                <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 0;">
-                    <i class="fas fa-map-marker-alt" style="color: var(--c1); width: 16px;"></i>
-                    Jl. Postel, Kabupaten Asmat,<br />Papua Selatan, Indonesia
-                </p>
-                <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 8px 0 0;">
-                    <i class="fas fa-clock" style="color: var(--c1); width: 16px;"></i>
-                    Office Hours: 15.00 - 18.00 P.M
-                </p>
-            </div>
-
-            <div>
-                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;" data-i18n="footer_phone">
-                    Phone / WhatsApp</h4>
-                <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 0;">
-                    <i class="fab fa-whatsapp" style="color: var(--c1); width: 16px;"></i>
-                    Mam Delfin: 08218887004
-                </p>
-                <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 4px 0 0;">
-                    <i class="fab fa-whatsapp" style="color: var(--c1); width: 16px;"></i>
-                    Miss Putri: 085691296762
-                </p>
-            </div>
-
-            <div>
-                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;" data-i18n="footer_institution">
-                    Institution</h4>
-                <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 0;">
-                    Kursus Bahasa Inggris,<br />
-                    Sanggar Kegiatan Belajar (SKB) Asmat<br />
-                    <em>Pendidikan Paul &amp; PNF</em><br />
-                    Dinas Pendidikan Kabupaten Asmat
-                </p>
-            </div>
-
-            <div>
-                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;" data-i18n="footer_follow">
-                    Follow Us</h4>
-                <div style="display: flex; gap: 12px; margin-top: 4px;">
-
-                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
-                        style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 1rem; transition: all .25s ease;"
-                        onmouseover="this.style.background='#1877F2';this.style.color='#fff';this.style.borderColor='#1877F2';this.style.transform='translateY(-2px)';"
-                        onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-
-                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="TikTok"
-                        style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 1rem; transition: all .25s ease;"
-                        onmouseover="this.style.background='#000';this.style.color='#fff';this.style.borderColor='#000';this.style.transform='translateY(-2px)';"
-                        onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
-                        <i class="fab fa-tiktok"></i>
-                    </a>
-
+                <div>
+                    <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;" data-i18n="footer_contact">
+                        Contact</h4>
+                    <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 0;">
+                        <i class="fas fa-map-marker-alt" style="color: var(--c1); width: 16px;"></i>
+                        Jl. Postel, Kabupaten Asmat,<br />Papua Selatan, Indonesia
+                    </p>
+                    <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 8px 0 0;">
+                        <i class="fas fa-clock" style="color: var(--c1); width: 16px;"></i>
+                        Office Hours: 15.00 - 18.00 P.M
+                    </p>
                 </div>
+
+                <div>
+                    <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;" data-i18n="footer_phone">
+                        Phone / WhatsApp</h4>
+                    <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 0;">
+                        <i class="fab fa-whatsapp" style="color: var(--c1); width: 16px;"></i>
+                        Mam Delfin: 08218887004
+                    </p>
+                    <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 4px 0 0;">
+                        <i class="fab fa-whatsapp" style="color: var(--c1); width: 16px;"></i>
+                        Miss Putri: 085691296762
+                    </p>
+                </div>
+
+                <div>
+                    <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;"
+                        data-i18n="footer_institution">
+                        Institution</h4>
+                    <p style="font-size: 0.82rem; color: var(--text2); line-height: 1.8; margin: 0;">
+                        Kursus Bahasa Inggris,<br />
+                        Sanggar Kegiatan Belajar (SKB) Asmat<br />
+                        <em>Pendidikan Paul &amp; PNF</em><br />
+                        Dinas Pendidikan Kabupaten Asmat
+                    </p>
+                </div>
+
+                <div>
+                    <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;" data-i18n="footer_follow">
+                        Follow Us</h4>
+                    <div style="display: flex; gap: 12px; margin-top: 4px;">
+
+                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
+                            style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 1rem; transition: all .25s ease;"
+                            onmouseover="this.style.background='#1877F2';this.style.color='#fff';this.style.borderColor='#1877F2';this.style.transform='translateY(-2px)';"
+                            onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+
+                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="TikTok"
+                            style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 1rem; transition: all .25s ease;"
+                            onmouseover="this.style.background='#000';this.style.color='#fff';this.style.borderColor='#000';this.style.transform='translateY(-2px)';"
+                            onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+
+                    </div>
+                </div>
+
             </div>
 
+            <div style="border-top: 1px solid var(--border); padding-top: 20px; text-align: center;">
+                <p style="font-size: 0.82rem; color: var(--text2);">
+                    © <span data-year>2026</span> English Prime Course. All Rights Are Reserved.
+                </p>
+                <p style="font-size: 0.78rem; margin-top: 8px; color: var(--text3);">
+                    Designed by
+                    <a href="https://guru-kreatif.vercel.app/" target="_blank" rel="noopener noreferrer"
+                        class="footer-credit-link">
+                        <strong>Yantho Rundy</strong> 💗
+                    </a>
+                </p>
+            </div>
         </div>
-
-        <div style="border-top: 1px solid var(--border); padding-top: 20px; text-align: center;">
-            <p style="font-size: 0.82rem; color: var(--text2);">
-                © <span data-year>2026</span> English Prime Course. All Rights Are Reserved.
-            </p>
-            <p style="font-size: 0.78rem; margin-top: 8px; color: var(--text3);">
-                Designed by
-                <a href="https://guru-kreatif.vercel.app/" target="_blank" rel="noopener noreferrer"
-                    class="footer-credit-link">
-                    <strong>Yantho Rundy</strong> 💗
-                </a>
-            </p>
-        </div>
-    </div>
-</footer>
-<br>
+    </footer>
+    <br>
     <script>
         /* =========================================================================
            VIDEO DATA
