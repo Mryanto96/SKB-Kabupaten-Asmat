@@ -1,179 +1,671 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="en" data-theme="light">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Blog | SMP Persiapan Negeri Pulau Tiga</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog | English Prime Course</title>
     <meta name="description"
-        content="Blog dan artikel tentang kegiatan belajar mengajar, tips pendidikan, dan pengalaman mengajar di daerah 3T.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        content="Articles, stories, and updates from English Prime Course — where learning meets real life." />
+    <meta name="author" content="English Prime Course" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+
     <style>
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
+        /* ============================================================
+           BLOG PAGE — News Layout with Sidebar
+           ============================================================ */
+
+        :root {
+            --emerald: #10b981;
+            --emerald-dark: #059669;
+            --emerald-soft: rgba(16, 185, 129, 0.10);
         }
 
-        .blog-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        /* .blog-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--c1);
-        } */
-
-        .blog-image {
-            height: 220px;
-            overflow: hidden;
-            background: var(--bg3);
+        /* ---------- SUBTLE GRID LINES ---------- */
+        body {
             position: relative;
         }
 
-        .blog-image img {
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(to right, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+        }
+
+        [data-theme="dark"] body::before {
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        .page-content,
+        .navbar,
+        .mobile-menu,
+        footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ---------- PAGE HEADER ---------- */
+        .blog-header {
+            padding: 80px 0 48px;
+            text-align: center;
+        }
+
+        .blog-header .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .blog-header .section-label::before,
+        .blog-header .section-label::after {
+            content: '';
+            width: 24px;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .blog-header .section-title {
+            margin-bottom: 16px;
+        }
+
+        .blog-header .section-desc {
+            margin: 0 auto;
+        }
+
+        /* ============================================================
+           MAIN LAYOUT — 2 KOLOM (Konten + Sidebar)
+           ============================================================ */
+        .blog-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+            align-items: start;
+            padding-top: 8px;
+        }
+
+        @media (min-width: 1024px) {
+            .blog-layout {
+                grid-template-columns: minmax(0, 1fr) 320px;
+                gap: 40px;
+            }
+        }
+
+        /* ============================================================
+           KOLOM KIRI — Featured + Grid
+           ============================================================ */
+        .blog-main {
+            min-width: 0;
+        }
+
+        /* ---------- FEATURED SECTION ---------- */
+        .featured-section {
+            margin-bottom: 32px;
+        }
+
+        .featured-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--emerald);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 14px;
+        }
+
+        .featured-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, var(--border), transparent);
+        }
+
+        .featured-card {
+            display: grid;
+            grid-template-columns: 1fr;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: border-color 0.4s var(--ease-smooth),
+                box-shadow 0.4s var(--ease-smooth),
+                transform 0.4s var(--ease-smooth);
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+        }
+
+        .featured-card:hover {
+            border-color: var(--emerald);
+            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .featured-media {
+            position: relative;
+            aspect-ratio: 16 / 10;
+            background: var(--bg3);
+            overflow: hidden;
+        }
+
+        .featured-media img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.6s var(--ease-smooth);
         }
 
-        .blog-card:hover .blog-image img {
+        .featured-card:hover .featured-media img {
+            transform: scale(1.04);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            background: var(--emerald);
+            color: #fff;
+            border-radius: 99px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            z-index: 2;
+        }
+
+        .featured-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .featured-cat {
+            display: inline-flex;
+            align-self: flex-start;
+            padding: 3px 10px;
+            background: var(--emerald-soft);
+            color: var(--emerald-dark);
+            border-radius: 99px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .featured-title {
+            font-size: clamp(1.15rem, 1rem + 0.8vw, 1.5rem);
+            font-weight: 700;
+            line-height: 1.25;
+            letter-spacing: -0.4px;
+            color: var(--text);
+            margin-bottom: 12px;
+            transition: color 0.3s var(--ease-smooth);
+        }
+
+        .featured-card:hover .featured-title {
+            color: var(--emerald-dark);
+        }
+
+        .featured-excerpt {
+            font-size: 0.9rem;
+            color: var(--text2);
+            line-height: 1.65;
+            margin-bottom: 16px;
+        }
+
+        .featured-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            font-size: 0.72rem;
+            color: var(--text3);
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .featured-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .featured-meta i {
+            color: var(--emerald);
+        }
+
+        /* ---------- BLOG GRID (KIRI BAWAH) ---------- */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        @media (min-width: 640px) {
+            .blog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* ---------- BLOG CARD ---------- */
+        .blog-card {
+            display: flex;
+            flex-direction: column;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.4s var(--ease-smooth),
+                box-shadow 0.4s var(--ease-smooth),
+                border-color 0.4s var(--ease-smooth);
+            position: relative;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.10);
+            border-color: var(--emerald);
+        }
+
+        .blog-card-media {
+            aspect-ratio: 16 / 10;
+            background: var(--bg3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .blog-card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s var(--ease-smooth);
+            display: block;
+        }
+
+        .blog-card:hover .blog-card-media img {
             transform: scale(1.05);
         }
 
-        .blog-category {
+        .blog-card-cat {
             position: absolute;
             top: 12px;
             left: 12px;
-            padding: 4px 12px;
+            padding: 4px 10px;
             border-radius: 99px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
+            z-index: 2;
         }
 
-        .blog-category.tips {
-            background: #10b981;
-        }
-
-        .blog-category.experience {
+        .blog-card-cat.news {
             background: #3b82f6;
         }
 
-        .blog-category.news {
+        .blog-card-cat.event {
             background: #f59e0b;
         }
 
-        .blog-category.activity {
+        .blog-card-cat.achievement {
+            background: #ef4444;
+        }
+
+        .blog-card-cat.activity {
             background: #8b5cf6;
         }
 
-        .blog-content {
-            padding: 20px;
+        .blog-card-cat.workshop {
+            background: #06b6d4;
         }
 
-        .blog-title {
-            font-size: 1.1rem;
+        .blog-card-cat.tips {
+            background: #10b981;
+        }
+
+        .blog-card-body {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .blog-card-title {
+            font-size: 1rem;
             font-weight: 700;
+            line-height: 1.35;
+            letter-spacing: -0.2px;
             color: var(--text);
-            margin-bottom: 8px;
-            line-height: 1.4;
-            overflow: hidden;
+            margin-bottom: 10px;
             display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
             -webkit-box-orient: vertical;
+            overflow: hidden;
+            transition: color 0.3s var(--ease-smooth);
         }
 
-        .blog-meta {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 12px;
-            font-size: 0.7rem;
-            color: var(--text3);
-            flex-wrap: wrap;
+        .blog-card:hover .blog-card-title {
+            color: var(--emerald-dark);
         }
 
-        .blog-meta span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .blog-excerpt {
-            font-size: 0.85rem;
+        .blog-card-excerpt {
+            font-size: 0.82rem;
             color: var(--text2);
             line-height: 1.6;
-            margin-bottom: 16px;
-            overflow: hidden;
+            margin-bottom: 14px;
+            flex: 1;
             display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
             -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
-        .read-more {
-            color: var(--c1);
-            font-weight: 600;
-            font-size: 0.8rem;
-            text-decoration: none;
+        .blog-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            font-size: 0.7rem;
+            color: var(--text3);
+            font-weight: 500;
+        }
+
+        .blog-card-footer span {
             display: inline-flex;
             align-items: center;
             gap: 5px;
         }
 
-        .read-more:hover {
-            text-decoration: underline;
+        .blog-card-footer i {
+            font-size: 0.68rem;
         }
 
-        .empty-blog {
-            text-align: center;
-            padding: 60px 20px;
-            background: var(--bg2);
-            border-radius: 24px;
+        /* ============================================================
+           KOLOM KANAN — SIDEBAR
+           ============================================================ */
+        .blog-sidebar {
+            position: sticky;
+            top: calc(var(--nav-h, 68px) + 24px);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .empty-blog i {
-            font-size: 4rem;
-            color: var(--text3);
-            margin-bottom: 16px;
-        }
-
-        .empty-blog p {
-            color: var(--text2);
-        }
-
-        .loading {
-            text-align: center;
-            padding: 60px;
-        }
-
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--border);
-            border-top-color: var(--c1);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
+        @media (max-width: 1023px) {
+            .blog-sidebar {
+                position: static;
             }
         }
 
-        @media (max-width: 768px) {
+        .sidebar-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+
+        .sidebar-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--emerald);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .sidebar-title i {
+            color: var(--emerald);
+            font-size: 0.85rem;
+        }
+
+        /* ---------- ARTIKEL VERTIKAL (SIDEBAR LIST) ---------- */
+        .sidebar-articles {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .sidebar-article {
+            display: flex;
+            gap: 12px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.3s var(--ease-smooth);
+        }
+
+        .sidebar-article:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .sidebar-article:hover {
+            transform: translateX(4px);
+        }
+
+        .sidebar-article-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: var(--bg3);
+            position: relative;
+        }
+
+        .sidebar-article-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s var(--ease-smooth);
+        }
+
+        .sidebar-article:hover .sidebar-article-img img {
+            transform: scale(1.08);
+        }
+
+        .sidebar-article-body {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .sidebar-article-cat {
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--emerald);
+            margin-bottom: 4px;
+        }
+
+        .sidebar-article-title {
+            font-size: 0.82rem;
+            font-weight: 600;
+            line-height: 1.35;
+            color: var(--text);
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            transition: color 0.3s var(--ease-smooth);
+        }
+
+        .sidebar-article:hover .sidebar-article-title {
+            color: var(--emerald-dark);
+        }
+
+        .sidebar-article-date {
+            font-size: 0.65rem;
+            color: var(--text3);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ---------- SIDEBAR: KATEGORI LIST ---------- */
+        .sidebar-cats {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-cat-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background: var(--bg2);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text2);
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s var(--ease-smooth);
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            text-align: left;
+            width: 100%;
+        }
+
+        .sidebar-cat-item:hover {
+            background: var(--emerald-soft);
+            color: var(--emerald-dark);
+            transform: translateX(4px);
+        }
+
+        .sidebar-cat-item .cat-count {
+            padding: 2px 8px;
+            background: var(--emerald);
+            color: #fff;
+            border-radius: 99px;
+            font-size: 0.68rem;
+            font-weight: 700;
+        }
+
+        /* ---------- LOAD MORE ---------- */
+        .loadmore-wrap {
+            text-align: center;
+            margin-top: 32px;
+        }
+
+        .loadmore-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            background: var(--card-bg);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-pill);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-smooth);
+        }
+
+        .loadmore-btn:hover {
+            background: var(--emerald);
+            color: #fff;
+            border-color: var(--emerald);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .loadmore-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .article-counter {
+            display: block;
+            margin-top: 12px;
+            font-size: 0.75rem;
+            color: var(--text3);
+        }
+
+        .article-counter strong {
+            color: var(--text);
+        }
+
+        /* ---------- EMPTY STATE ---------- */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 20px;
+            background: var(--bg2);
+            border-radius: var(--radius);
+            border: 2px dashed var(--border);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--text3);
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .empty-state h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+            color: var(--text2);
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 640px) {
+            .blog-header {
+                padding: 60px 0 40px;
+            }
+
             .blog-grid {
                 grid-template-columns: 1fr;
             }
@@ -183,206 +675,122 @@
 
 <body>
 
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-inner">
-                <a href="index.html" class="logo">
-                    <div class="logo-icon">SMP</div>
-                    <div class="logo-text">
-                        <span class="logo-title">Persiapan Negeri</span>
-                        <span class="logo-sub">Pulau Tiga • Nakai</span>
-                    </div>
-                </a>
-                <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="documents.html">Documents</a></li>
-                    <li><a href="gallery.html">Gallery</a></li>
-                    <li><a href="grades.html">Students Grades</a></li>
-                    <li><a href="exam.html">Ujian</a></li>
-                    <li><a href="rapor.html">Rapor</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="about.html">About Me</a></li>
-                    <li><a href="https://mryanto96.github.io/ATTENDANCE-SYSTEM/" target="_blank">Absensi</a></li>
-                    <li><a href="contact.html">Contact Me</a></li>
-                </ul>
-                <div class="nav-right">
-                    <button class="dark-toggle" aria-label="Toggle dark mode" id="darkToggleBtn">
-                        <div class="dark-toggle-ball">☀️</div>
-                    </button>
-                    <button class="hamburger" aria-label="Menu">
-                        <span></span><span></span><span></span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="index.html">Home</a>
-        <a href="documents.html">Documents</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="grades.html">Students Grades</a>
-        <a href="exam.html">Ujian</a>
-        <a href="rapor.html">Rapor</a>
-        <a href="blog.html">Blog</a>
-        <a href="about.html">About Me</a>
-        <li><a href="https://mryanto96.github.io/ATTENDANCE-SYSTEM/" target="_blank">Absensi</a></li>
-        <a href="contact.html">Contact Me</a>
-    </div>
-
     <div class="page-content">
-        <div class="page-header">
-            <div class="page-header-bg"></div>
+
+        <!-- ============================================================
+             PAGE HEADER
+             ============================================================ -->
+        <section class="blog-header">
             <div class="container">
-                <div class="fade-up" style="text-align: center; max-width: 700px; margin: 0 auto;">
-                    <p class="section-label">Blog & Artikel</p>
-                    <h1
-                        style="font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;letter-spacing:-1px;margin-bottom:16px;">
-                        Catatan <span class="gradient-text">Pengabdian</span>
-                    </h1>
-                    <p style="color:var(--text2);font-size:0.95rem;line-height:1.7;">
-                        Berbagi pengalaman, tips mengajar, dan cerita inspiratif dari kegiatan belajar mengajar di
-                        daerah 3T.
+                <p class="section-label">Blog & Articles</p>
+                <h1 class="section-title">
+                    Stories from <span class="gradient-text">English Prime Course</span>
+                </h1>
+                <p class="section-desc" style="margin: 0 auto;">
+                    Articles, activities, and updates from our learning community —
+                    where learning meets real life.
+                </p>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             LAYOUT (GRID + SIDEBAR)
+             ============================================================ -->
+        <section class="section" style="padding-top: 0;">
+            <div class="container">
+
+                <!-- 2-Column Layout -->
+                <div class="blog-layout">
+
+                    <!-- KIRI: Featured + Grid -->
+                    <div class="blog-main">
+
+                        <!-- Featured -->
+                        <section class="featured-section" id="featuredSection" style="display:none;">
+                            <div class="featured-label">
+                                <i class="fas fa-star"></i>
+                                Featured Article
+                            </div>
+                            <div id="featuredContent"></div>
+                        </section>
+
+                        <!-- Grid -->
+                        <div class="blog-grid" id="blogGrid">
+                            <!-- Cards in-jected by JS -->
+                        </div>
+
+                        <!-- Load More -->
+                        <div class="loadmore-wrap" id="loadmoreWrap" style="display:none;">
+                            <button class="loadmore-btn" id="loadmoreBtn" type="button">
+                                <span>Load More Articles</span>
+                                <i class="fas fa-arrow-down"></i>
+                            </button>
+                            <span class="article-counter" id="articleCounter"></span>
+                        </div>
+
+                    </div>
+
+                    <!-- KANAN: Sidebar -->
+                    <aside class="blog-sidebar">
+
+                        <!-- Sidebar: Artikel Terbaru -->
+                        <div class="sidebar-panel">
+                            <h3 class="sidebar-title">
+                                <i class="fas fa-clock"></i>
+                                Latest Articles
+                            </h3>
+                            <div class="sidebar-articles" id="sidebarArticles">
+                                <!-- In-jected by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Sidebar: Kategori -->
+                        <div class="sidebar-panel">
+                            <h3 class="sidebar-title">
+                                <i class="fas fa-tags"></i>
+                                Categories
+                            </h3>
+                            <div class="sidebar-cats" id="sidebarCategories">
+                                <!-- In-jected by JS -->
+                            </div>
+                        </div>
+
+                    </aside>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============================================================
+             FOOTER
+             ============================================================ -->
+        <footer style="border-top: 1px solid var(--border); background: var(--bg2);">
+            <div class="container">
+                <div style="padding: 32px 0 16px; text-align: center;">
+                    <p style="font-size: 0.82rem; color: var(--text2); margin: 0;">
+                        © <span data-year>2026</span> English Prime Course. All Rights Are Reserved.
+                    </p>
+                    <p style="font-size: 0.72rem; margin-top: 6px; color: var(--text3);">
+                        Designed by
+                        <a href="https://guru-kreatif.vercel.app/" target="_blank" rel="noopener noreferrer">
+                            <strong>Yantho Rundy</strong> 💗
+                        </a>
                     </p>
                 </div>
             </div>
-        </div>
+        </footer>
 
-        <div class="container" style="padding-bottom: 80px;">
-            <!-- BLOG GRID -->
-            <div class="blog-grid" id="blogGrid">
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Memuat artikel...</p>
-                </div>
-            </div>
-        </div>
     </div>
-    <br><br>
-    <script src="js/main.js"></script>
-    <script src="js/navbar.js"></script>
-    <script>
-        // ===== KONFIGURASI =====
-        // GANTI DENGAN WEB APP URL ANDA!
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw7A9CIccdaHnGWGjtiPHdRnWfDXjKMOdVjU7sN306VqNXQWG5eZ-8sFpJcs0T1EBPK/exec';
 
-        // ===== FUNGSI =====
-        function stripHtml(html) {
-            const temp = document.createElement('div');
-            temp.innerHTML = html;
-            return temp.textContent || temp.innerText || '';
-        }
+    <!-- ============================================================
+         SCRIPTS
+         ============================================================ -->
+    <script src="js/blog-data.js"></script>
+    <script src="js/blog-page.js"></script>
+    <script src="js/main.js" defer></script>
+    <script src="js/navbar.js" defer></script>
 
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function formatDate(dateString) {
-            if (!dateString) return '';
-            const date = new Date(dateString);
-            return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-        }
-
-        function getCategoryLabel(kategori) {
-            const labels = {
-                tips: 'Tips Mengajar',
-                experience: 'Pengalaman',
-                news: 'Berita',
-                activity: 'Kegiatan'
-            };
-            return labels[kategori] || 'Artikel';
-        }
-
-        function getCategoryColor(kategori) {
-            const colors = {
-                tips: '#10b981',
-                experience: '#3b82f6',
-                news: '#f59e0b',
-                activity: '#8b5cf6'
-            };
-            return colors[kategori] || '#10b981';
-        }
-
-        // ===== AMBIL ARTIKEL DARI APPS SCRIPT =====
-        async function loadArticles() {
-            try {
-                const response = await fetch(`${APPS_SCRIPT_URL}?action=getAllArticles&t=${Date.now()}`);
-                const result = await response.json();
-
-                if (result.success && result.data) {
-                    return result.data;
-                }
-                return [];
-            } catch (error) {
-                console.error('Error loading articles:', error);
-                return [];
-            }
-        }
-
-        // ===== RENDER BLOG =====
-        async function renderBlog() {
-            const grid = document.getElementById('blogGrid');
-            if (!grid) return;
-
-            const articles = await loadArticles();
-
-            if (articles.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-blog">
-                        <i class="fas fa-newspaper"></i>
-                        <p>Belum ada artikel.</p>
-                        <p style="font-size: 0.85rem;">Silakan cek kembali nanti.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            // Urutkan dari terbaru ke terlama
-            const sortedArticles = [...articles].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-            grid.innerHTML = sortedArticles.map(article => {
-                const plainText = stripHtml(article.isi);
-                const excerpt = plainText.substring(0, 120) + (plainText.length > 120 ? '...' : '');
-                const imageUrl = article.gambar || `https://placehold.co/600x400/var(--bg3)/var(--text2)?text=${encodeURIComponent(article.judul)}`;
-                const categoryLabel = getCategoryLabel(article.kategori);
-                const categoryColor = getCategoryColor(article.kategori);
-
-                return `
-                    <div class="blog-card" onclick="window.location.href='post.html?id=${article.id}'">
-                        <div class="blog-image">
-                            <img src="${imageUrl}" 
-                                 alt="${escapeHtml(article.judul)}" 
-                                 onerror="this.src='https://placehold.co/600x400/var(--bg3)/var(--text2)?text=${encodeURIComponent(article.judul)}'">
-                            <span class="blog-category ${article.kategori}" style="background: ${categoryColor}">
-                                ${categoryLabel}
-                            </span>
-                        </div>
-                        <div class="blog-content">
-                            <h3 class="blog-title">${escapeHtml(article.judul)}</h3>
-                            <div class="blog-meta">
-                                <span><i class="fas fa-calendar-alt"></i> ${formatDate(article.timestamp)}</span>
-                                <span><i class="fas fa-eye"></i> ${article.views || 0} views</span>
-                            </div>
-                            <p class="blog-excerpt">${escapeHtml(excerpt)}</p>
-                            <a href="post.html?id=${article.id}" class="read-more" onclick="event.stopPropagation()">
-                                Baca selengkapnya <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // ===== INIT =====
-        document.addEventListener('DOMContentLoaded', () => {
-            renderBlog();
-        });
-    </script>
-    <script src="js/main.js"></script>
-    <script src="js/navbar.js"></script>
 </body>
 
 </html>
