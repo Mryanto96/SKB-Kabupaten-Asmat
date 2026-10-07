@@ -16,6 +16,7 @@ const TRANSLATIONS = {
         nav_activities: 'Activities',
         nav_attendance: 'Attendance',
         nav_peserta: 'Students',              // ← TAMBAH INI
+        nav_blog: 'Blog',                      // ← TAMBAH INI
         nav_contact: 'Contact',
 
         // Sub-menu Activities
@@ -34,6 +35,7 @@ const TRANSLATIONS = {
         nav_activities: 'Kegiatan',
         nav_attendance: 'Kehadiran',
         nav_peserta: 'Peserta',               // ← TAMBAH INI
+        nav_blog: 'Blog',                     // ← TAMBAH INI
         nav_contact: 'Kontak',
 
         // Sub-menu Kegiatan
@@ -96,6 +98,7 @@ const MENU_STRUCTURE = [
     },
     { key: 'nav_attendance', url: 'attendance.html' },
     { key: 'nav_peserta', url: 'peserta.html' },     // ← TAMBAH INI
+    { key: 'nav_blog', url: 'blog.html' },           // ← TAMBAH INI
     { key: 'nav_contact', url: 'contact.html' }
 ];
 /* --------------------------------------------
