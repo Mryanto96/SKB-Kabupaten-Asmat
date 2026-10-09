@@ -4,7 +4,6 @@
 // ============================================
 
 /* --------------------------------------------
-  /* ============================================================
    LANGUAGE / i18n
    ============================================================ */
 const TRANSLATIONS = {
@@ -15,8 +14,8 @@ const TRANSLATIONS = {
         nav_management: 'Management',
         nav_activities: 'Activities',
         nav_attendance: 'Attendance',
-        nav_peserta: 'Students',              // ← TAMBAH INI
-        nav_blog: 'Blog',                      // ← TAMBAH INI
+        nav_peserta: 'Students',
+        nav_blog: 'Blog',
         nav_contact: 'Contact',
 
         // Sub-menu Activities
@@ -34,8 +33,8 @@ const TRANSLATIONS = {
         nav_management: 'Manajemen',
         nav_activities: 'Kegiatan',
         nav_attendance: 'Kehadiran',
-        nav_peserta: 'Peserta',               // ← TAMBAH INI
-        nav_blog: 'Blog',                     // ← TAMBAH INI
+        nav_peserta: 'Peserta',
+        nav_blog: 'Blog',
         nav_contact: 'Kontak',
 
         // Sub-menu Kegiatan
@@ -97,10 +96,11 @@ const MENU_STRUCTURE = [
         ]
     },
     { key: 'nav_attendance', url: 'attendance.html' },
-    { key: 'nav_peserta', url: 'peserta.html' },     // ← TAMBAH INI
-    { key: 'nav_blog', url: 'blog.html' },           // ← TAMBAH INI
+    { key: 'nav_peserta', url: 'peserta.html' },
+    { key: 'nav_blog', url: 'blog.html' },
     { key: 'nav_contact', url: 'contact.html' }
 ];
+
 /* --------------------------------------------
    RENDER HELPERS
 -------------------------------------------- */
@@ -209,6 +209,7 @@ function initNavigation() {
 
     attachAllEvents();
     updateActiveNavLink();
+    forceNavbarAlwaysVisible();
 }
 
 /* --------------------------------------------
@@ -333,7 +334,6 @@ function updateActiveNavLink() {
         const href = link.getAttribute('href');
 
         if (li.classList.contains('has-dropdown')) {
-            // Try exact match first (path + hash), then path + any hash, then path only
             const match =
                 li.querySelector(`.dropdown-menu a[href="${fullPath}"]`) ||
                 li.querySelector(`.dropdown-menu a[href^="${currentPath}#"]`) ||
@@ -360,6 +360,68 @@ function updateActiveNavLink() {
     });
 }
 
+/* ============================================
+   ANTI-HIDE NAVBAR
+   Memaksa navbar selalu terlihat saat scroll.
+   Menghapus class yang menyembunyikan navbar
+   dan memaksa style inline agar tetap muncul.
+   ============================================ */
+function forceNavbarAlwaysVisible() {
+    const navbar = document.querySelector('nav.navbar');
+    if (!navbar) return;
+
+    // Class yang biasanya dipakai untuk hide navbar
+    const hideClasses = [
+        'hide', 'hidden', 'navbar-hide', 'navbar-hidden',
+        'scroll-down', 'scroll-hide', 'nav-up', 'nav-hidden',
+        'hide-on-scroll', 'navbar-scroll-down', 'navbar--hidden',
+        'is-hidden', 'navbar-up', 'shrink-hidden',
+        'navbar-scrolled-hide', 'nav-scroll-hide', 'top-hide'
+    ];
+
+    // Fungsi membersihkan navbar dari class/style hide
+    function cleanNavbar() {
+        // Hapus semua class hide
+        hideClasses.forEach(cls => {
+            if (navbar.classList.contains(cls)) {
+                navbar.classList.remove(cls);
+            }
+        });
+
+        // Paksa style inline agar selalu terlihat
+        navbar.style.transform = 'translateY(0)';
+        navbar.style.top = '0';
+        navbar.style.opacity = '1';
+        navbar.style.visibility = 'visible';
+        navbar.style.pointerEvents = 'auto';
+    }
+
+    // Jalankan langsung
+    cleanNavbar();
+
+    // Observasi setiap perubahan class/style pada navbar
+    const observer = new MutationObserver(cleanNavbar);
+    observer.observe(navbar, {
+        attributes: true,
+        attributeFilter: ['class', 'style']
+    });
+
+    // Scroll listener — paksa navbar terlihat saat scroll
+    let scrollTicking = false;
+    window.addEventListener('scroll', function () {
+        if (!scrollTicking) {
+            window.requestAnimationFrame(function () {
+                cleanNavbar();
+                scrollTicking = false;
+            });
+            scrollTicking = true;
+        }
+    }, { passive: true });
+
+    // Resize listener
+    window.addEventListener('resize', cleanNavbar);
+}
+
 /* --------------------------------------------
    NAVBAR STYLES (injected — fallback)
    NOTE: main styles live in css/style.css.
@@ -369,6 +431,14 @@ function injectNavbarStyles() {
     if (document.getElementById('navbar-dynamic-styles')) return;
 
     const styles = `
+    /* --- Navbar always visible saat scroll --- */
+    nav.navbar {
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 1000;
+      transform: translateY(0) !important;
+    }
+
     .nav-right { display: flex; align-items: center; gap: 12px; }
     .nav-links li { position: relative; }
     .dropdown-menu {
