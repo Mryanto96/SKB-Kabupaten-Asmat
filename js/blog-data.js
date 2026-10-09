@@ -22,7 +22,7 @@ const BLOG_DATA = [
         authorRole: 'English Course Director',
         date: '2025-08-17',
         tags: ['News', 'Education', 'Youth', 'Independence Day'],
-        views: 0,
+        views: 1000,
         featured: true,
 
         content: `
@@ -186,7 +186,7 @@ const BLOG_DATA = [
         authorRole: 'English Course Director',
         date: '2025-08-25',
         tags: ['Activity', 'Culture', 'Speaking', 'Community'],
-        views: 0,
+        views: 900,
         featured: false,
 
         content: `
@@ -458,7 +458,7 @@ const BLOG_DATA = [
         authorRole: 'English Course Director',
         date: '2025-08-30',
         tags: ['Achievement', 'Culture', 'Speaking', 'Community'],
-        views: 0,
+        views: 1503,
         featured: false,
 
         content: `
@@ -838,7 +838,7 @@ const BLOG_DATA = [
         authorRole: 'English Course Director',
         date: '2025-08-10',
         tags: ['Tips', 'Motivation', 'Education', 'Future'],
-        views: 0,
+        views: 1470,
         featured: false,
 
         content: `
