@@ -17,16 +17,18 @@
 
     <style>
         /* ============================================================
-           BLOG PAGE — News Layout with Sidebar
-           ============================================================ */
+               HALAMAN BLOG — Layout Berita dengan Sidebar
+               ============================================================ */
 
         :root {
             --emerald: #10b981;
             --emerald-dark: #059669;
             --emerald-soft: rgba(16, 185, 129, 0.10);
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* ---------- SUBTLE GRID LINES ---------- */
+        /* ---------- GARIS GRID HALUS ---------- */
         body {
             position: relative;
         }
@@ -59,7 +61,7 @@
             z-index: 1;
         }
 
-        /* ---------- PAGE HEADER ---------- */
+        /* ---------- HEADER HALAMAN ---------- */
         .blog-header {
             padding-top: 32px;
             padding-bottom: 30px;
@@ -90,8 +92,8 @@
         }
 
         /* ============================================================
-           MAIN LAYOUT — 2 KOLOM (Konten + Sidebar)
-           ============================================================ */
+               LAYOUT UTAMA — 2 KOLOM (Konten + Sidebar)
+               ============================================================ */
         .blog-layout {
             display: grid;
             grid-template-columns: 1fr;
@@ -108,13 +110,13 @@
         }
 
         /* ============================================================
-           KOLOM KIRI — Featured + Grid
-           ============================================================ */
+               KOLOM KIRI — Artikel Utama + Grid
+               ============================================================ */
         .blog-main {
             min-width: 0;
         }
 
-        /* ---------- FEATURED SECTION ---------- */
+        /* ---------- BAGIAN ARTIKEL UTAMA ---------- */
         .featured-section {
             margin-bottom: 32px;
         }
@@ -145,61 +147,98 @@
             border: 1px solid var(--border);
             border-radius: var(--radius);
             overflow: hidden;
-            transition: border-color 0.4s var(--ease-smooth),
-                box-shadow 0.4s var(--ease-smooth),
-                transform 0.4s var(--ease-smooth);
             text-decoration: none;
             color: inherit;
             position: relative;
+
+            transition:
+                border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            will-change: transform, box-shadow, border-color;
+            transform: translateY(0);
+            backface-visibility: hidden;
+        }
+
+        @media (min-width: 720px) {
+            .featured-card {
+                grid-template-columns: 340px 1fr;
+                min-height: 260px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .featured-card {
+                grid-template-columns: 380px 1fr;
+            }
         }
 
         .featured-card:hover {
             border-color: var(--emerald);
-            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.15);
+            box-shadow: 0 16px 40px rgba(16, 185, 129, 0.18);
             transform: translateY(-4px);
         }
 
         .featured-media {
             position: relative;
-            aspect-ratio: 16 / 10;
             background: var(--bg3);
             overflow: hidden;
+            min-height: 220px;
+            aspect-ratio: 16 / 10;
+        }
+
+        @media (min-width: 720px) {
+            .featured-media {
+                aspect-ratio: auto;
+                height: 100%;
+                min-height: 260px;
+            }
         }
 
         .featured-media img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s var(--ease-smooth);
+
+            transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+            backface-visibility: hidden;
         }
 
         .featured-card:hover .featured-media img {
-            transform: scale(1.04);
+            transform: scale(1.06);
         }
 
         .featured-badge {
             position: absolute;
-            top: 14px;
-            left: 14px;
+            top: 12px;
+            left: 12px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 5px 12px;
+            gap: 5px;
+            padding: 4px 10px;
             background: var(--emerald);
             color: #fff;
             border-radius: 99px;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             font-weight: 700;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.6px;
             text-transform: uppercase;
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
             z-index: 2;
         }
 
         .featured-body {
-            padding: 24px;
+            padding: 20px 22px;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+        }
+
+        @media (min-width: 720px) {
+            .featured-body {
+                padding: 24px 26px;
+            }
         }
 
         .featured-cat {
@@ -209,21 +248,27 @@
             background: var(--emerald-soft);
             color: var(--emerald-dark);
             border-radius: 99px;
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             font-weight: 700;
             letter-spacing: 0.6px;
             text-transform: uppercase;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
 
         .featured-title {
-            font-size: clamp(1.15rem, 1rem + 0.8vw, 1.5rem);
+            font-size: clamp(1.1rem, 0.95rem + 0.6vw, 1.35rem);
             font-weight: 700;
-            line-height: 1.25;
-            letter-spacing: -0.4px;
+            line-height: 1.3;
+            letter-spacing: -0.3px;
             color: var(--text);
-            margin-bottom: 12px;
-            transition: color 0.3s var(--ease-smooth);
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+
+            transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .featured-card:hover .featured-title {
@@ -231,34 +276,40 @@
         }
 
         .featured-excerpt {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text2);
-            line-height: 1.65;
-            margin-bottom: 16px;
+            line-height: 1.6;
+            margin-bottom: 14px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .featured-meta {
             display: flex;
             flex-wrap: wrap;
-            gap: 14px;
-            font-size: 0.72rem;
+            gap: 12px;
+            font-size: 0.68rem;
             color: var(--text3);
-            padding-top: 14px;
+            padding-top: 12px;
             border-top: 1px solid var(--border);
         }
 
         .featured-meta span {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             font-weight: 500;
         }
 
         .featured-meta i {
             color: var(--emerald);
+            font-size: 0.65rem;
         }
 
-        /* ---------- BLOG GRID ---------- */
+        /* ---------- GRID BLOG ---------- */
         .blog-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -271,7 +322,7 @@
             }
         }
 
-        /* ---------- BLOG CARD ---------- */
+        /* ---------- KARTU BLOG ---------- */
         .blog-card {
             display: flex;
             flex-direction: column;
@@ -281,15 +332,20 @@
             overflow: hidden;
             text-decoration: none;
             color: inherit;
-            transition: transform 0.4s var(--ease-smooth),
-                box-shadow 0.4s var(--ease-smooth),
-                border-color 0.4s var(--ease-smooth);
             position: relative;
+
+            transition:
+                transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, box-shadow, border-color;
+            transform: translateY(0) scale(1);
+            backface-visibility: hidden;
         }
 
         .blog-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.10);
+            transform: translateY(-6px) scale(1.005);
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
             border-color: var(--emerald);
         }
 
@@ -304,12 +360,15 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s var(--ease-smooth);
             display: block;
+
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+            backface-visibility: hidden;
         }
 
         .blog-card:hover .blog-card-media img {
-            transform: scale(1.05);
+            transform: scale(1.07);
         }
 
         .blog-card-cat {
@@ -327,19 +386,19 @@
             z-index: 2;
         }
 
-        .blog-card-cat.news {
+        .blog-card-cat.berita {
             background: #3b82f6;
         }
 
-        .blog-card-cat.event {
+        .blog-card-cat.acara {
             background: #f59e0b;
         }
 
-        .blog-card-cat.achievement {
+        .blog-card-cat.prestasi {
             background: #ef4444;
         }
 
-        .blog-card-cat.activity {
+        .blog-card-cat.kegiatan {
             background: #8b5cf6;
         }
 
@@ -349,6 +408,10 @@
 
         .blog-card-cat.tips {
             background: #10b981;
+        }
+
+        .blog-card-cat.pengalaman {
+            background: #ec4899;
         }
 
         .blog-card-body {
@@ -370,7 +433,8 @@
             line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            transition: color 0.3s var(--ease-smooth);
+
+            transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .blog-card:hover .blog-card-title {
@@ -413,8 +477,8 @@
         }
 
         /* ============================================================
-           KOLOM KANAN — SIDEBAR
-           ============================================================ */
+               KOLOM KANAN — SIDEBAR
+               ============================================================ */
         .blog-sidebar {
             position: sticky;
             top: calc(var(--nav-h, 68px) + 24px);
@@ -455,7 +519,7 @@
             font-size: 0.85rem;
         }
 
-        /* ---------- ARTIKEL VERTIKAL (SIDEBAR LIST) ---------- */
+        /* ---------- ARTIKEL VERTIKAL (SIDEBAR) ---------- */
         .sidebar-articles {
             display: flex;
             flex-direction: column;
@@ -469,7 +533,9 @@
             border-bottom: 1px solid var(--border);
             text-decoration: none;
             color: inherit;
-            transition: transform 0.3s var(--ease-smooth);
+
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            will-change: transform;
         }
 
         .sidebar-article:last-child {
@@ -478,7 +544,7 @@
         }
 
         .sidebar-article:hover {
-            transform: translateX(4px);
+            transform: translateX(6px);
         }
 
         .sidebar-article-img {
@@ -495,11 +561,13 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s var(--ease-smooth);
+
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
         }
 
         .sidebar-article:hover .sidebar-article-img img {
-            transform: scale(1.08);
+            transform: scale(1.1);
         }
 
         .sidebar-article-body {
@@ -530,7 +598,8 @@
             line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            transition: color 0.3s var(--ease-smooth);
+
+            transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .sidebar-article:hover .sidebar-article-title {
@@ -545,7 +614,7 @@
             gap: 4px;
         }
 
-        /* ---------- SIDEBAR: KATEGORI LIST ---------- */
+        /* ---------- SIDEBAR: DAFTAR KATEGORI ---------- */
         .sidebar-cats {
             display: flex;
             flex-direction: column;
@@ -563,18 +632,23 @@
             color: var(--text2);
             font-size: 0.8rem;
             font-weight: 500;
-            transition: all 0.3s var(--ease-smooth);
             cursor: pointer;
             border: none;
             font-family: inherit;
             text-align: left;
             width: 100%;
+
+            transition:
+                background 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            will-change: transform, background, color;
         }
 
         .sidebar-cat-item:hover {
             background: var(--emerald-soft);
             color: var(--emerald-dark);
-            transform: translateX(4px);
+            transform: translateX(6px);
         }
 
         .sidebar-cat-item .cat-count {
@@ -586,7 +660,7 @@
             font-weight: 700;
         }
 
-        /* ---------- LOAD MORE ---------- */
+        /* ---------- TOMBOL MUAT LEBIH BANYAK ---------- */
         .loadmore-wrap {
             text-align: center;
             margin-top: 32px;
@@ -605,20 +679,32 @@
             font-size: 0.875rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s var(--ease-smooth);
+
+            transition:
+                background 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, box-shadow, background;
         }
 
         .loadmore-btn:hover {
             background: var(--emerald);
             color: #fff;
             border-color: var(--emerald);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(16, 185, 129, 0.35);
+        }
+
+        .loadmore-btn:active {
+            transform: translateY(-1px) scale(0.98);
         }
 
         .loadmore-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
 
         .article-counter {
@@ -632,7 +718,7 @@
             color: var(--text);
         }
 
-        /* ---------- EMPTY STATE ---------- */
+        /* ---------- KONDISI KOSONG ---------- */
         .empty-state {
             grid-column: 1 / -1;
             text-align: center;
@@ -661,14 +747,35 @@
             color: var(--text2);
         }
 
-        /* ---------- RESPONSIVE ---------- */
+        /* ---------- RESPONSIF ---------- */
         @media (max-width: 640px) {
             .blog-header {
-                padding: 60px 0 40px;
+                padding: 30px 0 40px;
             }
 
             .blog-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .featured-body {
+                padding: 18px;
+            }
+        }
+
+        /* ---------- REDUCED MOTION ---------- */
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+
+            .blog-card:hover,
+            .featured-card:hover {
+                transform: none;
             }
         }
     </style>
@@ -768,9 +875,10 @@
             <div class="container">
                 <div
                     style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 32px 0 16px; text-align: left;">
-        
+
                     <div>
-                        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;" data-i18n="footer_contact">
+                        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;"
+                            data-i18n="footer_contact">
                             Contact</h4>
                         <p style="font-size: 0.78rem; color: var(--text2); line-height: 1.8; margin: 0;">
                             <i class="fas fa-map-marker-alt" style="color: var(--c1); width: 16px;"></i>
@@ -781,7 +889,7 @@
                             Office Hours: 15.00 - 18.00 P.M
                         </p>
                     </div>
-        
+
                     <div>
                         <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;" data-i18n="footer_phone">
                             Phone / WhatsApp</h4>
@@ -794,9 +902,10 @@
                             Miss Putri: 085691296762
                         </p>
                     </div>
-        
+
                     <div>
-                        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;" data-i18n="footer_institution">
+                        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;"
+                            data-i18n="footer_institution">
                             Institution</h4>
                         <p style="font-size: 0.78rem; color: var(--text2); line-height: 1.8; margin: 0;">
                             Kursus Bahasa Inggris,<br />
@@ -805,31 +914,32 @@
                             Dinas Pendidikan Kabupaten Asmat
                         </p>
                     </div>
-        
+
                     <div>
-                        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;" data-i18n="footer_follow">Follow
+                        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;"
+                            data-i18n="footer_follow">Follow
                             Us</h4>
                         <div style="display: flex; gap: 10px; margin-top: 4px;">
-        
+
                             <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
                                 style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 0.95rem; transition: all .25s ease;"
                                 onmouseover="this.style.background='#1877F2';this.style.color='#fff';this.style.borderColor='#1877F2';this.style.transform='translateY(-2px)';"
                                 onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
-        
+
                             <a href="#" target="_blank" rel="noopener noreferrer" aria-label="TikTok"
                                 style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--text2); text-decoration: none; font-size: 0.95rem; transition: all .25s ease;"
                                 onmouseover="this.style.background='#000';this.style.color='#fff';this.style.borderColor='#000';this.style.transform='translateY(-2px)';"
                                 onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text2)';this.style.borderColor='var(--border)';this.style.transform='translateY(0)';">
                                 <i class="fab fa-tiktok"></i>
                             </a>
-        
+
                         </div>
                     </div>
-        
+
                 </div>
-        
+
                 <div style="border-top: 1px solid var(--border); padding-top: 16px; text-align: center;">
                     <p style="font-size: 0.78rem; color: var(--text2); margin: 0;">
                         © <span data-year>2026</span> English Prime Course. All Rights Are Reserved.
