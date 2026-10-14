@@ -73,14 +73,31 @@ function t(key) {
 
 
 /* --------------------------------------------
-   MENU STRUCTURE (uses i18n keys)
-   NOTE: 
-   - Courses sudah dihapus.
-   - Quiz & Video jadi menu utama.
-   - About tidak ada di menu karena kontennya
-     sudah tergabung di index.html (cukup scroll).
-   - Peserta/Students ditambah sebagai menu utama
-     (setelah Attendance, sebelum Contact).
+   External URL Detection Helper
+-------------------------------------------- */
+function isExternalUrl(url) {
+    if (!url) return false;
+    return /^(https?:)?\/\//i.test(url);
+}
+
+function buildLinkAttributes(url) {
+    if (isExternalUrl(url)) {
+        return 'target="_blank" rel="noopener noreferrer"';
+    }
+    return '';
+}
+
+function renderLinkLabel(url, key) {
+    const label = t(key);
+    if (isExternalUrl(url)) {
+        return `${label} <i class="external-icon" aria-hidden="true">↗</i>`;
+    }
+    return label;
+}
+
+
+/* --------------------------------------------
+   MENU STRUCTURE
 -------------------------------------------- */
 const MENU_STRUCTURE = [
     { key: 'nav_home', url: 'index.html' },
@@ -95,95 +112,124 @@ const MENU_STRUCTURE = [
             { key: 'sub_documentation', url: 'activities.html#documentation' }
         ]
     },
-    { key: 'nav_attendance', url: 'attendance.html' },
+    {
+        key: 'nav_attendance',
+        url: 'https://script.google.com/macros/s/AKfycbwfoIIXpndkYZKZQT2ccWbDYmDavpxmeJI-r1iDOGqRcD6sIiSS7wJjXWVbgYzcl0aS0A/exec'
+    },
     { key: 'nav_peserta', url: 'peserta.html' },
     { key: 'nav_blog', url: 'blog.html' },
     { key: 'nav_contact', url: 'contact.html' }
 ];
 
+
 /* --------------------------------------------
-   RENDER HELPERS
+   RENDER: Desktop Nav Links
 -------------------------------------------- */
 function renderNavLinks() {
     let html = '';
+
     MENU_STRUCTURE.forEach(item => {
         if (item.dropdown) {
+            // ─── Menu dengan dropdown ───
             html += `<li class="has-dropdown">
-        <a href="#" aria-haspopup="true" aria-expanded="false">${t(item.key)}</a>
-        <ul class="dropdown-menu">`;
+                <a href="#" aria-haspopup="true" aria-expanded="false">${t(item.key)}</a>
+                <ul class="dropdown-menu">`;
+
             item.dropdown.forEach(sub => {
-                html += `<li><a href="${sub.url}">${t(sub.key)}</a></li>`;
+                const attrs = buildLinkAttributes(sub.url);
+                html += `<li><a href="${sub.url}" ${attrs}>${renderLinkLabel(sub.url, sub.key)}</a></li>`;
             });
+
             html += `</ul></li>`;
         } else {
-            html += `<li><a href="${item.url}">${t(item.key)}</a></li>`;
+            // ─── Menu biasa (internal / eksternal) ───
+            const attrs = buildLinkAttributes(item.url);
+            html += `<li><a href="${item.url}" ${attrs}>${renderLinkLabel(item.url, item.key)}</a></li>`;
         }
     });
+
     return html;
 }
 
+
+/* --------------------------------------------
+   RENDER: Mobile Menu
+-------------------------------------------- */
 function renderMobileMenu() {
     let html = '';
+
     MENU_STRUCTURE.forEach(item => {
         if (item.dropdown) {
+            // ─── Menu dengan dropdown ───
             html += `
-        <div class="mobile-dropdown-item">
-          <div class="mobile-dropdown-toggle" role="button" tabindex="0" aria-expanded="false">
-            <span>${t(item.key)}</span>
-            <span class="toggle-icon" aria-hidden="true">▼</span>
-          </div>
-          <div class="mobile-submenu">`;
+            <div class="mobile-dropdown-item">
+                <div class="mobile-dropdown-toggle" role="button" tabindex="0" aria-expanded="false">
+                    <span>${t(item.key)}</span>
+                    <span class="toggle-icon" aria-hidden="true">▼</span>
+                </div>
+                <div class="mobile-submenu">`;
+
             item.dropdown.forEach(sub => {
-                html += `<a href="${sub.url}">${t(sub.key)}</a>`;
+                const attrs = buildLinkAttributes(sub.url);
+                html += `<a href="${sub.url}" ${attrs}>${renderLinkLabel(sub.url, sub.key)}</a>`;
             });
+
             html += `</div></div>`;
         } else {
-            html += `<a href="${item.url}">${t(item.key)}</a>`;
+            // ─── Menu biasa (internal / eksternal) ───
+            const attrs = buildLinkAttributes(item.url);
+            html += `<a href="${item.url}" ${attrs}>${renderLinkLabel(item.url, item.key)}</a>`;
         }
     });
+
     return html;
 }
 
+
+/* --------------------------------------------
+   RENDER: Navbar
+-------------------------------------------- */
 function renderNavbar() {
     const lang = getCurrentLang();
     const nextLang = lang === 'en' ? 'id' : 'en';
 
     return `
-  <nav class="navbar" aria-label="Main navigation">
-    <div class="container">
-      <div class="nav-inner">
-        <a href="index.html" class="logo" aria-label="SKB Asmat Home">
-          <img src="images/Logo1.png" alt="SKB Asmat Logo" class="logo-img">
-          <div class="logo-text">
-            <span class="logo-title">SKB KABUPATEN ASMAT</span>
-            <span class="logo-sub">ENGLISH PRIME COURSE</span>
-          </div>
-        </a>
+    <nav class="navbar" aria-label="Main navigation">
+        <div class="container">
+            <div class="nav-inner">
+                <a href="index.html" class="logo" aria-label="SKB Asmat Home">
+                    <img src="images/Logo1.png" alt="SKB Asmat Logo" class="logo-img">
+                    <div class="logo-text">
+                        <span class="logo-title">SKB KABUPATEN ASMAT</span>
+                        <span class="logo-sub">ENGLISH PRIME COURSE</span>
+                    </div>
+                </a>
 
-        <ul class="nav-links">
-          ${renderNavLinks()}
-        </ul>
+                <ul class="nav-links">
+                    ${renderNavLinks()}
+                </ul>
 
-        <div class="nav-right">
-          <button
-            class="lang-toggle"
-            id="langToggleBtn"
-            aria-label="Switch language"
-            data-next-lang="${nextLang}">
-            ${t('lang_switch_label')}
-          </button>
-          <button class="hamburger" aria-label="${t('hamburger_label')}" aria-expanded="false" aria-controls="mobileMenu">
-            <span></span><span></span><span></span>
-          </button>
+                <div class="nav-right">
+                    <button
+                        class="lang-toggle"
+                        id="langToggleBtn"
+                        aria-label="Switch language"
+                        data-next-lang="${nextLang}">
+                        ${t('lang_switch_label')}
+                    </button>
+                    <button class="hamburger" aria-label="${t('hamburger_label')}" aria-expanded="false" aria-controls="mobileMenu">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        ${renderMobileMenu()}
     </div>
-  </nav>
-  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-    ${renderMobileMenu()}
-  </div>
-  `;
+    `;
 }
+
 
 /* --------------------------------------------
    INIT
@@ -211,6 +257,7 @@ function initNavigation() {
     updateActiveNavLink();
     forceNavbarAlwaysVisible();
 }
+
 
 /* --------------------------------------------
    EVENTS
@@ -265,7 +312,7 @@ function attachAllEvents() {
         langBtn.addEventListener('click', function () {
             const next = this.dataset.nextLang || 'id';
             setCurrentLang(next);
-            initNavigation();       // re-render navbar with new language
+            initNavigation();
             document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang: next } }));
         });
     }
@@ -301,6 +348,7 @@ function attachAllEvents() {
     });
 }
 
+
 /* --------------------------------------------
    MOBILE MENU HELPERS
 -------------------------------------------- */
@@ -319,6 +367,7 @@ function closeMobileMenu() {
     document.body.classList.remove('menu-open');
 }
 
+
 /* --------------------------------------------
    ACTIVE LINK
 -------------------------------------------- */
@@ -332,6 +381,12 @@ function updateActiveNavLink() {
         const link = li.querySelector(':scope > a');
         if (!link) return;
         const href = link.getAttribute('href');
+
+        // Skip link eksternal (tidak bisa jadi active)
+        if (isExternalUrl(href)) {
+            link.classList.remove('active');
+            return;
+        }
 
         if (li.classList.contains('has-dropdown')) {
             const match =
@@ -349,6 +404,12 @@ function updateActiveNavLink() {
     /* Mobile links */
     document.querySelectorAll('#mobileMenu a').forEach(link => {
         const href = link.getAttribute('href');
+
+        if (isExternalUrl(href)) {
+            link.classList.remove('active');
+            return;
+        }
+
         const isActive = href === currentPath || href === fullPath;
         link.classList.toggle('active', isActive);
     });
@@ -360,17 +421,14 @@ function updateActiveNavLink() {
     });
 }
 
+
 /* ============================================
    ANTI-HIDE NAVBAR
-   Memaksa navbar selalu terlihat saat scroll.
-   Menghapus class yang menyembunyikan navbar
-   dan memaksa style inline agar tetap muncul.
-   ============================================ */
+============================================ */
 function forceNavbarAlwaysVisible() {
     const navbar = document.querySelector('nav.navbar');
     if (!navbar) return;
 
-    // Class yang biasanya dipakai untuk hide navbar
     const hideClasses = [
         'hide', 'hidden', 'navbar-hide', 'navbar-hidden',
         'scroll-down', 'scroll-hide', 'nav-up', 'nav-hidden',
@@ -379,16 +437,13 @@ function forceNavbarAlwaysVisible() {
         'navbar-scrolled-hide', 'nav-scroll-hide', 'top-hide'
     ];
 
-    // Fungsi membersihkan navbar dari class/style hide
     function cleanNavbar() {
-        // Hapus semua class hide
         hideClasses.forEach(cls => {
             if (navbar.classList.contains(cls)) {
                 navbar.classList.remove(cls);
             }
         });
 
-        // Paksa style inline agar selalu terlihat
         navbar.style.transform = 'translateY(0)';
         navbar.style.top = '0';
         navbar.style.opacity = '1';
@@ -396,17 +451,14 @@ function forceNavbarAlwaysVisible() {
         navbar.style.pointerEvents = 'auto';
     }
 
-    // Jalankan langsung
     cleanNavbar();
 
-    // Observasi setiap perubahan class/style pada navbar
     const observer = new MutationObserver(cleanNavbar);
     observer.observe(navbar, {
         attributes: true,
         attributeFilter: ['class', 'style']
     });
 
-    // Scroll listener — paksa navbar terlihat saat scroll
     let scrollTicking = false;
     window.addEventListener('scroll', function () {
         if (!scrollTicking) {
@@ -418,14 +470,12 @@ function forceNavbarAlwaysVisible() {
         }
     }, { passive: true });
 
-    // Resize listener
     window.addEventListener('resize', cleanNavbar);
 }
 
+
 /* --------------------------------------------
-   NAVBAR STYLES (injected — fallback)
-   NOTE: main styles live in css/style.css.
-   These are only fallbacks for nav-specific bits.
+   NAVBAR STYLES
 -------------------------------------------- */
 function injectNavbarStyles() {
     if (document.getElementById('navbar-dynamic-styles')) return;
@@ -433,64 +483,82 @@ function injectNavbarStyles() {
     const styles = `
     /* --- Navbar always visible saat scroll --- */
     nav.navbar {
-      position: sticky !important;
-      top: 0 !important;
-      z-index: 1000;
-      transform: translateY(0) !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1000;
+        transform: translateY(0) !important;
     }
 
     .nav-right { display: flex; align-items: center; gap: 12px; }
     .nav-links li { position: relative; }
+
+    /* External link icon di nav */
+    .nav-links a .external-icon,
+    .mobile-menu a .external-icon {
+        display: inline-block;
+        font-size: 0.7em;
+        opacity: 0.65;
+        margin-left: 4px;
+        transition: opacity 0.2s, transform 0.2s;
+        font-style: normal;
+    }
+
+    .nav-links a:hover .external-icon,
+    .mobile-menu a:hover .external-icon {
+        opacity: 1;
+        transform: translate(2px, -2px);
+    }
+
     .dropdown-menu {
-      position: absolute; top: 100%; left: 0;
-      background: var(--card-bg, #fff);
-      border: 1px solid var(--border, #e5e7eb);
-      border-radius: 12px; min-width: 200px;
-      opacity: 0; visibility: hidden; transform: translateY(-10px);
-      transition: opacity .2s ease, transform .2s ease, visibility .2s;
-      z-index: 1000; box-shadow: 0 10px 25px -5px rgba(0,0,0,.1);
-      list-style: none; padding: 8px 0; margin: 0;
+        position: absolute; top: 100%; left: 0;
+        background: var(--card-bg, #fff);
+        border: 1px solid var(--border, #e5e7eb);
+        border-radius: 12px; min-width: 200px;
+        opacity: 0; visibility: hidden; transform: translateY(-10px);
+        transition: opacity .2s ease, transform .2s ease, visibility .2s;
+        z-index: 1000; box-shadow: 0 10px 25px -5px rgba(0,0,0,.1);
+        list-style: none; padding: 8px 0; margin: 0;
     }
     .dropdown-menu li { list-style: none; }
     .dropdown-menu a {
-      display: block; padding: 10px 18px;
-      font-size: .9rem; white-space: nowrap;
-      color: var(--text, #111); text-decoration: none;
+        display: block; padding: 10px 18px;
+        font-size: .9rem; white-space: nowrap;
+        color: var(--text, #111); text-decoration: none;
     }
     .dropdown-menu a:hover { background: var(--bg2, #f3f4f6); }
     .nav-links li:hover .dropdown-menu,
     .nav-links li.has-dropdown > a[aria-expanded="true"] + .dropdown-menu,
     .dropdown-menu.open {
-      opacity: 1; visibility: visible; transform: translateY(0);
+        opacity: 1; visibility: visible; transform: translateY(0);
     }
     .has-dropdown > a::after {
-      content: " ▼"; font-size: .65rem; margin-left: 4px; opacity: .7;
+        content: " ▼"; font-size: .65rem; margin-left: 4px; opacity: .7;
     }
     .has-dropdown.active-parent > a { color: var(--primary, #2563eb); }
 
     .mobile-dropdown-item { border-bottom: 1px solid var(--border, #e5e7eb); }
     .mobile-dropdown-toggle {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 20px; cursor: pointer; font-weight: 500;
-      color: var(--text, #111);
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 14px 20px; cursor: pointer; font-weight: 500;
+        color: var(--text, #111);
     }
     .mobile-dropdown-toggle .toggle-icon { font-size: .7rem; transition: transform .2s; }
     .mobile-dropdown-toggle.open .toggle-icon { transform: rotate(180deg); }
     .mobile-submenu {
-      max-height: 0; overflow: hidden; transition: max-height .3s ease;
-      background: var(--bg2, #f9fafb);
+        max-height: 0; overflow: hidden; transition: max-height .3s ease;
+        background: var(--bg2, #f9fafb);
     }
     .mobile-submenu a {
-      display: block; padding: 10px 20px 10px 40px;
-      font-size: .9rem; color: var(--text2, #374151); text-decoration: none;
+        display: block; padding: 10px 20px 10px 40px;
+        font-size: .9rem; color: var(--text2, #374151); text-decoration: none;
     }
     .mobile-submenu a:hover { background: var(--bg3, #f3f4f6); }
     .mobile-submenu a.active { color: var(--primary, #2563eb); font-weight: 600; }
 
     .hamburger {
-      cursor: pointer; background: none; border: none;
-      display: none; flex-direction: column; gap: 5px;
-      padding: 10px; z-index: 1100;
+        cursor: pointer; background: none; border: none;
+        display: none; flex-direction: column; gap: 5px;
+        padding: 10px; z-index: 1100;
     }
     .hamburger span { width: 22px; height: 2px; background: var(--text, #111); transition: all .3s ease; }
     .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
@@ -498,43 +566,44 @@ function injectNavbarStyles() {
     .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
     .lang-toggle {
-      background: transparent; color: var(--text, #111);
-      border: 1px solid var(--border, #e5e7eb);
-      border-radius: 8px; padding: 6px 12px;
-      font-weight: 600; font-size: .85rem; cursor: pointer;
-      transition: background .2s, color .2s;
+        background: transparent; color: var(--text, #111);
+        border: 1px solid var(--border, #e5e7eb);
+        border-radius: 8px; padding: 6px 12px;
+        font-weight: 600; font-size: .85rem; cursor: pointer;
+        transition: background .2s, color .2s;
     }
     .lang-toggle:hover { background: var(--primary, #2563eb); color: #fff; border-color: var(--primary, #2563eb); }
 
     .mobile-menu {
-      position: fixed; top: 69px; left: -100%;
-      width: 80%; max-width: 320px;
-      height: calc(100% - 69px);
-      background: var(--card-bg, #fff);
-      border-right: 1px solid var(--border, #e5e7eb);
-      transition: left .3s ease; z-index: 999;
-      overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,.1);
+        position: fixed; top: 69px; left: -100%;
+        width: 80%; max-width: 320px;
+        height: calc(100% - 69px);
+        background: var(--card-bg, #fff);
+        border-right: 1px solid var(--border, #e5e7eb);
+        transition: left .3s ease; z-index: 999;
+        overflow-y: auto; box-shadow: 2px 0 10px rgba(0,0,0,.1);
     }
     .mobile-menu.active { left: 0; }
     .mobile-menu > a {
-      display: block; padding: 14px 20px;
-      border-bottom: 1px solid var(--border, #e5e7eb);
-      color: var(--text, #111); text-decoration: none;
+        display: block; padding: 14px 20px;
+        border-bottom: 1px solid var(--border, #e5e7eb);
+        color: var(--text, #111); text-decoration: none;
     }
     .mobile-menu > a.active { color: var(--primary, #2563eb); font-weight: 600; }
     body.menu-open { overflow: hidden; }
 
     @media (max-width: 992px) {
-      .nav-links { display: none !important; }
-      .hamburger { display: flex !important; }
+        .nav-links { display: none !important; }
+        .hamburger { display: flex !important; }
     }
-  `;
+    `;
 
     const styleSheet = document.createElement('style');
     styleSheet.id = 'navbar-dynamic-styles';
     styleSheet.textContent = styles;
     document.head.appendChild(styleSheet);
 }
+
 
 /* --------------------------------------------
    START
