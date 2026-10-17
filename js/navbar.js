@@ -14,6 +14,7 @@ const TRANSLATIONS = {
         nav_management: 'Management',
         nav_activities: 'Activities',
         nav_attendance: 'Attendance',
+        nav_quiz: 'Quiz',
         nav_peserta: 'Students',
         nav_blog: 'Blog',
         nav_contact: 'Contact',
@@ -33,6 +34,7 @@ const TRANSLATIONS = {
         nav_management: 'Manajemen',
         nav_activities: 'Kegiatan',
         nav_attendance: 'Kehadiran',
+        nav_quiz: 'Kuis',
         nav_peserta: 'Peserta',
         nav_blog: 'Blog',
         nav_contact: 'Kontak',
@@ -116,11 +118,14 @@ const MENU_STRUCTURE = [
         key: 'nav_attendance',
         url: 'https://script.google.com/macros/s/AKfycbwfoIIXpndkYZKZQT2ccWbDYmDavpxmeJI-r1iDOGqRcD6sIiSS7wJjXWVbgYzcl0aS0A/exec'
     },
+    {
+        key: 'nav_quiz', // Diperbaiki: huruf 'Q' diubah menjadi 'q' agar konsisten
+        url: 'https://script.google.com/macros/s/AKfycbxul9brj5BHTAjsqT_D4kY0tjWS5njY68KZ3Rz5mf0WiZVjX_omo-AQQ7NJ-TbnHQ_TTQ/exec'
+    },
     { key: 'nav_peserta', url: 'peserta.html' },
     { key: 'nav_blog', url: 'blog.html' },
     { key: 'nav_contact', url: 'contact.html' }
 ];
-
 
 /* --------------------------------------------
    RENDER: Desktop Nav Links
