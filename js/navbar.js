@@ -120,7 +120,7 @@ const MENU_STRUCTURE = [
     },
     {
         key: 'nav_quiz', // Diperbaiki: huruf 'Q' diubah menjadi 'q' agar konsisten
-        url: 'https://script.google.com/macros/s/AKfycbxul9brj5BHTAjsqT_D4kY0tjWS5njY68KZ3Rz5mf0WiZVjX_omo-AQQ7NJ-TbnHQ_TTQ/exec'
+        url: 'https://script.google.com/macros/s/AKfycbxL4AdTafmpQVB31xnSb4uD7vf2Qwx6fdufjzeDBffr9y11svqbnyMV17n7SrwKOJ2CEw/exec'
     },
     { key: 'nav_peserta', url: 'peserta.html' },
     { key: 'nav_blog', url: 'blog.html' },
