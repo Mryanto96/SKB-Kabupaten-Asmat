@@ -832,7 +832,7 @@ const BLOG_DATA = [
         id: 'why-english-matters',
         title: 'Why Learning English Matters More Than Ever',
         excerpt: 'In a world that grows smaller every day, English is no longer a luxury — it is a bridge to opportunity, connection, and a future without limits.',
-        thumbnail: 'images/blog/Asmat.png',
+        thumbnail: 'images/blog/English.png',
         category: 'tips',
         author: 'Maria Delfina Dhae',
         authorRole: 'English Course Director',
@@ -1226,5 +1226,5 @@ const BLOG_DATA = [
 <p>And perhaps most importantly:</p>
 
 <p><strong>English gave you a voice.</strong> 🌿</p>`
-    }
+    },
 ];
