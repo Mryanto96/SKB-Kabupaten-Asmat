@@ -1653,22 +1653,32 @@ footer span {
     gap: var(--s-2);
 }
 
+/* ============================================================
+   LOGO
+   ============================================================ */
 .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.5px;
+    /* Jarak gambar dan teks sangat rapat (1 langkah) */
     font-weight: 800;
     min-width: 0;
+
+    /* MENGGESER SELURUH LOGO LEBIH JAUH KE KIRI (2 langkah lagi) */
+    transform: translateX(-26px);
+
     transition: transform 0.3s var(--ease-smooth);
 }
 
-
 .logo-img {
-    width: clamp(35px, 5vw, 45px);
-    height: clamp(35px, 5vw, 45px);
+    width: clamp(50px, 20vw, 95px);
+    /* Ukuran TETAP */
+    height: clamp(50px, 20vw, 90px);
     object-fit: contain;
     flex-shrink: 0;
     transition: transform 0.3s var(--ease-smooth);
+
+    /* Tidak ada transform tambahan di sini */
 }
 
 .logo-text {
@@ -1676,6 +1686,8 @@ footer span {
     flex-direction: column;
     line-height: 1.1;
     min-width: 0;
+    align-items: flex-start;
+    /* Teks rata kiri */
 }
 
 .logo-title {
@@ -1692,15 +1704,14 @@ footer span {
 }
 
 .logo-sub {
-    font-size: clamp(0.65rem, 1.4vw, 0.70rem);
+    font-size: clamp(0.65rem, 1.4vw, 0.80rem);
     color: var(--text2);
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.3px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 .nav-links {
     display: none;
     align-items: center;

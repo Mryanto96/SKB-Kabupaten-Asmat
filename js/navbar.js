@@ -203,7 +203,7 @@ function renderNavbar() {
         <div class="container">
             <div class="nav-inner">
                 <a href="index.html" class="logo" aria-label="SKB Asmat Home">
-                    <img src="images/Logo1.png" alt="SKB Asmat Logo" class="logo-img">
+                    <img src="images/Logo2.png" alt="SKB Asmat Logo" class="logo-img">
                     <div class="logo-text">
                         <span class="logo-title">SKB KABUPATEN ASMAT</span>
                         <span class="logo-sub">ENGLISH PRIME COURSE</span>
