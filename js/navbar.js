@@ -116,7 +116,7 @@ const MENU_STRUCTURE = [
     },
     {
         key: 'nav_attendance',
-        url: 'https://script.google.com/macros/s/AKfycbwfoIIXpndkYZKZQT2ccWbDYmDavpxmeJI-r1iDOGqRcD6sIiSS7wJjXWVbgYzcl0aS0A/exec'
+        url: 'https://sites.google.com/view/english-prime-course/attendance'
     },
     {
         key: 'nav_quiz', // Diperbaiki: huruf 'Q' diubah menjadi 'q' agar konsisten
