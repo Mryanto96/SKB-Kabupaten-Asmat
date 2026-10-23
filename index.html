@@ -70,6 +70,7 @@
             margin: 0 auto;
         }
 
+        /* ✅ SVG connector hanya ditampilkan di desktop (≥900px) */
         .flow-svg {
             position: absolute;
             top: 0;
@@ -79,6 +80,12 @@
             pointer-events: none;
             z-index: 1;
             overflow: visible;
+        }
+
+        @media (max-width: 899px) {
+            .flow-svg {
+                display: none !important;
+            }
         }
 
         /* ---------- FLOW ITEM ---------- */
@@ -150,16 +157,16 @@
             box-shadow:
                 0 6px 20px rgba(15, 23, 42, 0.08),
                 0 16px 48px rgba(15, 23, 42, 0.10);
+            /* ✅ Hanya shadow & border yang berubah saat hover */
             transition:
-                transform 0.5s var(--ease-smooth),
                 box-shadow 0.5s var(--ease-smooth),
                 border-color 0.5s var(--ease-smooth);
             cursor: pointer;
             isolation: isolate;
         }
 
+        /* ✅ Hover tanpa transform */
         .flow-item:hover .flow-media-frame {
-            transform: translateY(-8px) scale(1.01);
             border-color: var(--flow-primary);
             box-shadow:
                 0 10px 30px rgba(16, 185, 129, 0.18),
@@ -173,12 +180,8 @@
             display: block;
             border-radius: calc(var(--radius) - 8px);
             background: var(--bg3);
-            transition: transform 0.6s var(--ease-smooth);
-            will-change: transform;
-        }
-
-        .flow-item:hover .flow-media-frame img {
-            transform: scale(1.04);
+            /* ✅ Tidak ada transform pada img */
+            transition: none;
         }
 
         /* Overlay gradient */
@@ -209,7 +212,8 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.6);
+            /* ✅ Tetap pakai translate untuk centering, tanpa scale animasi */
+            transform: translate(-50%, -50%);
             width: 56px;
             height: 56px;
             border-radius: 50%;
@@ -221,16 +225,13 @@
             justify-content: center;
             box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
             opacity: 0;
-            transition:
-                opacity 0.35s var(--ease-smooth),
-                transform 0.4s var(--ease-bounce);
+            transition: opacity 0.35s var(--ease-smooth);
             pointer-events: none;
             z-index: 3;
         }
 
         .flow-item:hover .flow-media-frame::after {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
         }
 
         /* Nomor dekoratif */
@@ -253,14 +254,13 @@
                 0 4px 12px rgba(16, 185, 129, 0.40),
                 0 0 0 4px var(--bg);
             z-index: 5;
+            /* ✅ Hanya warna & shadow yang berubah, tanpa transform */
             transition:
-                transform 0.4s var(--ease-bounce),
                 background 0.4s var(--ease-smooth),
                 box-shadow 0.4s var(--ease-smooth);
         }
 
         .flow-item:hover .flow-media-num {
-            transform: scale(1.15) rotate(-8deg);
             background: var(--flow-primary-dark);
             box-shadow:
                 0 6px 18px rgba(16, 185, 129, 0.55),
@@ -309,16 +309,15 @@
             border-radius: var(--radius);
             padding: clamp(1.4rem, 3vw, 2rem);
             position: relative;
+            /* ✅ Hanya shadow & border yang berubah, tanpa transform */
             transition:
                 box-shadow 0.4s var(--ease-smooth),
-                border-color 0.4s var(--ease-smooth),
-                transform 0.4s var(--ease-smooth);
+                border-color 0.4s var(--ease-smooth);
         }
 
         .flow-item:hover .flow-text {
             box-shadow: var(--shadow-lg);
             border-color: var(--flow-primary);
-            transform: translateY(-3px);
         }
 
         .flow-text::after {
@@ -426,11 +425,12 @@
             padding: 14px 12px;
             background: var(--flow-primary-soft);
             border-radius: var(--radius-sm);
-            transition: transform 0.3s var(--ease-smooth);
+            /* ✅ Tanpa transform saat hover */
+            transition: background 0.3s var(--ease-smooth);
         }
 
         .flow-item:hover .flow-stat {
-            transform: translateY(-2px);
+            background: rgba(16, 185, 129, 0.14);
         }
 
         .flow-stat-value {
@@ -513,14 +513,6 @@
                 font-size: 0.8rem;
                 top: -10px;
                 left: -10px;
-            }
-
-            .flow-item:hover .flow-media-frame img {
-                transform: none;
-            }
-
-            .flow-item:hover .flow-media-frame {
-                transform: none;
             }
         }
 
@@ -1987,20 +1979,35 @@
 
     <!-- ============================================================
          DIAGONAL CONNECTOR SCRIPT — Emerald version
+         ✅ Hanya jalan di desktop (≥ 900px). Di mobile/tablet
+            SVG dihapus total agar tidak berantakan.
          ============================================================ -->
     <script>
         (function () {
             'use strict';
 
             const SVG_NS = 'http://www.w3.org/2000/svg';
+            const DESKTOP_BREAKPOINT = 900;
 
             // 🎨 Warna garis (Emerald)
             const COLOR_PRIMARY = '#10b981';
             const COLOR_SECONDARY = '#a7f3d0';
 
-            function drawConnectors(flowEl) {
+            function isDesktop() {
+                return window.innerWidth >= DESKTOP_BREAKPOINT;
+            }
+
+            function removeSvg(flowEl) {
                 const oldSvg = flowEl.querySelector('.flow-svg');
                 if (oldSvg) oldSvg.remove();
+            }
+
+            function drawConnectors(flowEl) {
+                // ✅ Selalu bersihkan SVG lama dulu
+                removeSvg(flowEl);
+
+                // ✅ Jika mobile/tablet → jangan gambar apa pun
+                if (!isDesktop()) return;
 
                 const svg = document.createElementNS(SVG_NS, 'svg');
                 svg.setAttribute('class', 'flow-svg');
