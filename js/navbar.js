@@ -120,7 +120,7 @@ const MENU_STRUCTURE = [
     },
     {
         key: 'nav_quiz', // Diperbaiki: huruf 'Q' diubah menjadi 'q' agar konsisten
-        url: 'https://script.google.com/macros/s/AKfycbxL4AdTafmpQVB31xnSb4uD7vf2Qwx6fdufjzeDBffr9y11svqbnyMV17n7SrwKOJ2CEw/exec'
+        url: 'https://sites.google.com/view/english-prime-course-asmat/quiz'
     },
     { key: 'nav_peserta', url: 'peserta.html' },
     { key: 'nav_blog', url: 'blog.html' },
