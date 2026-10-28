@@ -1983,210 +1983,210 @@
             SVG dihapus total agar tidak berantakan.
          ============================================================ -->
     <script>
-        (function () {
-            'use strict';
+    //     (function () {
+    //         'use strict';
 
-            const SVG_NS = 'http://www.w3.org/2000/svg';
-            const DESKTOP_BREAKPOINT = 900;
+    //         const SVG_NS = 'http://www.w3.org/2000/svg';
+    //         const DESKTOP_BREAKPOINT = 900;
 
-            // 🎨 Warna garis (Emerald)
-            const COLOR_PRIMARY = '#10b981';
-            const COLOR_SECONDARY = '#a7f3d0';
+    //         // 🎨 Warna garis (Emerald)
+    //         const COLOR_PRIMARY = '#10b981';
+    //         const COLOR_SECONDARY = '#a7f3d0';
 
-            function isDesktop() {
-                return window.innerWidth >= DESKTOP_BREAKPOINT;
-            }
+    //         function isDesktop() {
+    //             return window.innerWidth >= DESKTOP_BREAKPOINT;
+    //         }
 
-            function removeSvg(flowEl) {
-                const oldSvg = flowEl.querySelector('.flow-svg');
-                if (oldSvg) oldSvg.remove();
-            }
+    //         function removeSvg(flowEl) {
+    //             const oldSvg = flowEl.querySelector('.flow-svg');
+    //             if (oldSvg) oldSvg.remove();
+    //         }
 
-            function drawConnectors(flowEl) {
-                // ✅ Selalu bersihkan SVG lama dulu
-                removeSvg(flowEl);
+    //         function drawConnectors(flowEl) {
+    //             // ✅ Selalu bersihkan SVG lama dulu
+    //             removeSvg(flowEl);
 
-                // ✅ Jika mobile/tablet → jangan gambar apa pun
-                if (!isDesktop()) return;
+    //             // ✅ Jika mobile/tablet → jangan gambar apa pun
+    //             if (!isDesktop()) return;
 
-                const svg = document.createElementNS(SVG_NS, 'svg');
-                svg.setAttribute('class', 'flow-svg');
-                svg.setAttribute('preserveAspectRatio', 'none');
+    //             const svg = document.createElementNS(SVG_NS, 'svg');
+    //             svg.setAttribute('class', 'flow-svg');
+    //             svg.setAttribute('preserveAspectRatio', 'none');
 
-                const flowRect = flowEl.getBoundingClientRect();
-                svg.setAttribute('viewBox', `0 0 ${flowRect.width} ${flowRect.height}`);
-                svg.setAttribute('width', flowRect.width);
-                svg.setAttribute('height', flowRect.height);
+    //             const flowRect = flowEl.getBoundingClientRect();
+    //             svg.setAttribute('viewBox', `0 0 ${flowRect.width} ${flowRect.height}`);
+    //             svg.setAttribute('width', flowRect.width);
+    //             svg.setAttribute('height', flowRect.height);
 
-                const defs = document.createElementNS(SVG_NS, 'defs');
+    //             const defs = document.createElementNS(SVG_NS, 'defs');
 
-                const markerMain = createArrowMarker('flow-arrow-main', COLOR_PRIMARY);
-                defs.appendChild(markerMain);
+    //             const markerMain = createArrowMarker('flow-arrow-main', COLOR_PRIMARY);
+    //             defs.appendChild(markerMain);
 
-                const markerFlow = createArrowMarker('flow-arrow-flow', COLOR_SECONDARY);
-                defs.appendChild(markerFlow);
+    //             const markerFlow = createArrowMarker('flow-arrow-flow', COLOR_SECONDARY);
+    //             defs.appendChild(markerFlow);
 
-                svg.appendChild(defs);
+    //             svg.appendChild(defs);
 
-                const items = flowEl.querySelectorAll('.flow-item');
+    //             const items = flowEl.querySelectorAll('.flow-item');
 
-                for (let i = 0; i < items.length; i++) {
-                    const item = items[i];
-                    const media = item.querySelector('.flow-media-frame');
-                    const text = item.querySelector('.flow-text');
+    //             for (let i = 0; i < items.length; i++) {
+    //                 const item = items[i];
+    //                 const media = item.querySelector('.flow-media-frame');
+    //                 const text = item.querySelector('.flow-text');
 
-                    if (!media || !text) continue;
+    //                 if (!media || !text) continue;
 
-                    const mediaRect = media.getBoundingClientRect();
-                    const textRect = text.getBoundingClientRect();
-                    const isReverse = item.classList.contains('reverse');
+    //                 const mediaRect = media.getBoundingClientRect();
+    //                 const textRect = text.getBoundingClientRect();
+    //                 const isReverse = item.classList.contains('reverse');
 
-                    // Foto → Teks PASANGANNYA
-                    let startX, startY, endX, endY;
+    //                 // Foto → Teks PASANGANNYA
+    //                 let startX, startY, endX, endY;
 
-                    if (isReverse) {
-                        startX = mediaRect.left - flowRect.left + 6;
-                        startY = mediaRect.bottom - flowRect.top - 6;
-                        endX = textRect.right - flowRect.left - 6;
-                        endY = textRect.top - flowRect.top + 6;
-                    } else {
-                        startX = mediaRect.right - flowRect.left - 6;
-                        startY = mediaRect.bottom - flowRect.top - 6;
-                        endX = textRect.left - flowRect.left + 6;
-                        endY = textRect.top - flowRect.top + 6;
-                    }
+    //                 if (isReverse) {
+    //                     startX = mediaRect.left - flowRect.left + 6;
+    //                     startY = mediaRect.bottom - flowRect.top - 6;
+    //                     endX = textRect.right - flowRect.left - 6;
+    //                     endY = textRect.top - flowRect.top + 6;
+    //                 } else {
+    //                     startX = mediaRect.right - flowRect.left - 6;
+    //                     startY = mediaRect.bottom - flowRect.top - 6;
+    //                     endX = textRect.left - flowRect.left + 6;
+    //                     endY = textRect.top - flowRect.top + 6;
+    //                 }
 
-                    const dx = endX - startX;
-                    const dy = endY - startY;
+    //                 const dx = endX - startX;
+    //                 const dy = endY - startY;
 
-                    const cp1x = startX + dx * 0.2;
-                    const cp1y = startY + dy * 0.55;
-                    const cp2x = startX + dx * 0.8;
-                    const cp2y = startY + dy * 0.9;
+    //                 const cp1x = startX + dx * 0.2;
+    //                 const cp1y = startY + dy * 0.55;
+    //                 const cp2x = startX + dx * 0.8;
+    //                 const cp2y = startY + dy * 0.9;
 
-                    const pathMain = document.createElementNS(SVG_NS, 'path');
-                    pathMain.setAttribute('d',
-                        `M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`
-                    );
-                    pathMain.setAttribute('fill', 'none');
-                    pathMain.setAttribute('stroke', COLOR_PRIMARY);
-                    pathMain.setAttribute('stroke-width', '2');
-                    pathMain.setAttribute('stroke-dasharray', '8 5');
-                    pathMain.setAttribute('stroke-linecap', 'round');
-                    pathMain.setAttribute('marker-end', 'url(#flow-arrow-main)');
-                    pathMain.setAttribute('opacity', '0.75');
-                    pathMain.setAttribute('class', 'flow-connector-main');
+    //                 const pathMain = document.createElementNS(SVG_NS, 'path');
+    //                 pathMain.setAttribute('d',
+    //                     `M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`
+    //                 );
+    //                 pathMain.setAttribute('fill', 'none');
+    //                 pathMain.setAttribute('stroke', COLOR_PRIMARY);
+    //                 pathMain.setAttribute('stroke-width', '2');
+    //                 pathMain.setAttribute('stroke-dasharray', '8 5');
+    //                 pathMain.setAttribute('stroke-linecap', 'round');
+    //                 pathMain.setAttribute('marker-end', 'url(#flow-arrow-main)');
+    //                 pathMain.setAttribute('opacity', '0.75');
+    //                 pathMain.setAttribute('class', 'flow-connector-main');
 
-                    svg.appendChild(pathMain);
+    //                 svg.appendChild(pathMain);
 
-                    // Teks → Foto berikutnya
-                    if (i < items.length - 1) {
-                        const nextItem = items[i + 1];
-                        const nextMedia = nextItem.querySelector('.flow-media-frame');
-                        const nextIsReverse = nextItem.classList.contains('reverse');
+    //                 // Teks → Foto berikutnya
+    //                 if (i < items.length - 1) {
+    //                     const nextItem = items[i + 1];
+    //                     const nextMedia = nextItem.querySelector('.flow-media-frame');
+    //                     const nextIsReverse = nextItem.classList.contains('reverse');
 
-                        if (nextMedia) {
-                            const nextMediaRect = nextMedia.getBoundingClientRect();
+    //                     if (nextMedia) {
+    //                         const nextMediaRect = nextMedia.getBoundingClientRect();
 
-                            let startX2, startY2, endX2, endY2;
+    //                         let startX2, startY2, endX2, endY2;
 
-                            if (isReverse) {
-                                startX2 = textRect.left - flowRect.left + 6;
-                                startY2 = textRect.bottom - flowRect.top - 6;
-                            } else {
-                                startX2 = textRect.right - flowRect.left - 6;
-                                startY2 = textRect.bottom - flowRect.top - 6;
-                            }
+    //                         if (isReverse) {
+    //                             startX2 = textRect.left - flowRect.left + 6;
+    //                             startY2 = textRect.bottom - flowRect.top - 6;
+    //                         } else {
+    //                             startX2 = textRect.right - flowRect.left - 6;
+    //                             startY2 = textRect.bottom - flowRect.top - 6;
+    //                         }
 
-                            if (nextIsReverse) {
-                                endX2 = nextMediaRect.right - flowRect.left - 6;
-                                endY2 = nextMediaRect.top - flowRect.top + 6;
-                            } else {
-                                endX2 = nextMediaRect.left - flowRect.left + 6;
-                                endY2 = nextMediaRect.top - flowRect.top + 6;
-                            }
+    //                         if (nextIsReverse) {
+    //                             endX2 = nextMediaRect.right - flowRect.left - 6;
+    //                             endY2 = nextMediaRect.top - flowRect.top + 6;
+    //                         } else {
+    //                             endX2 = nextMediaRect.left - flowRect.left + 6;
+    //                             endY2 = nextMediaRect.top - flowRect.top + 6;
+    //                         }
 
-                            const dx2 = endX2 - startX2;
-                            const dy2 = endY2 - startY2;
+    //                         const dx2 = endX2 - startX2;
+    //                         const dy2 = endY2 - startY2;
 
-                            const cp1x2 = startX2 + dx2 * 0.1;
-                            const cp1y2 = startY2 + dy2 * 0.4;
-                            const cp2x2 = startX2 + dx2 * 0.85;
-                            const cp2y2 = startY2 + dy2 * 0.7;
+    //                         const cp1x2 = startX2 + dx2 * 0.1;
+    //                         const cp1y2 = startY2 + dy2 * 0.4;
+    //                         const cp2x2 = startX2 + dx2 * 0.85;
+    //                         const cp2y2 = startY2 + dy2 * 0.7;
 
-                            const pathFlow = document.createElementNS(SVG_NS, 'path');
-                            pathFlow.setAttribute('d',
-                                `M ${startX2} ${startY2} C ${cp1x2} ${cp1y2}, ${cp2x2} ${cp2y2}, ${endX2} ${endY2}`
-                            );
-                            pathFlow.setAttribute('fill', 'none');
-                            pathFlow.setAttribute('stroke', COLOR_SECONDARY);
-                            pathFlow.setAttribute('stroke-width', '1.5');
-                            pathFlow.setAttribute('stroke-dasharray', '4 4');
-                            pathFlow.setAttribute('stroke-linecap', 'round');
-                            pathFlow.setAttribute('marker-end', 'url(#flow-arrow-flow)');
-                            pathFlow.setAttribute('opacity', '0.6');
-                            pathFlow.setAttribute('class', 'flow-connector-flow');
+    //                         const pathFlow = document.createElementNS(SVG_NS, 'path');
+    //                         pathFlow.setAttribute('d',
+    //                             `M ${startX2} ${startY2} C ${cp1x2} ${cp1y2}, ${cp2x2} ${cp2y2}, ${endX2} ${endY2}`
+    //                         );
+    //                         pathFlow.setAttribute('fill', 'none');
+    //                         pathFlow.setAttribute('stroke', COLOR_SECONDARY);
+    //                         pathFlow.setAttribute('stroke-width', '1.5');
+    //                         pathFlow.setAttribute('stroke-dasharray', '4 4');
+    //                         pathFlow.setAttribute('stroke-linecap', 'round');
+    //                         pathFlow.setAttribute('marker-end', 'url(#flow-arrow-flow)');
+    //                         pathFlow.setAttribute('opacity', '0.6');
+    //                         pathFlow.setAttribute('class', 'flow-connector-flow');
 
-                            svg.appendChild(pathFlow);
-                        }
-                    }
-                }
+    //                         svg.appendChild(pathFlow);
+    //                     }
+    //                 }
+    //             }
 
-                flowEl.insertBefore(svg, flowEl.firstChild);
-            }
+    //             flowEl.insertBefore(svg, flowEl.firstChild);
+    //         }
 
-            function createArrowMarker(id, color) {
-                const marker = document.createElementNS(SVG_NS, 'marker');
-                marker.setAttribute('id', id);
-                marker.setAttribute('viewBox', '0 0 10 10');
-                marker.setAttribute('refX', '9');
-                marker.setAttribute('refY', '5');
-                marker.setAttribute('markerWidth', '7');
-                marker.setAttribute('markerHeight', '7');
-                marker.setAttribute('orient', 'auto-start-reverse');
+    //         function createArrowMarker(id, color) {
+    //             const marker = document.createElementNS(SVG_NS, 'marker');
+    //             marker.setAttribute('id', id);
+    //             marker.setAttribute('viewBox', '0 0 10 10');
+    //             marker.setAttribute('refX', '9');
+    //             marker.setAttribute('refY', '5');
+    //             marker.setAttribute('markerWidth', '7');
+    //             marker.setAttribute('markerHeight', '7');
+    //             marker.setAttribute('orient', 'auto-start-reverse');
 
-                const path = document.createElementNS(SVG_NS, 'path');
-                path.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
-                path.setAttribute('fill', color);
-                marker.appendChild(path);
+    //             const path = document.createElementNS(SVG_NS, 'path');
+    //             path.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
+    //             path.setAttribute('fill', color);
+    //             marker.appendChild(path);
 
-                return marker;
-            }
+    //             return marker;
+    //         }
 
-            function drawAll() {
-                document.querySelectorAll('[data-flow]').forEach(drawConnectors);
-            }
+    //         function drawAll() {
+    //             document.querySelectorAll('[data-flow]').forEach(drawConnectors);
+    //         }
 
-            window.addEventListener('load', drawAll);
+    //         window.addEventListener('load', drawAll);
 
-            let resizeTimer;
-            window.addEventListener('resize', function () {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(drawAll, 200);
-            });
+    //         let resizeTimer;
+    //         window.addEventListener('resize', function () {
+    //             clearTimeout(resizeTimer);
+    //             resizeTimer = setTimeout(drawAll, 200);
+    //         });
 
-            if (document.fonts && document.fonts.ready) {
-                document.fonts.ready.then(drawAll);
-            }
+    //         if (document.fonts && document.fonts.ready) {
+    //             document.fonts.ready.then(drawAll);
+    //         }
 
-            const observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function (m) {
-                    if (m.type === 'attributes' && m.attributeName === 'class') {
-                        if (m.target.classList.contains('visible')) {
-                            setTimeout(drawAll, 120);
-                        }
-                    }
-                });
-            });
+    //         const observer = new MutationObserver(function (mutations) {
+    //             mutations.forEach(function (m) {
+    //                 if (m.type === 'attributes' && m.attributeName === 'class') {
+    //                     if (m.target.classList.contains('visible')) {
+    //                         setTimeout(drawAll, 120);
+    //                     }
+    //                 }
+    //             });
+    //         });
 
-            document.querySelectorAll('.fade-up').forEach(function (el) {
-                observer.observe(el, { attributes: true });
-            });
+    //         document.querySelectorAll('.fade-up').forEach(function (el) {
+    //             observer.observe(el, { attributes: true });
+    //         });
 
-            setTimeout(drawAll, 1000);
-            setTimeout(drawAll, 2000);
-        })();
-    </script>
+    //         setTimeout(drawAll, 1000);
+    //         setTimeout(drawAll, 2000);
+    //     })();
+    // </script>
 </body>
 
 </html>
